@@ -85,19 +85,29 @@ q_people.week = [repmat(q_people.day,5,1);zeros(2,24)];
 q_people.year = [repmat(q_people.week,52,1);q_people.day];
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
-% First equation - switching ON the heating system
+% First equation - switching ON the heating system ==> Qth
 
-k0 = [2, 2];
-[k,fval, exitflag, output] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.electric.year.v, Build.Q), k0)
- 
-% Second equation - yearly heating demand
-% if Text<16
-%     
-% end
-% if Text>26
-%     Q_th = 0
-% end 
+% Second equation - yearly heating demand ==> q_plus_year
 
 % Implementation of the Newton-Raphson method
+    % Method initialisation
     
+    % Resolution
+    
+k0 = [2, 2]; %initial guess
+[k,fval, exitflag, output] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.electric.year.v, Build.Q), k0)
+ 
+Build.kth = k(1);
+Build.ksun = k(2);
+ 
+U_env = Build.kth - air_new*cp_air %[W/(m^2.K)];
+
+Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
+
+%% TASK 3 - Estimation of the hourly profile    
+
+% Hourly demand (thermal load)
+
+%% TASK 4 - Clustering of the heating demand
+% based on the hourly heating demand (typical periods)
     
