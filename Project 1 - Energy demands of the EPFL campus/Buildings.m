@@ -52,10 +52,10 @@ p.electric.day.f = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
 p.electric.week.f = [repmat(p.electric.day.f,5,1);zeros(2,24)];
 p.electric.year.f = [repmat(p.electric.week.f,52,1);p.electric.day.f];
 
-% total hours (should equal 3654, §1.2.1)
+% total hours (should equal 3654, ï¿½1.2.1)
 p.electric.totalHours = sum(p.electric.year.f,'all');
 
-% fraction of electricity demand converted to heat (§1.1)
+% fraction of electricity demand converted to heat (ï¿½1.1)
 f_el = 0.8; %[-]
 
 % hourly heating power of electricals
@@ -89,6 +89,8 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
 % function q = Qth(deltaT, Build.ground, k_th, T_int, Text, k_sun, Irr, q, Q_el)
 %     q = delta_t*(Build.ground*(k_th*(T_int-Text)-k_sun*Irr-q)-Q_el)
 % end
+k0 = [2, 2];
+[k,fval] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.electric.year.v, Build.Q), k0)
 
     
 % Second equation - yearly heating demand
