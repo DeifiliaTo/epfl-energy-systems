@@ -68,6 +68,11 @@ Q_gain_specific = (OccProf' .* (Heat_gain .* Share))';
 Q_gain = Q_gain_specific (1,:) + Q_gain_specific (2,:) + Q_gain_specific (3,:) + Q_gain_specific (4,:); %[W]
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
+m_air  = 2.5 % m3/m2h
+
+function q = Qth(deltaT, Ath, kth, T_int, T_ext, k_sun, ith, q, f_el, Q_el)
+    q = deltaT*(Ath*(kth*(T_int-T_ext)-k_sun*ith-q)-f_el*Q_el)
+end
 
 % First equation - switching ON the heating system
 
