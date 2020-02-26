@@ -52,10 +52,10 @@ p.electric.day.f = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
 p.electric.week.f = [repmat(p.electric.day.f,5,1);zeros(2,24)];
 p.electric.year.f = [repmat(p.electric.week.f,52,1);p.electric.day.f];
 
-% total hours (should equal 3654, §1.2.1)
+% total hours (should equal 3654, ï¿½1.2.1)
 p.electric.totalHours = sum(p.electric.year.f,'all');
 
-% fraction of electricity demand converted to heat (§1.1)
+% fraction of electricity demand converted to heat (ï¿½1.1)
 f_el = 0.8; %[-]
 
 % hourly heating power of electricals
@@ -67,9 +67,9 @@ p.electric.week.v = p.electric.week.f * Q_el;
 p.electric.year.v = p.electric.year.f * Q_el;
 
 % 1.2 - Presence of people (all the buildings are the same)
-heat_gain  = [5, 35, 23.3, 0];        %[W/m^2]
-share      = [0.3, 0.05, 0.35, 0.3];  %[-]
-weight_avg = dot(heat_gain, share);   %[W/m^2]
+Heat_gain  = [5, 35, 23.3, 0];        %[W/m^2]
+Share      = [0.3, 0.05, 0.35, 0.3];  %[-]
+weight_avg = dot(heat_gain, Share);   %[W/m^2]
 Q_gain     = weight_avg*Build.ground; %[W]
 
 OccProf_Office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
@@ -88,9 +88,8 @@ m_air  = 2.5 % m3/m2h
 
     
     % Resolution
-    index = 1;
     k0 = [2, 2];
-    [k,fval] = fsolve(@(k) Qth(1, Build.ground, k(1), T_int, Text(index), k(2), Irr(index), Q_gain, f_el, Q_el), k0)
+    [k,fval] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, Q_gain, f_el, Q_el, Build.Q), k0)
 
 
 %% TASK 3 - Estimation of the hourly profile    
@@ -101,3 +100,5 @@ m_air  = 2.5 % m3/m2h
 % based on the hourly heating demand (typical periods)
 
 end
+
+
