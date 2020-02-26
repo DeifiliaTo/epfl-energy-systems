@@ -90,7 +90,7 @@ function Build = Buildings(building_name)
         % Resolution
         index = 1;
         k0 = [2, 2];
-        [k,fval] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, Q_gain, f_el, Q_el, Build.Q), k0)
+        [k,fval] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, Q_gain, f_el, p.electric.year.v, Build.Q), k0)
     
     
     %% TASK 3 - Estimation of the hourly profile    
@@ -100,5 +100,6 @@ function Build = Buildings(building_name)
     %% TASK 4 - Clustering of the heating demand
     % based on the hourly heating demand (typical periods)
     
-    end
+end
+    
     
