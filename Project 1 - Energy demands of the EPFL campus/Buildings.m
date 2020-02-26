@@ -67,8 +67,8 @@ OccProf_Class = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 m_air  = 2.5 % m3/m2h
 
-function q = Qth(deltaT, Ath, kth, T_int, T_ext, k_sun, ith, q, f_el, Q_el)
-    q = deltaT*(Ath*(kth*(T_int-T_ext)-k_sun*ith-q)-f_el*Q_el)
+function q = Qth(deltaT, Build.ground, k_th, T_int, Text, k_sun, Irr, q, f_el, Q_el)
+    q = delta_t*(Build.ground*(k_th*(T_int-Text)-k_sun*Irr-q)-f_el*Q_el)
 end
 
 % First equation - switching ON the heating system
