@@ -20,14 +20,14 @@ function Build = Buildings(building_name)
 h = 8760;                   % Number of hours in a year
 T_th = 16;                  % Cut-off temperature of the heating system [�C]
 cp_air = 1152;              % Specific heat capacity of the air [J/m3/K] 
-T_int = 21;                 % Set point (comfort) temperature [�C]
+T_int = 21;                 % Set point (comfort) temperature [C]
 air_new = 2.5;              % Air renewal [m3/m2]
 Vent = air_new*cp_air/3600; % Ventilation capacity
 
 % Call of the weather data
 filename = 'P1_weatherdata.csv';
 data_w = csvread(filename,1,0);
-Text = data_w(:,1);         % External temperature [�C]
+Text = data_w(:,1);         % External temperature [C]
 Irr = data_w(:,2);          % Global solar irradiation [W/m2]
 
 % Call of the buildings data
@@ -40,15 +40,19 @@ name = data{1,1};
 % Index and variable definition
 index = find(ismember(name, building_name));
 Build.ground = data{1,3}(index);    % Building heated surface [m2]
-Build.env = data{1,4}(index);       % Building thermal envelope [m2]
-Build.Q = data{1,5}(index);         % Building annual heat load [kWh]
-Build.El = data{1,6}(index);        % Building annual electricity consumption [kWh]
+Build.Q = data{1,4}(index);         % Building annual heat load [kWh]
+Build.El = data{1,5}(index);        % Building annual electricity consumption [kWh]
 
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
 
 % 1.1 - Electronic appliances and lights for each buildings 
 
+
 % 1.2 - Presence of people (all the buildings are the same)
+heat_gain = [5, 35, 23.3, 0]
+share         = [0.3, 0.05, 0.35, 0.3]
+weight_avg = dot(heat_gain, share)
+
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
