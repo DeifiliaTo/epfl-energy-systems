@@ -46,6 +46,7 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
 
 % 1.1 - Electronic appliances and lights for each buildings 
+Q_el = Build.El*0.8*3654 %[kJ]
 
 
 % 1.2 - Presence of people (all the buildings are the same)
