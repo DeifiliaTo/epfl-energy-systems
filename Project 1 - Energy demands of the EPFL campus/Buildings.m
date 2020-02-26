@@ -33,7 +33,7 @@ Irr = data_w(:,2);          % Global solar irradiation [W/m2]
 % Call of the buildings data
 filename = 'P1_buildingsdata.csv';
 fid = fopen(filename);
-format = '%s%f%f%f%f%f'
+format = '%s%f%f%f%f'
 data = textscan(fid, format, 'Headerlines', 1, 'delimiter', ',');
 name = data{1,1};
 
