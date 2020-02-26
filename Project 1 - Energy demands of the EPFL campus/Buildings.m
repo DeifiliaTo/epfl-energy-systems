@@ -89,8 +89,7 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
 
 k0 = [2, 2];
 [k,fval, exitflag, output] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.electric.year.v, Build.Q), k0)
-
-    
+ 
 % Second equation - yearly heating demand
 % if Text<16
 %     
