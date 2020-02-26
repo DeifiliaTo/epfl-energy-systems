@@ -66,6 +66,7 @@ p.electric.day.v = p.electric.day.f * Q_el;
 p.electric.week.v = p.electric.week.f * Q_el;
 p.electric.year.v = p.electric.year.f * Q_el;
 
+
 % 1.2 - Presence of people (all the buildings are the same)
 Heat_gain = [5, 35, 23.3, 0];       %[W/m^2]
 Share     = [0.3, 0.05, 0.35, 0.3]; %[-]
@@ -76,26 +77,27 @@ OccProf_Rest   = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0]; 
 OccProf_Class  = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];       %[-]
 
 % Matrix of occupation profile for office, restaurant, classroom and other
-OccProf = [OccProf_Office; OccProf_Rest; OccProf_Class; zeros(1,24)]; %[-]
+OccProf.day.f = [OccProf_Office; OccProf_Rest; OccProf_Class; zeros(1,24)]; %[-]
 
 % Specific heat gain by people for a building from 1 am to 12 pm
-Q_people = sum ((OccProf' .* (Heat_gain .* Share))'); %[W/m^2]
-
+q_people.day = sum ((OccProf.day.f' .* (Heat_gain .* Share))')*3.6; %[kJ/m^2]
+q_people.week = [repmat(q_people.day,5,1);zeros(2,24)];
+q_people.year = [repmat(q_people.week,52,1);q_people.day];
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
 % First equation - switching ON the heating system
-function q = Qth(deltaT, Build.ground, k_th, T_int, Text, k_sun, Irr, q, f_el, Q_el)
-    q = delta_t*(Build.ground*(k_th*(T_int-Text)-k_sun*Irr-q)-f_el*Q_el)
-end
+% function q = Qth(deltaT, Build.ground, k_th, T_int, Text, k_sun, Irr, q, Q_el)
+%     q = delta_t*(Build.ground*(k_th*(T_int-Text)-k_sun*Irr-q)-Q_el)
+% end
 
     
 % Second equation - yearly heating demand
-if Text<16
-    
-end
-if Text>26
-    Q_th = 0
-end 
+% if Text<16
+%     
+% end
+% if Text>26
+%     Q_th = 0
+% end 
 
 % Implementation of the Newton-Raphson method
     
