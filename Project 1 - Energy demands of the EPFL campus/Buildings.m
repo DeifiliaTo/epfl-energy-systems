@@ -45,44 +45,53 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
 
-% 1.1 - Electronic appliances and lights for each buildings 
-Day_ele = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
-Week_ele = [Day_ele;Day_ele;Day_ele;Day_ele;Day_ele;zeros(2,24)];
-Year_ele = 
-Operating_hours = 3654 %[h/year]
-f_el = 0.8
-Q_el = Build.El*f_el/Operating_hours %[kJ]
-Ele_profile = Q_el*
+% 1.1 - Electronic appliances and lights for each buildings
+
+% fractional profiles
+p.electric.day.f = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
+p.electric.week.f = [repmat(p.electric.day.f,5,1);zeros(2,24)];
+p.electric.year.f = [repmat(p.electric.week.f,52,1);p.electric.day.f];
+
+% total hours (should equal 3654, §1.2.1)
+p.electric.totalHours = sum(p.electric.year.f,'all');
+
+% fraction of electricity demand converted to heat (§1.1)
+f_el = 0.8; %[-]
+
+% hourly heating power of electricals
+Q_el = Build.El * f_el / p.electric.totalHours; %[kW]
+
+% electrical heating profiles
+p.electric.day.v = p.electric.day.f * Q_el;
+p.electric.week.v = p.electric.week.f * Q_el;
+p.electric.year.v = p.electric.year.f * Q_el;
 
 % 1.2 - Presence of people (all the buildings are the same)
-Heat_gain = [5, 35, 23.3, 0]; %[W/m^2]
-Share         = [0.3, 0.05, 0.35, 0.3]; %[-]
+Heat_gain = [5, 35, 23.3, 0];       %[W/m^2]
+Share     = [0.3, 0.05, 0.35, 0.3]; %[-]
 
-OccProf_Office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
-OccProf_Rest = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
-OccProf_Class = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
-OccProf = [OccProf_Office; OccProf_Rest; OccProf_Class; zeros(1,24)];% Matrix Occupation Profile
+% Occupation profile for office, restaurant and classroom from 1 am to 24 pm
+OccProf_Office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0]; %[-]
+OccProf_Rest   = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];           %[-]
+OccProf_Class  = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];       %[-]
 
-Q_gain_specific = (OccProf' .* (Heat_gain .* Share))';
+% Matrix of occupation profile for office, restaurant, classroom and other
+OccProf = [OccProf_Office; OccProf_Rest; OccProf_Class; zeros(1,24)]; %[-]
 
-Q_gain = Q_gain_specific (1,:) + Q_gain_specific (2,:) + Q_gain_specific (3,:) + Q_gain_specific (4,:); %[W]
+% Specific heat gain by people for a building
+Q_people = sum ((OccProf' .* (Heat_gain .* Share))'); %[W/m^2]
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 m_air  = 2.5 % m3/m2h
 
-function q = Qth(deltaT, Build.ground, k_th, T_int, Text, k_sun, Irr, q, f_el, Q_el)
-    q = delta_t*(Build.ground*(k_th*(T_int-Text)-k_sun*Irr-q)-f_el*Q_el)
-end
-
 % First equation - switching ON the heating system
 
-% Second equation - yearly heating demand
-
-% Implementation of the Newton-Raphson method
-    
-    % Method initialisation
     
     % Resolution
+    index = 1;
+    k0 = [2, 2];
+    [k,fval] = fsolve(@(k) Qth(1, Build.ground, k(1), T_int, Text(index), k(2), Irr(index), Q_gain, f_el, Q_el), k0)
+
 
 %% TASK 3 - Estimation of the hourly profile    
 
@@ -90,3 +99,5 @@ end
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)
+
+end
