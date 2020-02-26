@@ -46,9 +46,13 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
 
 % 1.1 - Electronic appliances and lights for each buildings 
-Operating_hours = 3654; %[h/year]
-f_el = 0.8;
-Q_el = Build.El*f_el*Operating_hours; %[kJ]
+Day_ele = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
+Week_ele = [Day_ele;Day_ele;Day_ele;Day_ele;Day_ele;zeros(2,24)];
+Year_ele = 
+Operating_hours = 3654 %[h/year]
+f_el = 0.8
+Q_el = Build.El*f_el/Operating_hours %[kJ]
+Ele_profile = Q_el*
 
 % 1.2 - Presence of people (all the buildings are the same)
 heat_gain = [5, 35, 23.3, 0]; %[W/m^2]
@@ -61,6 +65,11 @@ OccProf_Cantine = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];
 OccProf_Class = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
+m_air  = 2.5 % m3/m2h
+
+function q = Qth(deltaT, Ath, kth, T_int, T_ext, k_sun, ith, q, f_el, Q_el)
+    q = deltaT*(Ath*(kth*(T_int-T_ext)-k_sun*ith-q)-f_el*Q_el)
+end
 
 % First equation - switching ON the heating system
 
