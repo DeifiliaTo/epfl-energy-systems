@@ -45,14 +45,26 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
 
-% 1.1 - Electronic appliances and lights for each buildings 
-Day_ele = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
-Week_ele = [repmat(Day_ele,5,1);zeros(2,24)];
-Year_ele = [repmat(Week_ele,52,1);Day_ele];
-Operating_hours = 3654 %[h/year]
-% f_el = 0.8
-Q_el = Build.El*f_el/Operating_hours %[kJ]
-% Ele_profile = Q_el*
+% 1.1 - Electronic appliances and lights for each buildings
+
+% fractional profiles
+p.electric.day.f = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
+p.electric.week.f = [repmat(p.electric.day.f,5,1);zeros(2,24)];
+p.electric.year.f = [repmat(p.electric.week.f,52,1);p.electric.day.f];
+
+% total hours (should equal 3654, §1.2.1)
+p.electric.totalHours = sum(p.electric.year.f,'all');
+
+% fraction of electricity demand converted to heat (§1.1)
+f_el = 0.8; %[-]
+
+% hourly heating power of electricals
+Q_el = Build.El * f_el / p.electric.totalHours; %[kW]
+
+% electrical heating profiles
+p.electric.day.v = p.electric.day.f * Q_el;
+p.electric.week.v = p.electric.week.f * Q_el;
+p.electric.year.v = p.electric.year.f * Q_el;
 
 % 1.2 - Presence of people (all the buildings are the same)
 heat_gain = [5, 35, 23.3, 0]; %[W/m^2]
