@@ -70,8 +70,8 @@ Q_gain = Q_gain_specific (1,:) + Q_gain_specific (2,:) + Q_gain_specific (3,:) +
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 m_air  = 2.5 % m3/m2h
 
-function q = Qth(deltaT, Ath, kth, T_int, T_ext, k_sun, ith, q, f_el, Q_el)
-    q = deltaT*(Ath*(kth*(T_int-T_ext)-k_sun*ith-q)-f_el*Q_el)
+function q = Qth(deltaT, Build.ground, k_th, T_int, Text, k_sun, Irr, q, f_el, Q_el)
+    q = delta_t*(Build.ground*(k_th*(T_int-Text)-k_sun*Irr-q)-f_el*Q_el)
 end
 
 % First equation - switching ON the heating system
