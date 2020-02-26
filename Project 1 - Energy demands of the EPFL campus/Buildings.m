@@ -47,12 +47,12 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 
 % 1.1 - Electronic appliances and lights for each buildings 
 Day_ele = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
-Week_ele = [Day_ele;Day_ele;Day_ele;Day_ele;Day_ele;zeros(2,24)];
-Year_ele = 
+Week_ele = [repmat(Day_ele,5,1);zeros(2,24)];
+Year_ele = [repmat(Week_ele,52,1);Day_ele];
 Operating_hours = 3654 %[h/year]
-f_el = 0.8
+% f_el = 0.8
 Q_el = Build.El*f_el/Operating_hours %[kJ]
-Ele_profile = Q_el*
+% Ele_profile = Q_el*
 
 % 1.2 - Presence of people (all the buildings are the same)
 heat_gain = [5, 35, 23.3, 0]; %[W/m^2]
