@@ -33,7 +33,7 @@ Irr = data_w(:,2);          % Global solar irradiation [W/m2]
 % Call of the buildings data
 filename = 'P1_buildingsdata.csv';
 fid = fopen(filename);
-format = '%s%f%f%f%f'
+format = '%s%f%f%f%f';
 data = textscan(fid, format, 'Headerlines', 1, 'delimiter', ',');
 name = data{1,1};
 
@@ -46,15 +46,19 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
 
 % 1.1 - Electronic appliances and lights for each buildings 
-Operating_hours = 3654 %[h/year]
-f_el = 0.8
-Q_el = Build.El*f_el*Operating_hours %[kJ]
+Operating_hours = 3654; %[h/year]
+f_el = 0.8;
+Q_el = Build.El*f_el*Operating_hours; %[kJ]
 
 % 1.2 - Presence of people (all the buildings are the same)
-heat_gain = [5, 35, 23.3, 0] %[W/m^2]
-share         = [0.3, 0.05, 0.35, 0.3] %[-]
-weight_avg = dot(heat_gain, share) %[W/m^2]
-Q_gain = weight_avg*Build.ground %[W]
+heat_gain = [5, 35, 23.3, 0]; %[W/m^2]
+share         = [0.3, 0.05, 0.35, 0.3]; %[-]
+weight_avg = dot(heat_gain, share); %[W/m^2]
+Q_gain = weight_avg*Build.ground; %[W]
+
+OccProf_Office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
+OccProf_Cantine = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
+OccProf_Class = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
