@@ -90,7 +90,7 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
 %     q = delta_t*(Build.ground*(k_th*(T_int-Text)-k_sun*Irr-q)-Q_el)
 % end
 k0 = [2, 2];
-[k,fval] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.electric.year.v, Build.Q), k0)
+[k,fval, exitflag, output] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.electric.year.v, Build.Q), k0)
 
     
 % Second equation - yearly heating demand
