@@ -55,19 +55,27 @@ Q_el = Build.El*f_el/Operating_hours %[kJ]
 
 
 % 1.2 - Presence of people (all the buildings are the same)
+<<<<<<< HEAD
 heat_gain  = [5, 35, 23.3, 0];        %[W/m^2]
 share      = [0.3, 0.05, 0.35, 0.3];  %[-]
 weight_avg = dot(heat_gain, share);   %[W/m^2]
 Q_gain     = weight_avg*Build.ground; %[W]
+=======
+Heat_gain = [5, 35, 23.3, 0]; %[W/m^2]
+Share         = [0.3, 0.05, 0.35, 0.3]; %[-]
+>>>>>>> ff647bc797976c51a80442ff6c6732a002b6af15
 
 OccProf_Office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
-OccProf_Cantine = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
+OccProf_Rest = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
 OccProf_Class = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];% Each hour from 1 am to 24 pm
+OccProf = [OccProf_Office; OccProf_Rest; OccProf_Class; zeros(1,24)];% Matrix Occupation Profile
+
+Q_gain_specific = (OccProf' .* (Heat_gain .* Share))';
+
+Q_gain = Q_gain_specific (1,:) + Q_gain_specific (2,:) + Q_gain_specific (3,:) + Q_gain_specific (4,:); %[W]
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 m_air  = 2.5 % m3/m2h
-
-
 
 % First equation - switching ON the heating system
 
