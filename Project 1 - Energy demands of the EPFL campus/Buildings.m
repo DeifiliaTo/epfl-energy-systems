@@ -70,7 +70,7 @@ p.electric.year.v = p.electric.year.f * Q_el;
 Heat_gain = [5, 35, 23.3, 0];       %[W/m^2]
 Share     = [0.3, 0.05, 0.35, 0.3]; %[-]
 
-% Occupation profile for office, restaurant and classroom from 1 am to 24 pm
+% Occupation profile for office, restaurant and classroom from 1 am to 12 pm
 OccProf_Office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0]; %[-]
 OccProf_Rest   = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];           %[-]
 OccProf_Class  = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];       %[-]
@@ -78,7 +78,7 @@ OccProf_Class  = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 
 % Matrix of occupation profile for office, restaurant, classroom and other
 OccProf = [OccProf_Office; OccProf_Rest; OccProf_Class; zeros(1,24)]; %[-]
 
-% Specific heat gain by people for a building
+% Specific heat gain by people for a building from 1 am to 12 pm
 Q_people = sum ((OccProf' .* (Heat_gain .* Share))'); %[W/m^2]
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
