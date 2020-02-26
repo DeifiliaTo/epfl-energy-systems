@@ -46,13 +46,15 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
 
 % 1.1 - Electronic appliances and lights for each buildings 
-
+Operating_hours = 3654 %[h/year]
+f_el = 0.8
+Q_el = Build.El*f_el*Operating_hours %[kJ]
 
 % 1.2 - Presence of people (all the buildings are the same)
-heat_gain = [5, 35, 23.3, 0]
-share         = [0.3, 0.05, 0.35, 0.3]
-weight_avg = dot(heat_gain, share)
-
+heat_gain = [5, 35, 23.3, 0] %[W/m^2]
+share         = [0.3, 0.05, 0.35, 0.3] %[-]
+weight_avg = dot(heat_gain, share) %[W/m^2]
+Q_gain = weight_avg*Build.ground %[W]
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
