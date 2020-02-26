@@ -86,9 +86,7 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
 % First equation - switching ON the heating system
-% function q = Qth(deltaT, Build.ground, k_th, T_int, Text, k_sun, Irr, q, Q_el)
-%     q = delta_t*(Build.ground*(k_th*(T_int-Text)-k_sun*Irr-q)-Q_el)
-% end
+
 k0 = [2, 2];
 [k,fval, exitflag, output] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.electric.year.v, Build.Q), k0)
 
