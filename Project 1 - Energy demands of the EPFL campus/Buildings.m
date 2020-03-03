@@ -66,12 +66,13 @@ p.elec.day.v  = p.elec.day.f  * Q_el; %[kW]
 p.elec.week.v = p.elec.week.f * Q_el; %[kW]
 p.elec.year.v = p.elec.year.f * Q_el; %[kW]
 
-% 1.2 - Presence of people (all the buildings are the same, s1.2.2)
-Heat_gain = [5, 35, 23.3, 0];       %[W/m^2]
-Share     = [0.3, 0.05, 0.35, 0.3]; %[-]
+% 1.2 - Presence of people
 
-% Occupation profile for office, restaurant and classroom from 1am to 12am
-% (fig 1.1)
+% Heat gain due to people by space (s1.2.2)
+Heat_gain   = [5, 35, 23.3, 0];       %[W/m^2]
+Space_share = [0.3, 0.05, 0.35, 0.3]; %[-]
+
+% Occupation profile for different spaces from 1am to 12am (fig 1.1)
 p.occ.office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0]; %[-]
 p.occ.rest   = [0 0 0 0 0 0 0 0   0.4 0.2 0.4 1   0.4 0.2 0.4 0   0   0   0 0 0 0 0 0]; %[-]
 p.occ.class  = [0 0 0 0 0 0 0 0.4 0.6 1   1   0.8 0.2 0.6 1   0.8 0.8 0.4 0 0 0 0 0 0]; %[-]
@@ -81,7 +82,7 @@ p.occ.other  = zeros(1,24);                                                     
 p.occ.day.f = [p.occ.office; p.occ.rest; p.occ.class; p.occ.other]; %[-]
 
 % Specific heat gain by people for a building from 1am to 12am
-q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Share))')*3.6; %[kJ/m^2/h]
+q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))')*3.6; %[kJ/m^2/h]
 q_people.week = [repmat(q_people.day,5,1);zeros(2,24)];
 q_people.year = [repmat(q_people.week,52,1);q_people.day];
 
