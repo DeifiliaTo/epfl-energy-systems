@@ -52,10 +52,10 @@ p.electric.day.f = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
 p.electric.week.f = [repmat(p.electric.day.f,5,1);zeros(2,24)];
 p.electric.year.f = [repmat(p.electric.week.f,52,1);p.electric.day.f];
 
-% total hours (should equal 3654, �1.2.1)
+% total hours (should equal 3654, s1.2.1)
 p.electric.totalHours = sum(p.electric.year.f,'all');
 
-% fraction of electricity demand converted to heat (�1.1)
+% fraction of electricity demand converted to heat (s1.1)
 f_el = 0.8; %[-]
 
 % hourly heating power of electricals
