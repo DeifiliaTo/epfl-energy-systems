@@ -122,12 +122,19 @@ z = ones(365,24);
 Qth_calculated = arrayfun(@simple_Qth,Build.ground*z,Build.kth*z,T_int*z,T_ext,Build.ksun*z,i_dot,q_people.year,p.elec.year.v);
 
 Qth_plus = arrayfun(@(x) max([x,0]),Qth_calculated);
+Qth_plus(:,1:7) = 0;
+Qth_plus(:,22:24) = 0;
+
+% because matlab indexes n-by-m matrices by column first when using a
+% single index :(
+Qth_calculated_2 = Qth_calculated';
+Qth_plus_2 = Qth_plus';
 
 t = 1:h;
 yyaxis left
-plot(t,Qth_calculated(1:end))
+plot(t,Qth_calculated_2(1:end))
 yyaxis right
-plot(t,Qth_plus(1:end))
+plot(t,Qth_plus_2(1:end))
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)
