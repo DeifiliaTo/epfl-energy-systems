@@ -40,5 +40,4 @@ for i = 1:n_build
     
     fprintf(fid,format2,building_name,',',Build.kth,',',Build.ksun);
     fclose(fid);
-    
 end
