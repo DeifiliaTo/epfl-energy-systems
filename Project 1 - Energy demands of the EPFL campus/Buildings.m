@@ -95,7 +95,7 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
     
     
 k0 = [5, 2]; %initial guess
-[k,fval, exitflag, output] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.elec.year.v, Build.Q), k0);
+[k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.elec.year.v, Build.Q), k0);
  
 Build.kth = k(1);
 Build.ksun = k(2);
@@ -108,11 +108,23 @@ Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
 
 % Hourly demand (thermal load)
 
-Qth_calculated = Build.ground*(Build.kth*(T_int-Text)-Build.ksun*Irr-q_people.day)-p.elec.day.v;
+%convert q_people.year matrix into column vector
 
+%convert q_people.year matrix into column vector
+
+if Text<16
+Qth_calculated = Build.ground*(Build.kth*(T_int-Text)-Build.ksun*Irr-q_people.year)-p.elec.year.v;
+else Qth_calculated = 0
+end
+
+if Qth_calculated <0
+    Qth_plus = 0
+else Qth_plus = Qth_calculated
+end
+    
 t = 1:h;
 
-plot(t,Qth_calculated)
+plot(t,Qth_plus(1:end))
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)
