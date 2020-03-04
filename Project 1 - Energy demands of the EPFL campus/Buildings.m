@@ -11,7 +11,6 @@ function Build = Buildings(building_name)
 % (2) the building envelope properties (Newton-Raphson)
 % (3) the hourly heating demand
 % (4) the typical periods (clustering)
-%% 
 
 %% DATA MANAGEMENT
 %  Do NOT modify
@@ -48,12 +47,12 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 % 1.1 - Electronic appliances and lights for each buildings
 
 % fractional profiles from hour 0-23
-p.elec.day.f  = [zeros(7,1);ones(14,1);zeros(3,1)];
-p.elec.week.f = [repmat(p.elec.day.f,5,1);zeros(48,1)];
-p.elec.year.f = [repmat(p.elec.week.f,52,1);p.elec.day.f];
+p.elec.day.f  = [zeros(7,1);ones(14,1);zeros(3,1)];         %[-]
+p.elec.week.f = [repmat(p.elec.day.f,5,1);zeros(48,1)];     %[-]
+p.elec.year.f = [repmat(p.elec.week.f,52,1);p.elec.day.f];  %[-]
 
 % heating binary switch is same as for electricity
-p.heat.year.f = p.elec.year.f;
+p.heat.year.f = p.elec.year.f; %[-]
 
 % total hours (should equal 3654, s1.2.1)
 p.elec.totalHours = sum(p.elec.year.f,'all');
@@ -62,7 +61,7 @@ p.elec.totalHours = sum(p.elec.year.f,'all');
 f_el = 0.8; %[-]
 
 % hourly heating power of electricals
-Q_el = Build.El * f_el / p.elec.totalHours*1000; %[W]
+Q_el = Build.El * f_el / p.elec.totalHours * 1000; %[W]
 
 % electrical heating profiles
 p.elec.day.v  = p.elec.day.f  * Q_el; %[W]
@@ -76,6 +75,7 @@ Heat_gain   = [5, 35, 23.3, 0];       %[W/m^2]
 Space_share = [0.3, 0.05, 0.35, 0.3]; %[-]
 
 % Occupation profile for different spaces from hour 0-23 (fig 1.1)
+% NB: data structure different
 p.occ.office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0]; %[-]
 p.occ.rest   = [0 0 0 0 0 0 0 0   0.4 0.2 0.4 1   0.4 0.2 0.4 0   0   0   0 0 0 0 0 0]; %[-]
 p.occ.class  = [0 0 0 0 0 0 0 0.4 0.6 1   1   0.8 0.2 0.6 1   0.8 0.8 0.4 0 0 0 0 0 0]; %[-]
@@ -85,6 +85,7 @@ p.occ.other  = zeros(1,24);                                                     
 p.occ.day.f = [p.occ.office; p.occ.rest; p.occ.class; p.occ.other]; %[-]
 
 % Specific heat gain by people for a building from hour 0-23
+% transpose back to vertical format from day onwards
 q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))')'; %[W/m^2]
 q_people.week = [repmat(q_people.day,5,1);zeros(48,1)];
 q_people.year = [repmat(q_people.week,52,1);q_people.day];
@@ -116,15 +117,20 @@ Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
 % matrix of ones to create matrices for constants
 z = ones(h,1);
 
+% calculate Qth for each timestep
 Qth_calculated = arrayfun(@simple_Qth,Build.ground*z,Build.kth*z,T_int*z,Text,Build.ksun*z,Irr,q_people.year,p.elec.year.v,p.heat.year.f);
 
+% only take positive Q (this is heating)
 Qth_plus = arrayfun(@(x) max([x,0]),Qth_calculated);
 
+% plot Qth series
 t = 1:h;
 figure
 plot(t,Qth_calculated(1:end))
+title('Q_{th}');
 figure
 plot(t,Qth_plus(1:end))
+title('Q_{th}^+');
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)
