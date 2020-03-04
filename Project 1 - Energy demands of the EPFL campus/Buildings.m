@@ -47,8 +47,8 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 
 % 1.1 - Electronic appliances and lights for each buildings
 
-% fractional profiles
-p.elec.day.f  = [0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0];
+% fractional profiles from hour 0-23
+p.elec.day.f  = [0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0];
 p.elec.week.f = [repmat(p.elec.day.f,5,1);zeros(2,24)];
 p.elec.year.f = [repmat(p.elec.week.f,52,1);p.elec.day.f];
 
@@ -72,7 +72,7 @@ p.elec.year.v = p.elec.year.f * Q_el; %[W]
 Heat_gain   = [5, 35, 23.3, 0];       %[W/m^2]
 Space_share = [0.3, 0.05, 0.35, 0.3]; %[-]
 
-% Occupation profile for different spaces from 1am to 12am (fig 1.1)
+% Occupation profile for different spaces from hour 0-23 (fig 1.1)
 p.occ.office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0]; %[-]
 p.occ.rest   = [0 0 0 0 0 0 0 0   0.4 0.2 0.4 1   0.4 0.2 0.4 0   0   0   0 0 0 0 0 0]; %[-]
 p.occ.class  = [0 0 0 0 0 0 0 0.4 0.6 1   1   0.8 0.2 0.6 1   0.8 0.8 0.4 0 0 0 0 0 0]; %[-]
@@ -81,7 +81,7 @@ p.occ.other  = zeros(1,24);                                                     
 % Matrix of occupation profile for office, restaurant, classroom and other
 p.occ.day.f = [p.occ.office; p.occ.rest; p.occ.class; p.occ.other]; %[-]
 
-% Specific heat gain by people for a building from 1am to 12am
+% Specific heat gain by people for a building from hour 0-23
 q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))'); %[W/m^2]
 q_people.week = [repmat(q_people.day,5,1);zeros(2,24)];
 q_people.year = [repmat(q_people.week,52,1);q_people.day];
