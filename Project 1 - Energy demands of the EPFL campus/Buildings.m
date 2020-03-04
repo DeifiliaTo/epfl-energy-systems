@@ -30,9 +30,11 @@ data_w = csvread(filename,1,0);
 Text = data_w(:,1);         % External temperature [C]
 Irr = data_w(:,2);          % Global solar irradiation [W/m2]
 
-% transform Text to our format
+% transform format 
 T_ext = zeros(365,24);
 T_ext(1:end) = Text;
+i_dot = zeros(365,24);
+i_dot(1:end) = Irr;
 
 % Call of the buildings data
 filename = 'P1_buildingsdata.csv';
