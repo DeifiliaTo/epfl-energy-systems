@@ -125,12 +125,15 @@ Qth_plus = arrayfun(@(x) max([x,0]),Qth_calculated);
 
 % plot Qth series
 t = 1:h;
+time = hours(t);
+time_lims = [time(1) time(end)];
 figure
-plot(t,Qth_calculated(1:end))
-title('Q_{th}');
+plot(time,Qth_calculated(1:end))
+title(sprintf('%s: Q_{th}',building_name));
+xlim(time_lims)
 figure
-plot(t,Qth_plus(1:end))
-title('Q_{th}^+');
+plot(time,Qth_plus(1:end))
+title(sprintf('%s: Q_{th}^+',building_name));
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)
