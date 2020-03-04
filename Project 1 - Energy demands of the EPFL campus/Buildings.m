@@ -116,22 +116,17 @@ Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
 
 % Hourly demand (thermal load)
 
-%convert q_people.year matrix into column vector
+% matrix of ones to create matrices for constants
+z = ones(365,24);
 
-%convert q_people.year matrix into column vector
+Qth_calculated = arrayfun(@simple_Qth,Build.ground*z,Build.kth*z,T_int*z,T_ext,Build.ksun*z,i_dot,q_people.year,p.elec.year.v);
 
-if Text<16
-Qth_calculated = Build.ground*(Build.kth*(T_int-Text)-Build.ksun*Irr-q_people.year)-p.elec.year.v;
-else Qth_calculated = 0
-end
+Qth_plus = arrayfun(@(x) max([x,0]),Qth_calculated);
 
-if Qth_calculated <0
-    Qth_plus = 0
-else Qth_plus = Qth_calculated
-end
-    
 t = 1:h;
-
+yyaxis left
+plot(t,Qth_calculated(1:end))
+yyaxis right
 plot(t,Qth_plus(1:end))
 
 %% TASK 4 - Clustering of the heating demand

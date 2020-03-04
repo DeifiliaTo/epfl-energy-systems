@@ -1,6 +1,6 @@
-function [Qth_calculated] = simple_Qth(Build.ground,Build.kth,T_int,Text,Build.ksun,Irr,q_people.year,p.elec.year.v)
+function [Qth_calculated] = simple_Qth(Ath,kth,T_int,Text,ksun,Irr,q_people,Q_elec)
 if Text<16
-Qth_calculated = Build.ground*(Build.kth*(T_int-Text)-Build.ksun*Irr-q_people.year)-p.elec.year.v;
+Qth_calculated = Ath*(kth*(T_int-Text)-ksun*Irr-q_people)-Q_elec;
 else Qth_calculated = 0;
 end
 end
