@@ -18,7 +18,7 @@ function Build = Buildings(building_name)
 
 % Initial parameters
 h = 8760;                   % Number of hours in a year
-T_th = 16;                  % Cut-off temperature of the heating system [�C]
+T_th = 16;                  % Cut-off temperature of the heating system [C]
 cp_air = 1152;              % Specific heat capacity of the air [J/m3/K] 
 T_int = 21;                 % Set point (comfort) temperature [C]
 air_new = 2.5;              % Air renewal [m3/m2]
@@ -29,12 +29,6 @@ filename = 'P1_weatherdata.csv';
 data_w = csvread(filename,1,0);
 Text = data_w(:,1);         % External temperature [C]
 Irr = data_w(:,2);          % Global solar irradiation [W/m2]
-
-% transform format 
-T_ext = zeros(365,24);
-T_ext(1:end) = Text;
-i_dot = zeros(365,24);
-i_dot(1:end) = Irr;
 
 % Call of the buildings data
 filename = 'P1_buildingsdata.csv';
@@ -54,8 +48,8 @@ Build.El = data{1,5}(index);        % Building annual electricity consumption [k
 % 1.1 - Electronic appliances and lights for each buildings
 
 % fractional profiles from hour 0-23
-p.elec.day.f  = [0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0];
-p.elec.week.f = [repmat(p.elec.day.f,5,1);zeros(2,24)];
+p.elec.day.f  = [zeros(7,1);ones(14,1);zeros(3,1)];
+p.elec.week.f = [repmat(p.elec.day.f,5,1);zeros(48,1)];
 p.elec.year.f = [repmat(p.elec.week.f,52,1);p.elec.day.f];
 
 % heating binary switch is same as for electricity
@@ -91,8 +85,8 @@ p.occ.other  = zeros(1,24);                                                     
 p.occ.day.f = [p.occ.office; p.occ.rest; p.occ.class; p.occ.other]; %[-]
 
 % Specific heat gain by people for a building from hour 0-23
-q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))'); %[W/m^2]
-q_people.week = [repmat(q_people.day,5,1);zeros(2,24)];
+q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))')'; %[W/m^2]
+q_people.week = [repmat(q_people.day,5,1);zeros(48,1)];
 q_people.year = [repmat(q_people.week,52,1);q_people.day];
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
@@ -120,24 +114,17 @@ Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
 % Hourly demand (thermal load)
 
 % matrix of ones to create matrices for constants
-z = ones(365,24);
+z = ones(h,1);
 
-Qth_calculated = arrayfun(@simple_Qth,Build.ground*z,Build.kth*z,T_int*z,T_ext,Build.ksun*z,i_dot,q_people.year,p.elec.year.v);
+Qth_calculated = arrayfun(@simple_Qth,Build.ground*z,Build.kth*z,T_int*z,Text,Build.ksun*z,Irr,q_people.year,p.elec.year.v,p.heat.year.f);
 
 Qth_plus = arrayfun(@(x) max([x,0]),Qth_calculated);
-Qth_plus(:,1:7) = 0;
-Qth_plus(:,22:24) = 0;
-
-% because matlab indexes n-by-m matrices by column first when using a
-% single index :(
-Qth_calculated_2 = Qth_calculated';
-Qth_plus_2 = Qth_plus';
 
 t = 1:h;
 figure
-plot(t,Qth_calculated_2(1:end))
+plot(t,Qth_calculated(1:end))
 figure
-plot(t,Qth_plus_2(1:end))
+plot(t,Qth_plus(1:end))
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)
