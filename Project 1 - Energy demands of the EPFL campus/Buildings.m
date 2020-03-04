@@ -58,6 +58,9 @@ p.elec.day.f  = [0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0];
 p.elec.week.f = [repmat(p.elec.day.f,5,1);zeros(2,24)];
 p.elec.year.f = [repmat(p.elec.week.f,52,1);p.elec.day.f];
 
+% heating binary switch is same as for electricity
+p.heat.year.f = p.elec.year.f;
+
 % total hours (should equal 3654, s1.2.1)
 p.elec.totalHours = sum(p.elec.year.f,'all');
 
@@ -103,7 +106,7 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
 k0 = [5, 2];
 
 % do a simple solver
-[k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.elec.year.v, Build.Q), k0);
+[k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, p.elec.year.v, Build.Q, p.heat.year.f), k0);
 
 Build.kth = k(1);
 Build.ksun = k(2);
@@ -131,9 +134,9 @@ Qth_calculated_2 = Qth_calculated';
 Qth_plus_2 = Qth_plus';
 
 t = 1:h;
-yyaxis left
+figure
 plot(t,Qth_calculated_2(1:end))
-yyaxis right
+figure
 plot(t,Qth_plus_2(1:end))
 
 %% TASK 4 - Clustering of the heating demand
