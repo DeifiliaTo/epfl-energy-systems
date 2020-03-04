@@ -61,7 +61,12 @@ Dev = zeros (max(idx),1);
 for i = 1:max(idx)
     Cluster_idx = idx == i;
     Days_i = Weather_norm (Cluster_idx, :);
+    
+    % Simple sum of absolute difference
     Dev (i) = sum(sum(abs(Days_i - C (i,:))));
+    
+    % Standard deviation
+    Dev_std = sum ((Days_i - C (i,:)).^2);
 end
 
 % Profile deviation for the entire year
