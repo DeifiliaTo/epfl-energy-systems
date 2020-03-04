@@ -118,7 +118,7 @@ Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
 z = ones(h,1);
 
 % calculate Qth for each timestep
-Qth_calculated = arrayfun(@simple_Qth,Build.ground*z,Build.kth*z,T_int*z,Text,Build.ksun*z,Irr,q_people.year,p.elec.year.v,p.heat.year.f);
+Qth_calculated = arrayfun(@Qth, 3600*z, Build.ground*z, Build.kth*z, T_int*z, Text, Build.ksun*z, Irr, q_people.year, p.elec.year.v, p.heat.year.f);
 
 % only take positive Q (this is heating)
 Qth_plus = arrayfun(@(x) max([x,0]),Qth_calculated);
@@ -134,6 +134,7 @@ xlim(time_lims)
 figure
 plot(time,Qth_plus(1:end))
 title(sprintf('%s: Q_{th}^+',building_name));
+xlim(time_lims)
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)
