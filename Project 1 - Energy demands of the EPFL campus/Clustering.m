@@ -130,23 +130,43 @@ for j=6571:8760
     Irr_season_avg(j,1)=Irr_mean(4);
 end
 
-% Plot of the temperature
-figure(1)
-plot(t_hour,Text,'b.');  %in blue the real data
-hold on;
-plot(t_hour,Text_season_avg,'r.');   %in red the mean value over a season
-xlabel 'Time [hours]';
-ylabel 'Text [°C]'; 
-legend('Real Data','Mean value');
-hold off;
-
 % Plot of the irradiation
 figure(2)
-plot(t_hour,Irr,'b.');   %in blue the real data
+plot(t_hour,Irr,'b.');              %in blue the real data
 hold on;
-plot(t_hour,Irr_season_avg,'r.');    %in red the mean value over a season
+plot(t_hour,Irr_season_avg,'r.');   %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Irradiation [W/m2]'; 
-legend('Real Data','Mean ');
+legend('Irr','Mean ');
 hold off;
 
+%Tenir compte de la température extérieure
+k=1;
+for i=1:8760
+    u=mod(i,168);
+    if mod(u,24)>20&&Text(i)<=16||mod(u,24)<8&&Text(i)<=16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        k=k+1;
+    elseif u>127&&u<141&&Text(i)<=16||u>151&&u<165&&Text(i)<=16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        k=k+1;
+    elseif Text(i)>16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        k=k+1;
+    end
+end
+
+% Plot of the temperature
+figure(1)
+plot(t_hour,Text,'b.');              %in blue the real data
+hold on;
+plot(Tzero(:,1),Tzero(:,2),'c.')
+hold on;
+plot(t_hour,Text_season_avg,'r.');       %in red the mean value over a season
+xlabel 'Time [hours]';
+ylabel 'Text [°C]'; 
+legend('Text','zero','Mean');
+hold off;
