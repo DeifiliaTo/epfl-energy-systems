@@ -14,7 +14,7 @@ t_hour = (1:1:8760); % Vector of hour for the year
 t_day = (1:1:365); % Vetcor of day for the year
 
 
-%% Normalization of Text and Irr
+% % Normalization of Text and Irr
 
 % Normalization of Text
 Text_min = min (Text);
@@ -27,7 +27,7 @@ Irr_max = max (Irr);
 Irr_norm = (Irr - Irr_min)/(Irr_max - Irr_min);
 
 
-%% Sorting Text_norm and Irr_norm into Weather_norm
+% % Sorting Text_norm and Irr_norm into Weather_norm
 
 % Weather_norm is a matrix of 365 lines and 28 columns
 % The 14 first columns (1 to 14) contain the normalized hourly temperature
@@ -38,6 +38,7 @@ Irr_norm = (Irr - Irr_min)/(Irr_max - Irr_min);
 Weather_norm = zeros (365,28);
 
 % Extracting temperature and irradiance at each hour throughout the year
+% Summer is from hour 3500 to 6000
 for i = 1:14
     for j = 1:365
         Weather_norm (j,i) = Text_norm(7 + i + (j-1)*24);
@@ -46,13 +47,13 @@ for i = 1:14
 end
 
 
-%% kmeans clustering and indicators
+% % kmeans clustering and indicators
 
 % Clustering into 12 typical days
 % idx contains the index for the 365 days, refering to one of the 12
 % typical days
 % C contains the 24 Text_norm and Irr_norm of the 12 typical days
-[idx, C, Sum, D] = kmeans (Weather_norm, 12);
+[idx, C, Sum, D] = kmeans (Weather_norm, 4);
 
 % Profile deviation for each typical period
 
@@ -66,7 +67,7 @@ for i = 1:max(idx)
     Dev (i) = sum(sum(abs(Days_i - C (i,:))));
     
     % Standard deviation
-    Dev_std = sum ((Days_i - C (i,:)).^2);
+    Dev_std (i) = sum(sum ((Days_i - C (i,:)).^2));
 end
 
 % Profile deviation for the entire year
@@ -129,23 +130,43 @@ for j=6571:8760
     Irr_season_avg(j,1)=Irr_mean(4);
 end
 
-% Plot of the temperature
-figure(1)
-plot(t_hour,Text,'b.');  %in blue the real data
-hold on;
-plot(t_hour,Text_season_avg,'r.');   %in red the mean value over a season
-xlabel 'Time [hours]';
-ylabel 'Text [°C]'; 
-legend('Real Data','Mean value');
-hold off;
-
 % Plot of the irradiation
 figure(2)
-plot(t_hour,Irr,'b.');   %in blue the real data
+plot(t_hour,Irr,'b.');              %in blue the real data
 hold on;
-plot(t_hour,Irr_season_avg,'r.');    %in red the mean value over a season
+plot(t_hour,Irr_season_avg,'r.');   %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Irradiation [W/m2]'; 
-legend('Real Data','Mean ');
+legend('Irr','Mean ');
 hold off;
 
+%Tenir compte de la température extérieure
+k=1;
+for i=1:8760
+    u=mod(i,168);
+    if mod(u,24)>20&&Text(i)<=16||mod(u,24)<8&&Text(i)<=16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        k=k+1;
+    elseif u>127&&u<141&&Text(i)<=16||u>151&&u<165&&Text(i)<=16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        k=k+1;
+    elseif Text(i)>16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        k=k+1;
+    end
+end
+
+% Plot of the temperature
+figure(1)
+plot(t_hour,Text,'b.');              %in blue the real data
+hold on;
+plot(Tzero(:,1),Tzero(:,2),'c.')
+hold on;
+plot(t_hour,Text_season_avg,'r.');       %in red the mean value over a season
+xlabel 'Time [hours]';
+ylabel 'Text [°C]'; 
+legend('Text','zero','Mean');
+hold off;
