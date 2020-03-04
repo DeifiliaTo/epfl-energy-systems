@@ -40,7 +40,7 @@ name = data{1,1};
 % Index and variable definition
 index = find(ismember(name, building_name));
 Build.ground = data{1,3}(index);    % Building heated surface [m2]
-Build.Q = data{1,4}(index);         % Building annual heat load [kWh]
+Build.Q = data{1,4}(index)*3.6E6;         % Building annual heat load [J]
 Build.El = data{1,5}(index);        % Building annual electricity consumption [kWh]
 
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
@@ -95,7 +95,7 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
     % Resolution
     
 k0 = [2, 2]; %initial guess
-[k,fval, exitflag, output] = fsolve(@(k) q_objective(1, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.elec.year.v, Build.Q), k0);
+[k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.elec.year.v, Build.Q), k0);
  
 Build.kth = k(1);
 Build.ksun = k(2);
