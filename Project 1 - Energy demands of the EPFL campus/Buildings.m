@@ -94,11 +94,15 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
     
     % Resolution
     
-k0 = [2, 2]; %initial guess
-[k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.elec.year.v, Build.Q), k0);
+k0 = [1 2]; %initial guess
+tol = 1e-10;
+deltaT = 3600;
+res = newtonraphson(k0, tol, deltaT, Build.ground, T_int, Text, Irr, q_people.year, f_el, p.elec.year.v, Build.Q)
+
+% [k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.elec.year.v, Build.Q), k0);
  
-Build.kth = k(1);
-Build.ksun = k(2);
+%Build.kth = k(1);
+%Build.ksun = k(2);
  
 U_env = Build.kth - air_new*cp_air; %[W/(m^2.K)]
 
