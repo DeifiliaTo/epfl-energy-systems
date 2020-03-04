@@ -133,7 +133,7 @@ end
 figure(1)
 plot(t_hour,Text,'b.');  %in blue the real data
 hold on;
-plot(t_hour,Text_season_avg,'r');   %in red the mean value over a season
+plot(t_hour,Text_season_avg,'r.');   %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Text [°C]'; 
 legend('Real Data','Mean value');
@@ -143,9 +143,9 @@ hold off;
 figure(2)
 plot(t_hour,Irr,'b.');   %in blue the real data
 hold on;
-plot(t_hour,Irr_season_avg,'r');    %in red the mean value over a season
+plot(t_hour,Irr_season_avg,'r.');    %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Irradiation [W/m2]'; 
-legend('Real Data','Mean value');
+legend('Real Data','Mean ');
 hold off;
 
