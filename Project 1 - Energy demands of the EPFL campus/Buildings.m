@@ -30,6 +30,10 @@ data_w = csvread(filename,1,0);
 Text = data_w(:,1);         % External temperature [C]
 Irr = data_w(:,2);          % Global solar irradiation [W/m2]
 
+% transform Text to our format
+T_ext = zeros(365,24);
+T_ext(1:end) = Text;
+
 % Call of the buildings data
 filename = 'P1_buildingsdata.csv';
 fid = fopen(filename);
@@ -40,7 +44,7 @@ name = data{1,1};
 % Index and variable definition
 index = find(ismember(name, building_name));
 Build.ground = data{1,3}(index);    % Building heated surface [m2]
-Build.Q = data{1,4}(index)*3.6E6;         % Building annual heat load [J]
+Build.Q = data{1,4}(index)*3.6E6;   % Building annual heat load [J]
 Build.El = data{1,5}(index);        % Building annual electricity consumption [kWh]
 
 %% TASK 1 - Calculation of the internal heat gains (appliances & humans)
@@ -92,11 +96,13 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
 % Implementation of the Newton-Raphson method
     % Method initialisation
     % Resolution
-    
-    
-k0 = [5, 2]; %initial guess
+
+% initial guesses (midrange, p.8)
+k0 = [5, 2];
+
+% do a simple solver
 [k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, f_el, p.elec.year.v, Build.Q), k0);
- 
+
 Build.kth = k(1);
 Build.ksun = k(2);
  
