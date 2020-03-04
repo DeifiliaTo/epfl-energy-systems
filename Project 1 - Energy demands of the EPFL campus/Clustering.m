@@ -14,7 +14,7 @@ t_hour = (1:1:8760); % Vector of hour for the year
 t_day = (1:1:365); % Vetcor of day for the year
 
 
-%% Normalization of Text and Irr
+% % Normalization of Text and Irr
 
 % Normalization of Text
 Text_min = min (Text);
@@ -27,7 +27,7 @@ Irr_max = max (Irr);
 Irr_norm = (Irr - Irr_min)/(Irr_max - Irr_min);
 
 
-%% Sorting Text_norm and Irr_norm into Weather_norm
+% % Sorting Text_norm and Irr_norm into Weather_norm
 
 % Weather_norm is a matrix of 365 lines and 28 columns
 % The 14 first columns (1 to 14) contain the normalized hourly temperature
@@ -46,13 +46,13 @@ for i = 1:14
 end
 
 
-%% kmeans clustering and indicators
+% % kmeans clustering and indicators
 
 % Clustering into 12 typical days
 % idx contains the index for the 365 days, refering to one of the 12
 % typical days
 % C contains the 24 Text_norm and Irr_norm of the 12 typical days
-[idx, C, Sum, D] = kmeans (Weather_norm, 12);
+[idx, C, Sum, D] = kmeans (Weather_norm, 4);
 
 % Profile deviation for each typical period
 
@@ -66,7 +66,7 @@ for i = 1:max(idx)
     Dev (i) = sum(sum(abs(Days_i - C (i,:))));
     
     % Standard deviation
-    Dev_std = sum ((Days_i - C (i,:)).^2);
+    Dev_std (i) = sum(sum ((Days_i - C (i,:)).^2));
 end
 
 % Profile deviation for the entire year
