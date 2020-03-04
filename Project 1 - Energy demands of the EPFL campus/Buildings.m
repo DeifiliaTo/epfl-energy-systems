@@ -22,22 +22,22 @@ T_th = 16;                  % Cut-off temperature of the heating system [�C]
 cp_air = 1152;              % Specific heat capacity of the air [J/m3/K] 
 T_int = 21;                 % Set point (comfort) temperature [C]
 air_new = 2.5;              % Air renewal [m3/m2]
-Vent = air_new*cp_air/3600; % Ventilation capacity
+Vent = air_new*cp_air/3600; % Ventilation capacity  ???
 
 % Call of the weather data
 filename = 'P1_weatherdata.csv';
-data_w = csvread(filename,1,0);
+data_w = csvread(filename,1,0); %??? TAB
 Text = data_w(:,1);         % External temperature [C]
 Irr = data_w(:,2);          % Global solar irradiation [W/m2]
 
 % Call of the buildings data
 filename = 'P1_buildingsdata.csv';
-fid = fopen(filename);
-format = '%s%f%f%f%f';
-data = textscan(fid, format, 'Headerlines', 1, 'delimiter', ',');
-name = data{1,1};
+fid = fopen(filename);      %???
+format = '%s%f%f%f%f';      %???
+data = textscan(fid, format, 'Headerlines', 1, 'delimiter', ','); %???
+name = data{1,1};  %???
 
-% Index and variable definition
+% Index and variable definition  %???
 index = find(ismember(name, building_name));
 Build.ground = data{1,3}(index);    % Building heated surface [m2]
 Build.Q = data{1,4}(index);         % Building annual heat load [kWh]
@@ -68,13 +68,13 @@ p.electric.year.v = p.electric.year.f * Q_el;
 
 
 % 1.2 - Presence of people (all the buildings are the same)
-Heat_gain = [5, 35, 23.3, 0];       %[W/m^2]
+Heat_gain = [5, 35, 23.3, 0];       %[W/m^2] [J/s m^2]
 Share     = [0.3, 0.05, 0.35, 0.3]; %[-]
 
 % Occupation profile for office, restaurant and classroom from 1 am to 12 pm
-OccProf_Office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0]; %[-]
-OccProf_Rest   = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];           %[-]
-OccProf_Class  = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];       %[-]
+OccProf_Office = [0 0 0 0 0 0 0 0.2 0.4 0.6 0.8 0.8 0.4 0.6 0.8 0.8 0.4 0.2 0 0 0 0 0 0]; %[h]
+OccProf_Rest   = [0 0 0 0 0 0 0 0 0.4 0.2 0.4 1 0.4 0.2 0.4 0 0 0 0 0 0 0 0 0];           %[h]
+OccProf_Class  = [0 0 0 0 0 0 0 0.4 0.6 1 1 0.8 0.2 0.6 1 0.8 0.8 0.4 0 0 0 0 0 0];       %[h]
 
 % Matrix of occupation profile for office, restaurant, classroom and other
 OccProf.day.f = [OccProf_Office; OccProf_Rest; OccProf_Class; zeros(1,24)]; %[-]
