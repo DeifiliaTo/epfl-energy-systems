@@ -38,6 +38,7 @@ Irr_norm = (Irr - Irr_min)/(Irr_max - Irr_min);
 Weather_norm = zeros (365,28);
 
 % Extracting temperature and irradiance at each hour throughout the year
+% Summer is from hour 3500 to 6000
 for i = 1:14
     for j = 1:365
         Weather_norm (j,i) = Text_norm(7 + i + (j-1)*24);
