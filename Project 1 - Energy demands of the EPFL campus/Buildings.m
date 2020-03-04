@@ -98,17 +98,24 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
     % Resolution
 
 % initial guesses (midrange, p.8)
-k0 = [5, 2];
+k0 = 2;
 
 % do a simple solver
-[k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, p.elec.year.v, Build.Q, p.heat.year.f), k0);
+% [k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, p.elec.year.v, Build.Q, p.heat.year.f), k0);
+tol = 1e-5;
+deltaT = 3600;
+[kth, ksun, iters] = newtonraphson(k0, tol, deltaT, Build.ground, T_int, Text, Irr, q_people.year, f_el, p.elec.year.v, Build.Q, p.heat.year.f)
 
-Build.kth = k(1);
-Build.ksun = k(2);
+Build.kth = kth;
+Build.ksun = ksun;
  
 U_env = Build.kth - air_new*cp_air; %[W/(m^2.K)]
 
-Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
+% For NR method -- note: what is fval?
+Results = table(Build.kth,Build.ksun,U_env,iters);
+
+% For fsolve 
+% Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
 
 %% TASK 3 - Estimation of the hourly profile    
 
