@@ -59,12 +59,12 @@ p.elec.totalHours = sum(p.elec.year.f,'all');
 f_el = 0.8; %[-]
 
 % hourly heating power of electricals
-Q_el = Build.El * f_el / p.elec.totalHours; %[kW]
+Q_el = Build.El * f_el / p.elec.totalHours*1000; %[W]
 
 % electrical heating profiles
-p.elec.day.v  = p.elec.day.f  * Q_el; %[kW]
-p.elec.week.v = p.elec.week.f * Q_el; %[kW]
-p.elec.year.v = p.elec.year.f * Q_el; %[kW]
+p.elec.day.v  = p.elec.day.f  * Q_el; %[W]
+p.elec.week.v = p.elec.week.f * Q_el; %[W]
+p.elec.year.v = p.elec.year.f * Q_el; %[W]
 
 % 1.2 - Presence of people
 
@@ -82,7 +82,7 @@ p.occ.other  = zeros(1,24);                                                     
 p.occ.day.f = [p.occ.office; p.occ.rest; p.occ.class; p.occ.other]; %[-]
 
 % Specific heat gain by people for a building from 1am to 12am
-q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))')*3.6; %[kJ/m^2/h]
+q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))'); %[W/m^2]
 q_people.week = [repmat(q_people.day,5,1);zeros(2,24)];
 q_people.year = [repmat(q_people.week,52,1);q_people.day];
 
