@@ -1,5 +1,6 @@
-clear all
-clc
+clear all;
+close all;
+clc;
 
 % Analysis to cluster Text and Irr
 % From 7 am to 9 pm (from Monday to Friday)
@@ -62,5 +63,66 @@ end
 
 
 
+%%Clustering without kmeans
 
+%Clustering into 4 seasons
+%January-February-March
+for j=1:2190
+    Text_season(j,1)=Text(j);
+    Irr_season(j,1)=Irr(j);
+end
+%April-May-June
+for j=2191:4380
+    Text_season(j-2190,2)=Text(j);
+    Irr_season(j-2190,2)=Irr(j);
+end
+%July-August-September
+for j=4381:6570
+    Text_season(j-4380,3)=Text(j);
+    Irr_season(j-4380,3)=Irr(j);
+end
+%October-November-December
+for j=6571:8760
+    Text_season(j-6570,4)=Text(j);
+    Irr_season(j-6570,4)=Irr(j);
+end
+%We calculate the average for each season
+Text_mean=mean(Text_season);
+Irr_mean=mean(Irr_season);
+%Create new vectors which are the average of the temperature and 
+%the irradiation in hours 
+for j=1:2190
+    Text_season_avg(j,1)=Text_mean(1);
+    Irr_season_avg(j,1)=Irr_mean(1);
+end
+for j=2191:4380
+    Text_season_avg(j,1)=Text_mean(2);
+    Irr_season_avg(j,1)=Irr_mean(2);
+end
+for j=4381:6570
+    Text_season_avg(j,1)=Text_mean(3);
+    Irr_season_avg(j,1)=Irr_mean(3);
+end
+for j=6571:8760
+    Text_season_avg(j,1)=Text_mean(4);
+    Irr_season_avg(j,1)=Irr_mean(4);
+end
+%Plot of the temperature
+figure(1)
+plot(t_hour,Text,'b.');  %in blue the real data
+hold on;
+plot(t_hour,Text_season_avg,'r');   %in red the mean value over a season
+xlabel 'Time [hours]';
+ylabel 'Text [°C]'; 
+legend('Real Data','Mean value');
+hold off;
+%Plot of the irradiation
+figure(2)
+plot(t_hour,Irr,'b.');   %in blue the real data
+hold on;
+plot(t_hour,Irr_season_avg,'r');    %in red the mean value over a season
+xlabel 'Time [hours]';
+ylabel 'Irradiation [W/m2]'; 
+legend('Real Data','Mean value');
+hold off;
 
