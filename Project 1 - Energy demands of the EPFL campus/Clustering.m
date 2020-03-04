@@ -29,19 +29,19 @@ Irr_norm = (Irr - Irr_min)/(Irr_max - Irr_min);
 
 %% Sorting Text_norm and Irr_norm into Weather_norm
 
-% Weather_norm is a matrix of 365 lines and 48 columns
-% The 24 first columns (1 to 24) contain the normalized hourly temperature
+% Weather_norm is a matrix of 365 lines and 28 columns
+% The 14 first columns (1 to 14) contain the normalized hourly temperature
 % of the 365 days
-% The 24 last columns (25 to 48) contain the normalized hourly irradiance
+% The 14 last columns (15 to 28) contain the normalized hourly irradiance
 % of the 365 days
 
-Weather_norm = zeros (365,48);
+Weather_norm = zeros (365,28);
 
 % Extracting temperature and irradiance at each hour throughout the year
-for i = 1:24
+for i = 1:14
     for j = 1:365
-        Weather_norm (j,i) = Text_norm(i + (j-1)*24);
-        Weather_norm (j,(24 + i)) = Irr_norm(i + (j-1)*24);
+        Weather_norm (j,i) = Text_norm(7 + i + (j-1)*24);
+        Weather_norm (j,(14 + i)) = Irr_norm(7 + i + (j-1)*24);
     end
 end
 
@@ -52,16 +52,23 @@ end
 % idx contains the index for the 365 days, refering to one of the 12
 % typical days
 % C contains the 24 Text_norm and Irr_norm of the 12 typical days
-[idx, C] = kmeans (Weather_norm, 12);
+[idx, C, Sum, D] = kmeans (Weather_norm, 12);
 
 % Profile deviation for each typical period
-% C(idx(i),:)
+
+Dev = zeros (max(idx),1);
+
+for i = 1:max(idx)
+    Cluster_idx = idx == i;
+    Days_i = Weather_norm (Cluster_idx, :);
+    Dev (i) = sum(sum(abs(Days_i - C (i,:))));
+end
 
 % Profile deviation for the entire year
 
 % Maximum load duration curve difference
 
-
+%
 
 %%Clustering without kmeans
 
