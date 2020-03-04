@@ -95,7 +95,6 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
 % First equation - switching ON the heating system ==> Qth
 % Implementation of the Newton-Raphson method
     % Method initialisation
-    
     % Resolution
 
 % initial guesses (midrange, p.8)
@@ -114,6 +113,12 @@ Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
 %% TASK 3 - Estimation of the hourly profile    
 
 % Hourly demand (thermal load)
+
+Qth_calculated = Build.ground*(Build.kth*(T_int-Text)-Build.ksun*Irr-q_people.day)-p.elec.day.v;
+
+t = 1:h;
+
+plot(t,Qth_calculated)
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)
