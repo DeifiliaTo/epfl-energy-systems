@@ -77,30 +77,42 @@ end
 
 %% Clustering without kmeans
 
-% Clustering into 4 seasons
+% Clustering into 6 period
 
-% January-February-March
-for j=1:2190
+% January-February
+for j=1:1460
     Text_season(j,1)=Text(j);
     Irr_season(j,1)=Irr(j);
 end
 
-% April-May-June
-for j=2191:4380
-    Text_season(j-2190,2)=Text(j);
-    Irr_season(j-2190,2)=Irr(j);
+% March-April
+for j=1461:2920
+    Text_season(j-1460,2)=Text(j);
+    Irr_season(j-1460,2)=Irr(j);
 end
 
-% July-August-September
-for j=4381:6570
-    Text_season(j-4380,3)=Text(j);
-    Irr_season(j-4380,3)=Irr(j);
+% May-June
+for j=2921:4380
+    Text_season(j-2920,3)=Text(j);
+    Irr_season(j-2920,3)=Irr(j);
 end
 
-% October-November-December
-for j=6571:8760
-    Text_season(j-6570,4)=Text(j);
-    Irr_season(j-6570,4)=Irr(j);
+% July-August
+for j=4381:5840
+    Text_season(j-4380,4)=Text(j);
+    Irr_season(j-4380,4)=Irr(j);
+end
+
+% September-October
+for j=5841:7300
+    Text_season(j-5840,5)=Text(j);
+    Irr_season(j-5840,5)=Irr(j);
+end
+
+% November-December
+for j=7301:8760
+    Text_season(j-7300,6)=Text(j);
+    Irr_season(j-7300,6)=Irr(j);
 end
 
 %We calculate the average for each season
@@ -109,35 +121,35 @@ Irr_mean=mean(Irr_season);
 
 % Create new vectors which are the average of the temperature and 
 % the irradiation in hours 
-for j=1:2190
+for j=1:1460
     Text_season_avg(j,1)=Text_mean(1);
     Irr_season_avg(j,1)=Irr_mean(1);
 end
 
-for j=2191:4380
+for j=1461:2920
     Text_season_avg(j,1)=Text_mean(2);
     Irr_season_avg(j,1)=Irr_mean(2);
 end
 
-for j=4381:6570
+for j=2921:4380
     Text_season_avg(j,1)=Text_mean(3);
     Irr_season_avg(j,1)=Irr_mean(3);
 end
 
-for j=6571:8760
+for j=4381:5840
     Text_season_avg(j,1)=Text_mean(4);
     Irr_season_avg(j,1)=Irr_mean(4);
 end
 
-% Plot of the irradiation
-figure(2)
-plot(t_hour,Irr,'b.');              %in blue the real data
-hold on;
-plot(t_hour,Irr_season_avg,'r.');   %in red the mean value over a season
-xlabel 'Time [hours]';
-ylabel 'Irradiation [W/m2]'; 
-legend('Irr','Mean ');
-hold off;
+for j=5841:7300
+    Text_season_avg(j,1)=Text_mean(5);
+    Irr_season_avg(j,1)=Irr_mean(5);
+end
+
+for j=7301:8760
+    Text_season_avg(j,1)=Text_mean(6);
+    Irr_season_avg(j,1)=Irr_mean(6);
+end
 
 %Tenir compte de la température extérieure
 k=1;
@@ -146,14 +158,17 @@ for i=1:8760
     if mod(u,24)>20&&Text(i)<=16||mod(u,24)<8&&Text(i)<=16
         Tzero(k,1)=i;
         Tzero(k,2)=Text(i);
+        Tzero(k,3)=Irr(i);
         k=k+1;
     elseif u>127&&u<141&&Text(i)<=16||u>151&&u<165&&Text(i)<=16
         Tzero(k,1)=i;
         Tzero(k,2)=Text(i);
+        Tzero(k,3)=Irr(i);
         k=k+1;
     elseif Text(i)>16
         Tzero(k,1)=i;
         Tzero(k,2)=Text(i);
+        Tzero(k,3)=Irr(i);
         k=k+1;
     end
 end
@@ -168,4 +183,47 @@ plot(t_hour,Text_season_avg,'r.');       %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Text [°C]'; 
 legend('Text','zero','Mean');
+hold off;
+
+% Plot of the irradiation
+figure(2)
+plot(t_hour,Irr,'b.');              %in blue the real data
+hold on;
+plot(Tzero(:,1),Tzero(:,3),'c.')
+hold on;
+plot(t_hour,Irr_season_avg,'r.');   %in red the mean value over a season
+xlabel 'Time [hours]';
+ylabel 'Irradiation [W/m2]'; 
+legend('Irr','zero','Mean');
+hold off;
+
+% % Normalization of Text_season and Irr-season
+
+% Normalization of Text
+Text_min = min (Text);
+Text_max = max (Text);
+Text_norm_season = (Text_season - Text_min)/(Text_max - Text_min);
+
+% Normalization of Irr
+Irr_min = min (Irr);
+Irr_max = max (Irr);
+Irr_norm_season = (Irr_season - Irr_min)/(Irr_max - Irr_min);
+
+%Plot Clustering without kmeans
+figure(3)
+plot(Text_norm_season(:,1),Irr_norm_season(:,1),'b.');
+hold on;
+plot(Text_norm_season(:,2),Irr_norm_season(:,2),'r.');
+hold on;
+plot(Text_norm_season(:,3),Irr_norm_season(:,3),'y.');
+hold on;
+plot(Text_norm_season(:,4),Irr_norm_season(:,4),'g.');
+hold on;
+plot(Text_norm_season(:,5),Irr_norm_season(:,5),'m.');
+hold on;
+plot(Text_norm_season(:,6),Irr_norm_season(:,6),'k.');
+hold on;
+xlabel 'Temperature normalized';
+ylabel 'Irradiation normalized'; 
+legend('Jan-Feb','Mar-Apr','May-Jun','Jul-Aug','Sep-Oct','Nov-Dec');
 hold off;
