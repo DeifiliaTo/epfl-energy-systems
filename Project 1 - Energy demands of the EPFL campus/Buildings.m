@@ -98,13 +98,13 @@ q_people.year = [repmat(q_people.week,52,1);q_people.day];
     % Resolution
 
 % initial guesses (midrange, p.8)
-k0 = 2;
+k0 = 1;
 
 % do a simple solver
-% [k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, p.elec.year.v, Build.Q, p.heat.year.f), k0);
+%[k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, p.elec.year.v, Build.Q, p.heat.year.f), k0);
 tol = 1e-5;
 deltaT = 3600;
-[kth, ksun, iters] = newtonraphson(k0, tol, deltaT, Build.ground, T_int, Text, Irr, q_people.year, f_el, p.elec.year.v, Build.Q, p.heat.year.f)
+[kth, ksun, iters] = newtonraphson(k0, tol, deltaT, Build.ground, T_int, Text, Irr, q_people.year, f_el, p.elec.year.v, Build.Q, p.heat.year.f);
 
 Build.kth = kth;
 Build.ksun = ksun;
