@@ -88,7 +88,46 @@ p.occ.day.f = [p.occ.office; p.occ.rest; p.occ.class; p.occ.other]; %[-]
 % transpose back to vertical format from day onwards
 q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))')'; %[W/m^2]
 q_people.week = [repmat(q_people.day,5,1);zeros(48,1)];
-q_people.year = [repmat(q_people.week,52,1);q_people.day];
+q_people.year = [repmat(q_people.week,52,1);q_people.day;];
+
+%% Calculations for plots
+
+q_people_week = sum(reshape(q_people.week, 24, 7))
+
+index = 1;
+
+% Needed to do this in a for loop because of the extra day in the year
+% array
+q_people_year = zeros(52, 1);
+for i = 1:(length(q_people.year)-24)
+    q_people_year(index) = q_people_year(index) + q_people.year(i);        
+    if (mod(i, 168) == 0)
+       index = index + 1;
+    end
+   
+end
+%% Plots of heat gains and solar radiation
+weekdays = categorical({'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Sat', 'Sun'});
+weekdays = reordercats(weekdays, {'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Sat', 'Sun'});
+
+plot_q_people_day = bar(q_people.day*3.6)
+xlabel("Hour")
+ylabel('Heat gain [kJ]')
+title("Heat gain in buildings due to people, hourly")
+saveas(plot_q_people_day, "plots/people_hour.png")
+
+
+plot_q_people_week = bar(weekdays, q_people_week*3.6)
+xlabel("Day")
+ylabel('Heat gain [kJ]')
+title("Heat gain in buildings due to people, weekly")
+saveas(plot_q_people_week, "plots/people_week.png")
+
+plot_q_people_year = bar(q_people_year*3.6)
+xlabel("Week number")
+ylabel('Heat gain [kJ]')
+title("Heat gain in buildings due to people, yearly")
+saveas(plot_q_people_year, "plots/people_year.png")
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
