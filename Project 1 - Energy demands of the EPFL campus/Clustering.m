@@ -14,7 +14,7 @@ t_hour = (1:1:8760); % Vector of hour for the year
 t_day = (1:1:365); % Vetcor of day for the year
 
 
-%% Normalization of Text and Irr
+% % Normalization of Text and Irr
 
 % Normalization of Text
 Text_min = min (Text);
@@ -27,7 +27,7 @@ Irr_max = max (Irr);
 Irr_norm = (Irr - Irr_min)/(Irr_max - Irr_min);
 
 
-%% Sorting Text_norm and Irr_norm into Weather_norm
+% % Sorting Text_norm and Irr_norm into Weather_norm
 
 % Weather_norm is a matrix of 365 lines and 28 columns
 % The 14 first columns (1 to 14) contain the normalized hourly temperature
@@ -38,6 +38,7 @@ Irr_norm = (Irr - Irr_min)/(Irr_max - Irr_min);
 Weather_norm = zeros (365,28);
 
 % Extracting temperature and irradiance at each hour throughout the year
+% Summer is from hour 3500 to 6000
 for i = 1:14
     for j = 1:365
         Weather_norm (j,i) = Text_norm(7 + i + (j-1)*24);
@@ -46,13 +47,13 @@ for i = 1:14
 end
 
 
-%% kmeans clustering and indicators
+% % kmeans clustering and indicators
 
 % Clustering into 12 typical days
 % idx contains the index for the 365 days, refering to one of the 12
 % typical days
 % C contains the 24 Text_norm and Irr_norm of the 12 typical days
-[idx, C, Sum, D] = kmeans (Weather_norm, 12);
+[idx, C, Sum, D] = kmeans (Weather_norm, 4);
 
 % Profile deviation for each typical period
 
@@ -66,7 +67,7 @@ for i = 1:max(idx)
     Dev (i) = sum(sum(abs(Days_i - C (i,:))));
     
     % Standard deviation
-    Dev_std = sum ((Days_i - C (i,:)).^2);
+    Dev_std (i) = sum(sum ((Days_i - C (i,:)).^2));
 end
 
 % Profile deviation for the entire year
@@ -77,30 +78,42 @@ end
 
 %% Clustering without kmeans
 
-% Clustering into 4 seasons
+% Clustering into 6 period
 
-% January-February-March
-for j=1:2190
+% January-February
+for j=1:1460
     Text_season(j,1)=Text(j);
     Irr_season(j,1)=Irr(j);
 end
 
-% April-May-June
-for j=2191:4380
-    Text_season(j-2190,2)=Text(j);
-    Irr_season(j-2190,2)=Irr(j);
+% March-April
+for j=1461:2920
+    Text_season(j-1460,2)=Text(j);
+    Irr_season(j-1460,2)=Irr(j);
 end
 
-% July-August-September
-for j=4381:6570
-    Text_season(j-4380,3)=Text(j);
-    Irr_season(j-4380,3)=Irr(j);
+% May-June
+for j=2921:4380
+    Text_season(j-2920,3)=Text(j);
+    Irr_season(j-2920,3)=Irr(j);
 end
 
-% October-November-December
-for j=6571:8760
-    Text_season(j-6570,4)=Text(j);
-    Irr_season(j-6570,4)=Irr(j);
+% July-August
+for j=4381:5840
+    Text_season(j-4380,4)=Text(j);
+    Irr_season(j-4380,4)=Irr(j);
+end
+
+% September-October
+for j=5841:7300
+    Text_season(j-5840,5)=Text(j);
+    Irr_season(j-5840,5)=Irr(j);
+end
+
+% November-December
+for j=7301:8760
+    Text_season(j-7300,6)=Text(j);
+    Irr_season(j-7300,6)=Irr(j);
 end
 
 %We calculate the average for each season
@@ -109,43 +122,109 @@ Irr_mean=mean(Irr_season);
 
 % Create new vectors which are the average of the temperature and 
 % the irradiation in hours 
-for j=1:2190
+for j=1:1460
     Text_season_avg(j,1)=Text_mean(1);
     Irr_season_avg(j,1)=Irr_mean(1);
 end
 
-for j=2191:4380
+for j=1461:2920
     Text_season_avg(j,1)=Text_mean(2);
     Irr_season_avg(j,1)=Irr_mean(2);
 end
 
-for j=4381:6570
+for j=2921:4380
     Text_season_avg(j,1)=Text_mean(3);
     Irr_season_avg(j,1)=Irr_mean(3);
 end
 
-for j=6571:8760
+for j=4381:5840
     Text_season_avg(j,1)=Text_mean(4);
     Irr_season_avg(j,1)=Irr_mean(4);
 end
 
+for j=5841:7300
+    Text_season_avg(j,1)=Text_mean(5);
+    Irr_season_avg(j,1)=Irr_mean(5);
+end
+
+for j=7301:8760
+    Text_season_avg(j,1)=Text_mean(6);
+    Irr_season_avg(j,1)=Irr_mean(6);
+end
+
+%Tenir compte de la température extérieure
+k=1;
+for i=1:8760
+    u=mod(i,168);
+    if mod(u,24)>20&&Text(i)<=16||mod(u,24)<8&&Text(i)<=16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        Tzero(k,3)=Irr(i);
+        k=k+1;
+    elseif u>127&&u<141&&Text(i)<=16||u>151&&u<165&&Text(i)<=16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        Tzero(k,3)=Irr(i);
+        k=k+1;
+    elseif Text(i)>16
+        Tzero(k,1)=i;
+        Tzero(k,2)=Text(i);
+        Tzero(k,3)=Irr(i);
+        k=k+1;
+    end
+end
+
 % Plot of the temperature
 figure(1)
-plot(t_hour,Text,'b.');  %in blue the real data
+plot(t_hour,Text,'b.');              %in blue the real data
 hold on;
-plot(t_hour,Text_season_avg,'r');   %in red the mean value over a season
+plot(Tzero(:,1),Tzero(:,2),'c.')
+hold on;
+plot(t_hour,Text_season_avg,'r.');       %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Text [°C]'; 
-legend('Real Data','Mean value');
+legend('Text','zero','Mean');
 hold off;
 
 % Plot of the irradiation
 figure(2)
-plot(t_hour,Irr,'b.');   %in blue the real data
+plot(t_hour,Irr,'b.');              %in blue the real data
 hold on;
-plot(t_hour,Irr_season_avg,'r');    %in red the mean value over a season
+plot(Tzero(:,1),Tzero(:,3),'c.')
+hold on;
+plot(t_hour,Irr_season_avg,'r.');   %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Irradiation [W/m2]'; 
-legend('Real Data','Mean value');
+legend('Irr','zero','Mean');
 hold off;
 
+% % Normalization of Text_season and Irr-season
+
+% Normalization of Text
+Text_min = min (Text);
+Text_max = max (Text);
+Text_norm_season = (Text_season - Text_min)/(Text_max - Text_min);
+
+% Normalization of Irr
+Irr_min = min (Irr);
+Irr_max = max (Irr);
+Irr_norm_season = (Irr_season - Irr_min)/(Irr_max - Irr_min);
+
+%Plot Clustering without kmeans
+figure(3)
+plot(Text_norm_season(:,1),Irr_norm_season(:,1),'b.');
+hold on;
+plot(Text_norm_season(:,2),Irr_norm_season(:,2),'r.');
+hold on;
+plot(Text_norm_season(:,3),Irr_norm_season(:,3),'y.');
+hold on;
+plot(Text_norm_season(:,4),Irr_norm_season(:,4),'g.');
+hold on;
+plot(Text_norm_season(:,5),Irr_norm_season(:,5),'m.');
+hold on;
+plot(Text_norm_season(:,6),Irr_norm_season(:,6),'k.');
+hold on;
+xlabel 'Temperature normalized';
+ylabel 'Irradiation normalized'; 
+legend('Jan-Feb','Mar-Apr','May-Jun','Jul-Aug','Sep-Oct','Nov-Dec');
+hold off;

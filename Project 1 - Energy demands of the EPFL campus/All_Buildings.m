@@ -37,7 +37,7 @@ for i = 1:n_build
     building_name = name{i,1};
     Build = Buildings(building_name);
     format2 = '%s%s%f%s%f\n';
-    
-    fprintf(fid,format2,building_name,',',Build.kth,',',Build.ksun);
+    Build.kth
+    fprintf(fid,format2,building_name,',',Build.kth,',',Build.ksun)
     fclose(fid);
 end
