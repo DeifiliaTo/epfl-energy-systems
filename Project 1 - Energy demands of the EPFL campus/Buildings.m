@@ -67,7 +67,6 @@ Q_el = Build.El * f_el / p.elec.totalHours * 1000; %[W]
 p.elec.day.v  = p.elec.day.f  * Q_el; %[W]
 p.elec.week.v = p.elec.week.f * Q_el; %[W]
 p.elec.year.v = p.elec.year.f * Q_el; %[W]
-
 % 1.2 - Presence of people
 
 % Heat gain due to people by space (s1.2.2)
@@ -99,13 +98,22 @@ index = 1;
 % Needed to do this in a for loop because of the extra day in the year
 % array
 q_people_year = zeros(52, 1);
+q_el_year = zeros(52, 1);
+q_irr_year = zeros(52, 1);
 for i = 1:(length(q_people.year)-24)
     q_people_year(index) = q_people_year(index) + q_people.year(i);        
+    q_el_year(index) = q_el_year(index) + p.elec.year.f(i);
+    q_irr_year(index) = q_irr_year(index) + Irr(i);
     if (mod(i, 168) == 0)
        index = index + 1;
     end
-   
 end
+
+q_el_week = sum(reshape(p.elec.week.f, 24, 7));
+
+q_irr_week = sum(reshape(Irr(1:24*7), 24, 7));
+
+
 %% Plots of heat gains and solar radiation
 weekdays = categorical({'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Sat', 'Sun'});
 weekdays = reordercats(weekdays, {'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Sat', 'Sun'});
@@ -128,6 +136,44 @@ xlabel("Week number")
 ylabel('Heat gain [kJ]')
 title("Heat gain in buildings due to people, yearly")
 saveas(plot_q_people_year, "plots/people_year.png")
+
+% Plots for electrical
+plot_q_el_day = bar(p.elec.day.f*3.6)
+xlabel("Hour")
+ylabel('Heat gain [kJ]')
+title("Heat gain in buildings due to electrical applicances, hourly")
+saveas(plot_q_el_day, "plots/el_hour.png")
+
+plot_q_el_week = bar(weekdays, q_el_week*3.6)
+xlabel("Day")
+ylabel('Heat gain [kJ]')
+title("Heat gain in buildings due to electrical applicances, weekly")
+saveas(plot_q_el_week, "plots/el_week.png")
+
+plot_q_el_year = bar(q_people_year*3.6)
+xlabel("Week number")
+ylabel('Heat gain [kJ]')
+title("Heat gain in buildings due to electrical applicances, yearly")
+saveas(plot_q_el_year, "plots/el_year.png")
+
+% Plots for Irr
+plot_q_irr_day = bar(Irr*3.6)
+xlabel("Hour")
+ylabel('Heat gain [kJ/m2]')
+title("Heat gain in buildings due to irradiation, hourly")
+saveas(plot_q_irr_day, "plots/irr_hour.png")
+
+plot_q_irr_week = bar(weekdays, q_irr_week*3.6)
+xlabel("Day")
+ylabel('Heat gain [kJ/m2]')
+title("Heat gain in buildings due to irradiation, weekly")
+saveas(plot_q_irr_week, "plots/irr_week.png")
+
+plot_q_irr_year = bar(q_irr_year*3.6)
+xlabel("Week number")
+ylabel('Heat gain [kJ/m2]')
+title("Heat gain in buildings due to irradiation, yearly")
+saveas(plot_q_irr_year, "plots/irr_year.png")
 
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
