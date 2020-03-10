@@ -38,7 +38,6 @@ Irr_norm = (Irr - Irr_min)/(Irr_max - Irr_min);
 Weather_norm = zeros (365,28);
 
 % Extracting temperature and irradiance at each hour throughout the year
-% Summer is from hour 3500 to 6000
 for i = 1:14
     for j = 1:365
         Weather_norm (j,i) = Text_norm(7 + i + (j-1)*24);
@@ -46,14 +45,24 @@ for i = 1:14
     end
 end
 
+% From the experimental data, the heating is off from day 151 to 250: 100
+% days of summer
+Weather_norm_select = [Weather_norm(1:150,:); Weather_norm(251:365,:)];
+
 
 % % kmeans clustering and indicators
 
-% Clustering into 12 typical days
-% idx contains the index for the 365 days, refering to one of the 12
-% typical days
-% C contains the 24 Text_norm and Irr_norm of the 12 typical days
-[idx, C, Sum, D] = kmeans (Weather_norm, 4);
+% Clustering into 4 typical days
+% idx contains the index refering to one of the 4 typical days
+% C contains the 28 Text_norm and Irr_norm of the 4 typical days
+[idx, C, Sum, D] = kmeans (Weather_norm_select, 4);
+
+% Typical summer day
+Summer = mean (Weather_norm (151:250,:),1);
+
+% Extreme: coldest day
+Cool_idx = find (min(Weather_norm(:,1:14),[],2) == min(min(Weather_norm(:,1:14),[],2)));
+Coolest = Weather_norm (Cool_idx,:);
 
 % Profile deviation for each typical period
 
@@ -61,20 +70,21 @@ Dev = zeros (max(idx),1);
 
 for i = 1:max(idx)
     Cluster_idx = idx == i;
-    Days_i = Weather_norm (Cluster_idx, :);
+    Days_i = Weather_norm_select (Cluster_idx, :);
     
     % Simple sum of absolute difference
-    Dev (i) = sum(sum(abs(Days_i - C (i,:))));
+    % Dev (i) = sum(sum(abs(Days_i - C (i,:))));
     
     % Standard deviation
-    Dev_std (i) = sum(sum ((Days_i - C (i,:)).^2));
+    Dev_std (i) = sum( sum( (Days_i - C (i,:)).^2));
 end
 
 % Profile deviation for the entire year
+Dev_kmean = sum(Dev);
 
 % Maximum load duration curve difference
 
-%
+
 
 %% Clustering without kmeans
 
@@ -152,16 +162,16 @@ for j=7301:8760
     Irr_season_avg(j,1)=Irr_mean(6);
 end
 
-%Tenir compte de la température extérieure
+% Tenir compte de la température extérieure
 k=1;
 for i=1:8760
     u=mod(i,168);
-    if mod(u,24)>20&&Text(i)<=16||mod(u,24)<8&&Text(i)<=16
+    if mod(u,24)>20 && Text(i)<=16||mod(u,24)<8 && Text(i)<=16
         Tzero(k,1)=i;
         Tzero(k,2)=Text(i);
         Tzero(k,3)=Irr(i);
         k=k+1;
-    elseif u>127&&u<141&&Text(i)<=16||u>151&&u<165&&Text(i)<=16
+    elseif u>127 && u<141 && Text(i)<=16||u>151 && u<165 && Text(i)<=16
         Tzero(k,1)=i;
         Tzero(k,2)=Text(i);
         Tzero(k,3)=Irr(i);
