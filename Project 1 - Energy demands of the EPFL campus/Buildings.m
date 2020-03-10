@@ -20,7 +20,7 @@ h = 8760;                   % Number of hours in a year
 T_th = 16;                  % Cut-off temperature of the heating system [C]
 cp_air = 1152;              % Specific heat capacity of the air [J/m3/K] 
 T_int = 21;                 % Set point (comfort) temperature [C]
-air_new = 2.5;              % Air renewal [m3/m2]
+air_new = 2.5/3600;              % Air renewal [m3/m2/s]
 Vent = air_new*cp_air/3600; % Ventilation capacity
 
 % Call of the weather data
@@ -89,92 +89,6 @@ q_people.day  = sum((p.occ.day.f' .* (Heat_gain .* Space_share))')'; %[W/m^2]
 q_people.week = [repmat(q_people.day,5,1);zeros(48,1)];
 q_people.year = [repmat(q_people.week,52,1);q_people.day;];
 
-%% Calculations for plots
-
-q_people_week = sum(reshape(q_people.week, 24, 7))
-
-index = 1;
-
-% Needed to do this in a for loop because of the extra day in the year
-% array
-q_people_year = zeros(52, 1);
-q_el_year = zeros(52, 1);
-q_irr_year = zeros(52, 1);
-for i = 1:(length(q_people.year)-24)
-    q_people_year(index) = q_people_year(index) + q_people.year(i);        
-    q_el_year(index) = q_el_year(index) + p.elec.year.f(i);
-    q_irr_year(index) = q_irr_year(index) + Irr(i);
-    if (mod(i, 168) == 0)
-       index = index + 1;
-    end
-end
-
-q_el_week = sum(reshape(p.elec.week.f, 24, 7));
-
-q_irr_week = sum(reshape(Irr(1:24*7), 24, 7));
-
-
-%% Plots of heat gains and solar radiation
-weekdays = categorical({'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Sat', 'Sun'});
-weekdays = reordercats(weekdays, {'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Sat', 'Sun'});
-
-plot_q_people_day = bar(q_people.day*3.6)
-xlabel("Hour")
-ylabel('Heat gain [kJ]')
-title("Heat gain in buildings due to people, hourly")
-saveas(plot_q_people_day, "plots/people_hour.png")
-
-
-plot_q_people_week = bar(weekdays, q_people_week*3.6)
-xlabel("Day")
-ylabel('Heat gain [kJ]')
-title("Heat gain in buildings due to people, weekly")
-saveas(plot_q_people_week, "plots/people_week.png")
-
-plot_q_people_year = bar(q_people_year*3.6)
-xlabel("Week number")
-ylabel('Heat gain [kJ]')
-title("Heat gain in buildings due to people, yearly")
-saveas(plot_q_people_year, "plots/people_year.png")
-
-% Plots for electrical
-plot_q_el_day = bar(p.elec.day.f*3.6)
-xlabel("Hour")
-ylabel('Heat gain [kJ]')
-title("Heat gain in buildings due to electrical applicances, hourly")
-saveas(plot_q_el_day, "plots/el_hour.png")
-
-plot_q_el_week = bar(weekdays, q_el_week*3.6)
-xlabel("Day")
-ylabel('Heat gain [kJ]')
-title("Heat gain in buildings due to electrical applicances, weekly")
-saveas(plot_q_el_week, "plots/el_week.png")
-
-plot_q_el_year = bar(q_people_year*3.6)
-xlabel("Week number")
-ylabel('Heat gain [kJ]')
-title("Heat gain in buildings due to electrical applicances, yearly")
-saveas(plot_q_el_year, "plots/el_year.png")
-
-% Plots for Irr
-plot_q_irr_day = bar(Irr*3.6)
-xlabel("Hour")
-ylabel('Heat gain [kJ/m2]')
-title("Heat gain in buildings due to irradiation, hourly")
-saveas(plot_q_irr_day, "plots/irr_hour.png")
-
-plot_q_irr_week = bar(weekdays, q_irr_week*3.6)
-xlabel("Day")
-ylabel('Heat gain [kJ/m2]')
-title("Heat gain in buildings due to irradiation, weekly")
-saveas(plot_q_irr_week, "plots/irr_week.png")
-
-plot_q_irr_year = bar(q_irr_year*3.6)
-xlabel("Week number")
-ylabel('Heat gain [kJ/m2]')
-title("Heat gain in buildings due to irradiation, yearly")
-saveas(plot_q_irr_year, "plots/irr_year.png")
-
 %% TASK 2 - Calculation of the building thermal properties (kth and ksun)
 
 % First equation - switching ON the heating system ==> Qth
@@ -193,11 +107,11 @@ deltaT = 3600;
 
 Build.kth = kth;
 Build.ksun = ksun;
- 
-U_env = Build.kth - air_new*cp_air; %[W/(m^2.K)]
+Build.Uenv = Build.kth - air_new*cp_air; %[W/(m^2.K)]
+Build.iters = iters
 
 % For NR method -- note: what is fval?
-Results = table(Build.kth,Build.ksun,U_env,iters);
+Results = table(Build.kth,Build.ksun,Build.Uenv,Build.iters);
 
 % For fsolve 
 % Results = table(Build.kth,Build.ksun,U_env,fval,output.iterations);
@@ -205,6 +119,8 @@ Results = table(Build.kth,Build.ksun,U_env,iters);
 %% TASK 3 - Estimation of the hourly profile    
 
 % Hourly demand (thermal load)
+
+
 
 % matrix of ones to create matrices for constants
 z = ones(h,1);

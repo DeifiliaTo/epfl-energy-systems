@@ -32,12 +32,15 @@ n_build = length(name);
 %% Function call (Buildings.m)
 % The following can be deleted or uncommented depending on the organisation
 % of your Buildings.m file.
-
+filename = 'Buildings_characterisation.txt';
+total_props = [];
 for i = 1:n_build
     building_name = name{i,1};
     Build = Buildings(building_name);
-    format2 = '%s%s%f%s%f\n';
-    Build.kth
-    fprintf(fid,format2,building_name,',',Build.kth,',',Build.ksun)
+    data = {building_name, Build.kth, Build.ksun, Build.Uenv, Build.iters};
+    total_props = [total_props; data];
+    %format2 = '%s%s%f%s%f\n';
+    %fprintf(fid,format2,building_name,',',Build.kth,',',Build.ksun)
     fclose(fid);
 end
+writecell(total_props, filename)
