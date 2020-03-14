@@ -47,17 +47,17 @@ for i = 1:365
 
 end
 
-% Extraction of data corresponding to heated daylight hours (Text < 16) and
-% not heated daylight hours
+% Identification of data corresponding to heated daylight hours (Text < 16)
+% and not heated daylight hours
 T_th_norm = (T_th - Text_min)/(Text_max - Text_min);
 T_norm_idx = Text_norm_day < T_th_norm;
 
-% Vector conatining the temperature and the irradiance to be clustered
+% Vector containing the temperature and the irradiance to be clustered
 Text_norm_heated = Text_norm_day (T_norm_idx);
 Irr_norm_heated = Irr_norm_day (T_norm_idx);
 Weather_norm_select = [Text_norm_heated, Irr_norm_heated];
 
-% Vector conatining the temperature and the irradiance not to be clustered
+% Vector containing the temperature and the irradiance not to be clustered
 Text_norm_notheated = Text_norm_day (~T_norm_idx);
 Irr_norm_notheated = Irr_norm_day (~T_norm_idx);
 Weather_norm_nonselect = [Text_norm_notheated, Irr_norm_notheated];
@@ -90,13 +90,13 @@ Dev_C = zeros (max(idx),1);
 
 for i = 1:max(idx)
     Cluster_idx = idx == i;
-    Days_i = Weather_norm_select (Cluster_idx, :);
+    Period_i = Weather_norm_select (Cluster_idx, :);
     
     % Frequency of typical day
     Freq_C (i) = sum (Cluster_idx);
     
     % Standard deviation
-    Dev_C (i) = sum( sum( (Days_i - Weather_norm_C (i,:)).^2 ) );
+    Dev_C (i) = sum( sum( (Period_i - Weather_norm_C (i,:)).^2 ) );
 end
 
 % Typical periods
