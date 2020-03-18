@@ -103,12 +103,13 @@ k0 = 1;
 %[k,fval, exitflag, output] = fsolve(@(k) q_objective(3600, Build.ground, k(1), T_int, Text, k(2), Irr, q_people.year, p.elec.year.v, Build.Q, p.heat.year.f), k0);
 tol = 1e-5;
 deltaT = 3600;
-[kth, ksun, iters] = newtonraphson(k0, tol, deltaT, Build.ground, T_int, Text, Irr, q_people.year, f_el, p.elec.year.v, Build.Q, p.heat.year.f);
+[kth, ksun, iters, err] = newtonraphson(k0, tol, deltaT, Build.ground, T_int, Text, Irr, q_people.year, f_el, p.elec.year.v, Build.Q, p.heat.year.f);
 
 Build.kth = kth;
 Build.ksun = ksun;
 Build.Uenv = Build.kth - air_new*cp_air; %[W/(m^2.K)]
-Build.iters = iters
+Build.iters = iters;
+Build.err = err;
 
 % For NR method -- note: what is fval?
 Results = table(Build.kth,Build.ksun,Build.Uenv,Build.iters);
@@ -136,13 +137,15 @@ t = 1:h;
 time = hours(t);
 time_lims = [time(1) time(end)];
 figure
-plot(time,Qth_calculated(1:end))
+plot(time,Qth_calculated(1:end)*1/1000)
 title(sprintf('%s: Q_{th}',building_name));
 xlim(time_lims)
 figure
-plot(time,Qth_plus(1:end))
+plot_Qth_plus = plot(time,Qth_plus(1:end)*1/1000) % kJ
 title(sprintf('%s: Q_{th}^+',building_name));
 xlim(time_lims)
+ylabel('Heat demand [kJ]')
+saveas(plot_Qth_plus, "plots/Qth_plus.png")
 
 %% TASK 4 - Clustering of the heating demand
 % based on the hourly heating demand (typical periods)

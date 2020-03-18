@@ -1,4 +1,4 @@
-function [kth, k_sun, i] = newtonraphson(kguess, tol, deltaT, Ath, T_int, T_ext, ith, q, f_el, Q_el_year, Q_th, heat_switch)
+function [kth, k_sun, i, err] = newtonraphson(kguess, tol, deltaT, Ath, T_int, T_ext, ith, q, f_el, Q_el_year, Q_th, heat_switch)
 
 i = 0;    
 % Finding masked values to calc for Irr, q, Q_el averages
@@ -40,7 +40,7 @@ f = 1;
 
 % iterative loop
 % While we haven't hit maxIter, and still have significant error, loop
-while abs(f) > 1e-3 && i < maxIter
+while abs(f) > 1e-4 && i < maxIter
     i = i + 1;
     
     obj_fn = @(k_val) q_objective(deltaT, Ath, k_val, T_int, T_ext, k_sun, ith, q, Q_el_year, Q_th, heat_switch);
@@ -62,5 +62,6 @@ while abs(f) > 1e-3 && i < maxIter
 end
 
 kth = knew;
+err = tol;
 
 end

@@ -37,8 +37,8 @@ total_props = [];
 for i = 1:n_build
     building_name = name{i,1};
     Build = Buildings(building_name);
-    data = {building_name, Build.kth, Build.ksun, Build.Uenv, Build.iters};
-    total_props = [total_props; data];
+    data = {building_name, Build.kth, Build.ksun, Build.Uenv, Build.iters, Build.err};
+    total_props = [total_props; data]
     %format2 = '%s%s%f%s%f\n';
     %fprintf(fid,format2,building_name,',',Build.kth,',',Build.ksun)
     fclose(fid);
