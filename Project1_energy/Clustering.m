@@ -176,6 +176,11 @@ for j=7301:8760
     Irr_season_avg(j,1) = Irr_mean(6);
 end
 
+% % Indicator
+
+Dev_Average = sum( sum( ( (Text - Text_season_avg)/(Text_max - Text_min) ).^2 + ...
+    ( (Irr - Irr_season_avg)/(Irr_max - Irr_min) ).^2 ) );
+
 % Tenir compte de la température extérieure
 k = 1;
 for i = 1:8760
