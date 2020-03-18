@@ -1,0 +1,9 @@
+let Buildings := Buildings union {CRPP};
+let MediumTempBuildings := MediumTempBuildings union {CRPP};
+###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
+let FloorArea[CRPP] := 10831;
+let k_th[CRPP]:= 5.25;
+let k_sun[CRPP]:= 0.12;
+let specQ_people[CRPP]:= 1.2;
+###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################
+let specElec[CRPP,1] := 440.3;

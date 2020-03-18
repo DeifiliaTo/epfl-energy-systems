@@ -1,0 +1,9 @@
+let Buildings := Buildings union {GC};
+let MediumTempBuildings := MediumTempBuildings union {GC};
+###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
+let FloorArea[GC] := 26586;
+let k_th[GC]:= 4.88;
+let k_sun[GC]:= 0.09;
+let specQ_people[GC]:= 1.2;
+###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################
+let specElec[GC,1] := 541.4;
