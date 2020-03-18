@@ -6,6 +6,7 @@ Group B for [`ME-454`](https://edu.epfl.ch/coursebook/en/modelling-and-optimizat
 
 - [Moodle](https://moodle.epfl.ch/course/view.php?id=11)
 - [Mattermost channel](https://ipese-mattermost.epfl.ch/moes2020/pl/6xqf6uji8irc7pxf7bhn5eyi4c)
+- [Overleaf](https://www.overleaf.com/8328823628wcqcbfmkzgqz)
 
 ## Code standards
 
