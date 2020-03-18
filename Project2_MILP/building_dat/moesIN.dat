@@ -1,9 +1,16 @@
-let Buildings := Buildings union {IN};
-let MediumTempBuildings := MediumTempBuildings union {IN};
+let Buildings := Buildings union {'IN'};
+let MediumTempBuildings := MediumTempBuildings union {'IN'};
+
 ###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
-let FloorArea[IN] := 24073;
-let k_th[IN]:= 4.27;
-let k_sun[IN]:= 0.07;
-let specQ_people[IN]:= 1.2;
+let FloorArea['IN'] := 24073;     # [m2]
+let k_th['IN']:= 0.00825;   # [kW/m2/K]
+let k_sun['IN']:= 0.07;
+let specQ_people['IN']:= 0.002261; 
+
 ###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################
-let specElec[IN,1] := 517.1;
+let specElec['IN',1] := 0.021480496822165913;
+let specElec['IN',2] := 0.021480496822165913;
+let specElec['IN',3] := 0.021480496822165913;
+let specElec['IN',4] := 0.021480496822165913;
+let specElec['IN',5] := 0.004644207203090599;
+let specElec['IN',6] := 0.021480496822165913;

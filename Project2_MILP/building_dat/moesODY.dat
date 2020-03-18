@@ -1,9 +1,16 @@
-let Buildings := Buildings union {ODY};
-let MediumTempBuildings := MediumTempBuildings union {ODY};
+let Buildings := Buildings union {'ODY'};
+let MediumTempBuildings := MediumTempBuildings union {'ODY'};
+
 ###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
-let FloorArea[ODY] := 4092;
-let k_th[ODY]:= 6.59;
-let k_sun[ODY]:= 0.07;
-let specQ_people[ODY]:= 1.2;
+let FloorArea['ODY'] := 4092;     # [m2]
+let k_th['ODY']:= 0.00825;   # [kW/m2/K]
+let k_sun['ODY']:= 0.07;
+let specQ_people['ODY']:= 0.002261; 
+
 ###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################
-let specElec[ODY,1] := 22.3;
+let specElec['ODY',1] := 0.005449657869012708;
+let specElec['ODY',2] := 0.005449657869012708;
+let specElec['ODY',3] := 0.005449657869012708;
+let specElec['ODY',4] := 0.005449657869012708;
+let specElec['ODY',5] := 0.0011730205278592375;
+let specElec['ODY',6] := 0.005449657869012708;

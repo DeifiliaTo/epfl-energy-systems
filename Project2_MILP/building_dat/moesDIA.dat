@@ -1,9 +1,16 @@
-let Buildings := Buildings union {DIA};
-let MediumTempBuildings := MediumTempBuildings union {DIA};
+let Buildings := Buildings union {'DIA'};
+let MediumTempBuildings := MediumTempBuildings union {'DIA'};
+
 ###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
-let FloorArea[DIA] := 847;
-let k_th[DIA]:= 7.69;
-let k_sun[DIA]:= 0.15;
-let specQ_people[DIA]:= 1.2;
+let FloorArea['DIA'] := 847;     # [m2]
+let k_th['DIA']:= 0.00825;   # [kW/m2/K]
+let k_sun['DIA']:= 0.15;
+let specQ_people['DIA']:= 0.002261; 
+
 ###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################
-let specElec[DIA,1] := 0.0;
+let specElec['DIA',1] := 0.0;
+let specElec['DIA',2] := 0.0;
+let specElec['DIA',3] := 0.0;
+let specElec['DIA',4] := 0.0;
+let specElec['DIA',5] := 0.0;
+let specElec['DIA',6] := 0.0;

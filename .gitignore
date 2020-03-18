@@ -29,3 +29,6 @@ octave-workspace
 
 # Other rubbish
 .DS_Store
+
+# jupyter notebook save file
+.ipynb_checkpoints

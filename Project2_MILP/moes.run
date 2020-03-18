@@ -7,12 +7,35 @@ data moes.dat;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load building 1 data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-data moesb1.dat;
+data building_dat/moesGC.dat
+data building_dat/moesCE.dat
+data building_dat/moesMA.dat
+data building_dat/moesGR.dat
+data building_dat/moesCM.dat
+data building_dat/moesBI.dat
+data building_dat/moesCH.dat
+data building_dat/moesPH.dat
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load building 2 data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-data moesb2.dat;
+
+data building_dat/moesBC.dat
+data building_dat/moesCO.dat
+data building_dat/moesBP.dat
+data building_dat/moesBS.dat
+data building_dat/moesTCV.dat
+data building_dat/moesIN.dat
+data building_dat/moesODY.dat
+data building_dat/moesME.dat
+data building_dat/moesAA.dat
+data building_dat/moesEL.dat
+data building_dat/moesPO.dat
+data building_dat/moesCRPP.dat
+data building_dat/moesMX.dat
+data building_dat/moesBM.dat
+data building_dat/moesDIA.dat
+data building_dat/moesAI.dat
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the boiler model and its data
