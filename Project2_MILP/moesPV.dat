@@ -12,6 +12,12 @@ let  Flowout['Electricity','PV'] := refSize;
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let cinv1['PV'] := 10;			#  [CHF]
+# Src: https://ec.europa.eu/energy/sites/ener/files/documents/Report%20WP2.pdf
+# Flat plate collector 
 
-let cinv2['PV'] := 10;			# continious investment cost [CHF/kWp]
+let cinv1['PV'] := 773;			#  [CHF]
+
+# src: https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/AgoraEnergiewende_Current_and_Future_Cost_of_PV_Feb2015_web.pdf
+# value is in CHF/kWp
+
+let cinv2['PV'] := 0.00317*sum{t in Time} pv_elec[t];			# continuous investment cost [CHF/kWp]

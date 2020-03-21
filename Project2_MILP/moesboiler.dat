@@ -12,6 +12,10 @@ let Tminheating['Boiler'] := 120;
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let cinv1['Boiler'] := 10;			#  [CHF]
+/* Source: https://ec.europa.eu/energy/sites/ener/files/documents/Report%20WP2.pdf
+ Values from Germany taken (No specific Swiss data available)
+ "Assume Swiss and German markets are tightly linked"*/
 
-let cinv2['Boiler'] := 10;			# continious investment cost [CHF/kW]
+let cinv1['Boiler'] := 352*Qheatingsupply['Boiler'];			#  [CHF] = [CHF/kW] * kW
+
+let cinv2['Boiler'] := cinv1['Boiler']*0.02;			# continious investment cost [CHF/kW] ... for 25 - 100 kW. Condensing gas boiler.
