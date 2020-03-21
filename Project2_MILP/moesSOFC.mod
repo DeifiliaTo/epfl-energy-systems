@@ -9,4 +9,4 @@ param TER default 2 ;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set flow rate of biogas as a function of efficiencies
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let Flowin['Biogas','SOCF'] := Qheatingsupply['SOFC'](1/ eff_thermal + 1/(eff_electical*TER)); 
+let Flowin['Biogas','SOFC'] := Qheatingsupply['SOFC'] * (1/ eff_thermal + 1/(eff_electrical*TER)); 

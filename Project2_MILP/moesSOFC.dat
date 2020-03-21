@@ -13,6 +13,12 @@ let  Flowout['Electricity','SOFC'] := refSize;
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
+# investment cost (fixed + variable)
+
 let cinv1['SOFC'] := 383;			# fixed investment [CHF]
 
 let cinv2['SOFC'] := 8788;			# continious investment cost [CHF/kWp]
+
+# operating cost (fixed + variable)
+
+let cop2t['SOFC'] := 0.0577 * Qheatingsupply['SOFC']; # TODO check units of this number from Marie

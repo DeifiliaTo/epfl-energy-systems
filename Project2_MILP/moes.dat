@@ -157,7 +157,6 @@ param c_spec :=															# specific cost of resources
 NatGasGrid 0.0303
 ElecGridBuy 0.0916
 ElecGridSell -0.06
-Biogas 0.0577
 ;
 
 end;

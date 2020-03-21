@@ -50,6 +50,12 @@ model moesPV.mod;
 data moesPV.dat;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
+Load the SOFC model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+model moesSOFC.mod;
+data moesSOFC.dat;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
 Set the grid parameters: resource flow and fmax
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 let  Flowout['Natgas','NatGasGrid'] := refSize;
@@ -77,6 +83,7 @@ Display commands
 display Edemand;
 display Qheating;
 display Qheatingdemand;
+display Qheatingsupply;
 
 display mult;
 display mult_t;
