@@ -3,7 +3,7 @@ let LowTempBuildings := LowTempBuildings union {'BC'};
 
 ###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
 let FloorArea['BC'] := 17480;     # [m2]
-let k_th['BC']:= 5.65;   # [kW/m2/K]
+let k_th['BC']:= 0.0056500000000000005;   # [kW/m2/K]
 let k_sun['BC']:= 0.11;
 let specQ_people['BC']:= 0.002261; 
 

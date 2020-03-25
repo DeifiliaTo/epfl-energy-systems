@@ -3,7 +3,7 @@ let LowTempBuildings := LowTempBuildings union {'ODY'};
 
 ###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
 let FloorArea['ODY'] := 4092;     # [m2]
-let k_th['ODY']:= 6.59;   # [kW/m2/K]
+let k_th['ODY']:= 0.0065899999999999995;   # [kW/m2/K]
 let k_sun['ODY']:= 0.07;
 let specQ_people['ODY']:= 0.002261; 
 
