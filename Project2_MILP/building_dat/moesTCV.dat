@@ -3,7 +3,7 @@ let LowTempBuildings := LowTempBuildings union {'TCV'};
 
 ###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
 let FloorArea['TCV'] := 6095;     # [m2]
-let k_th['TCV']:= 4.83;   # [kW/m2/K]
+let k_th['TCV']:= 0.00483;   # [kW/m2/K]
 let k_sun['TCV']:= 0.09;
 let specQ_people['TCV']:= 0.002261; 
 
