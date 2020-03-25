@@ -20,4 +20,5 @@ let cinv1['PV'] := 773;			#  [CHF]
 # src: https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/AgoraEnergiewende_Current_and_Future_Cost_of_PV_Feb2015_web.pdf
 # value is in CHF/kWp
 
-let cinv2['PV'] := 0.00317*sum{t in Time} pv_elec[t];			# continuous investment cost [CHF/kWp]
+#TODO! Find value
+let cinv2['PV'] := 1; #0.00317*sum{t in Time} Flowout['Electricity','PV'] * mult_t['PV',t];			# continuous investment cost [CHF/kWp]
