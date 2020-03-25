@@ -1,9 +1,9 @@
 let Buildings := Buildings union {'IN'};
-let MediumTempBuildings := MediumTempBuildings union {'IN'};
+let LowTempBuildings := LowTempBuildings union {'IN'};
 
 ###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
 let FloorArea['IN'] := 24073;     # [m2]
-let k_th['IN']:= 0.00825;   # [kW/m2/K]
+let k_th['IN']:= 4.27;   # [kW/m2/K]
 let k_sun['IN']:= 0.07;
 let specQ_people['IN']:= 0.002261; 
 
