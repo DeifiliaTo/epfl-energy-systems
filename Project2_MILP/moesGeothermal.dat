@@ -1,0 +1,21 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set the maximum scaling factor of Geothermal combined heat and power (GCHP) unit
+---------------------------------------------------------------------------------------------------------------------------------------*/
+let  Fmax['Geothermal'] := refSize;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set the reference size of electricity flow (will be scaled with mult_t)
+---------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set cost parameter
+---------------------------------------------------------------------------------------------------------------------------------------*/
+
+# Investment cost: 10000 $/kW = 9860 CHF/kW
+# Source: https://iea-etsap.org/E-TechDS/PDF/E07-geoth_energy-GS-gct_ADfinal_gs.pdf
+let cinv1['Geothermal'] := 9860*Size['Geothermal'];			#  [CHF] = [CHF/kW] * kW
+
+# Operating and maintenance costs: 250 $/kWy = 0.0281 CHF/kWh
+# Source: https://iea-etsap.org/E-TechDS/PDF/E07-geoth_energy-GS-gct_ADfinal_gs.pdf
+let cinv2['Geothermal'] := 0.0281*Qheatingsupply['Geothermal'];			# continuous investment cost [CHF/kWp]
