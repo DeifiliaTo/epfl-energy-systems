@@ -1,14 +1,9 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set the efficiencis of the SOFC and thermal/electricity output ratio
+Set the efficiency of Geothermal combined heat and power (GCHP) unit
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-param eff_thermal default 0.538 ;
 
-param eff_electrical default 0.2734;
 
-param TER default 2 ;
+
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set flow rate of biogas as a function of efficiencies
+Set the electricity and heat output
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let Flowin['Biogas','SOFC'] := Qheatingsupply['SOFC'] * (1/ eff_thermal + 1/(eff_electrical*TER)); 
-
-let Flowout['Electricity','SOFC'] := Qheatingsupply['SOFC'] / TER;
