@@ -18,6 +18,6 @@ param Th_HP1stage := 323.15;      # 50C
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let cinv1['HP1stageLT'] := 0;			#  [CHF]
+let cinv1['HP1stageLT'] := 100000;			#  [CHF]
 
-let cinv2['HP1stageLT'] := 0;			# continious investment cost [CHF/kWp]
+let cinv2['HP1stageLT'] := 100000;			# continious investment cost [CHF/kWp]

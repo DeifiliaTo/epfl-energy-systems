@@ -49,8 +49,9 @@ MediumT 6   27006500
 ;
 
 Qheatingsupply [*] :=
-Boiler  1000
-  SOFC  1000
+  Boiler  1000
+HP2stage  1000
+    SOFC  1000
 ;
 
 mult [*] :=
@@ -72,6 +73,7 @@ NatGasGrid 6   72196
 Flowin :=
 Biogas      SOFC           3687.56
 Electricity ElecGridSell   1000
+Electricity HP2stage        209.732
 Natgas      Boiler         1111.11
 ;
 

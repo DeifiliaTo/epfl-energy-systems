@@ -19,6 +19,6 @@ let Th_HP2stage['MediumT'] := 333.15;   # 65C
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let cinv1['HP2stage'] := 0;			#  [CHF]
+let cinv1['HP2stage'] := 1000000;			#  [CHF]
 
-let cinv2['HP2stage'] := 0;			# continious investment cost [CHF/kWp]
+let cinv2['HP2stage'] := 1000000;			# continious investment cost [CHF/kWp]
