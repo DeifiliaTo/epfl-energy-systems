@@ -1,9 +1,10 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Setup variables
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-var Cogen_Hbo >=0;
-var Cogen_Hchp >=0;
-var Cogen_Echp >=0;
+
+var Cogen_Hbo{Time} >=0;
+var Cogen_Hchp{Time} >=0;
+var Cogen_Echp{Time} >=0;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Constraints
@@ -11,8 +12,10 @@ Constraints
 
 # Heat balance (12)
 subject to Cogen_heat:
-    Qheatingsupply['Cogen'] = Cogen_Hbo + Cogen_Hchp
+    Qheatingsupply['Cogen'] = sum {t in Time} ( Cogen_Hbo[t] + Cogen_Hchp[t] )
 ;
 
-# Electricity output
-let Flowout['Electricity','Cogen'] := Cogen_Echp;
+# Electricity balance (11, modified)
+subject to Cogen_elec:
+    Flowout['Electricity','Cogen'] = sum {t in Time} Cogen_Echp[t]
+;
