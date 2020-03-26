@@ -62,7 +62,7 @@ model moesHP2stage.mod;
 data moesHP2stage.dat;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Load the HP1stage models and its data
+Load the HP1stage models and their data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 model moesHP1stageLT.mod;
 data moesHP1stageLT.dat;

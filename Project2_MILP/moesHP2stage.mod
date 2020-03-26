@@ -1,10 +1,10 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the efficiency of 2stagesHP
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-param eff_carnot default 0.64;
+param eff_carnot := 0.64;
 param Th_HP2stage{HeatingLevel} default 298;
 
-param Tlmc_HP2stage default 278;             # water is taken from the lake at 4C and is rejected at 6C
+param Tlmc_HP2stage := 278;             # water is taken from the lake at 4C and is rejected at 6C
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the electricity output as a function of Th, Tc and Heat to supply to the buildings
