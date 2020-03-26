@@ -2,7 +2,14 @@
 Set the efficiency of 2stagesHP
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 param eff_carnot := 0.64;
-param Th_HP2stage{HeatingLevel} default 298;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set the hot and cold temperature
+---------------------------------------------------------------------------------------------------------------------------------------*/
+param Th_HP2stage{HeatingLevel};
+
+let Th_HP2stage['LowT'] := 323.15;      # 50C
+let Th_HP2stage['MediumT'] := 333.15;   # 65C
 
 param Tlmc_HP2stage := 278;             # water is taken from the lake at 4C and is rejected at 6C
 
