@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the efficiency of 2stagesHP
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-param eff_carnotMT default 0.64;
+param eff_carnotMT default 0.55;
 param Th_HP1stageMT default 298;
 
 param Tlmc_HP1stageMT default 278;             # water is taken from the lake at 4C and is rejected at 6C
