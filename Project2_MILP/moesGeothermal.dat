@@ -1,12 +1,12 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the maximum scaling factor of Geothermal power (GP) unit
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let  Fmax['Geothermal'] := 20 000; #[kW]
+let  Fmax['Geothermal'] := 1; #[kW]
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the reference size of electricity flow (will be scaled with mult_t)
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-
+let  Flowout['Electricity','Geothermal'] := 20 000;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set cost parameter
@@ -14,8 +14,8 @@ Set cost parameter
 
 # Investment cost: 4000 $/kW = 3922 CHF/kW
 # Source: https://www.lazard.com/media/450784/lazards-levelized-cost-of-energy-version-120-vfinal.pdf
-let cinv1['Geothermal'] := 3922*Size['Geothermal'];			#  [CHF] = [CHF/kW] * kW
+let cinv2['Geothermal'] := 3922			#  [CHF/kW]
 
 # Operating and maintenance costs: 0.025 $/kWh = 0.0245 CHF/kWh
 # Source: https://www.lazard.com/media/450784/lazards-levelized-cost-of-energy-version-120-vfinal.pdf
-let cinv2['Geothermal'] := 0.0245*Qheatingsupply['Geothermal'];			# continuous investment cost [CHF/kWp]
+let cop2['Geothermal'] := 0.0245 #*Qheatingsupply['Geothermal'];			# continuous investment cost [CHF/h]
