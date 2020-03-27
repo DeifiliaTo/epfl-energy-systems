@@ -2,9 +2,14 @@
 Set cost parameters
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 let cinv1['Cogen'] := 0;			    # fixed investment cost [CHF]
-
 let cinv2['Cogen'] := 0;			    # variable investment cost [CHF/kW_capacity]
 
 let cop1t['Cogen'] := 0;			    # fixed operating cost [CHF]
-
 let cop2t['Cogen'] := 0;			    # variable operating cost [CHF/kW_production]
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set reference size of Cogen unit
+---------------------------------------------------------------------------------------------------------------------------------------*/
+let Flowout['Electricity','Cogen'] := 1000;
+# let Qheatingsupply['Cogen'] := 1000; # or could define from heat output
+let Tminheating['Cogen'] := 120;
