@@ -18,4 +18,4 @@ let cinv2['Geothermal'] := 3922			#  [CHF/kW]
 
 # Operating and maintenance costs: 0.025 $/kWh = 0.0245 CHF/kWh
 # Source: https://www.lazard.com/media/450784/lazards-levelized-cost-of-energy-version-120-vfinal.pdf
-let cop2['Geothermal'] := 0.0245 #*Qheatingsupply['Geothermal'];			# continuous investment cost [CHF/h]
+let cop2t['Geothermal'] := 0.0245 #*Qheatingsupply['Geothermal'];			# continuous investment cost [CHF/h]

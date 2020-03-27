@@ -3,16 +3,22 @@ Set the maximum scaling factor
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 let  Fmax['SOFC'] := refSize;
 
+#let  Flowin['Biogas','SOFC'] := refSize;
+#let  Flowout['Electricity','SOFC'] := refSize;
+let Qheatingsupply['SOFC'] := 1000;
+
+let Tminheating['SOFC'] := 120;
+
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
 # investment cost (fixed + variable)
 
-let cinv1['SOFC'] := 383;			# fixed investment [CHF]
+let cinv1['SOFC'] := 10;			# fixed investment [CHF]
 
-let cinv2['SOFC'] := 8788;			# continious investment cost [CHF/kWp]
+let cinv2['SOFC'] := 10;			# continious investment cost [CHF/kWp]
 
 # operating cost (fixed + variable)
 
-let cop2t['SOFC'] := 0.0577 #* Qheatingsupply['SOFC']; # TODO check units of this number from Marie
+let cop2t['SOFC'] := 0.0577; #* Qheatingsupply['SOFC']; # TODO check units of this number from Marie
