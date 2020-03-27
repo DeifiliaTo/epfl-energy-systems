@@ -78,7 +78,7 @@ Utility paremeters
 param Tminheating{UtilitiesOfType['Heating']} default 0;
 
 # reference flow of the heating and cooling [kW]
-param Qheatingsupply{UtilitiesOfType['Heating']} default 1000;
+param Qheatingsupply{UtilitiesOfType['Heating']} default 0;
 
 # reference flow of the resources (elec, natgas etc) [kW] [m3/s] [kg/s]
 param Flowin{l in Layers,u in UtilitiesOfLayer[l]} default 0;

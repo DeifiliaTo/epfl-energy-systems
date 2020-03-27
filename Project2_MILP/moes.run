@@ -40,14 +40,14 @@ data building_dat/moesAI.dat
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the boiler model and its data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-model moesboiler.mod;
-data moesboiler.dat;
+#model moesboiler.mod;
+#data moesboiler.dat;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the PV model and its data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-model moesPV.mod;
-data moesPV.dat;
+#model moesPV.mod;
+#data moesPV.dat;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the SOFC model and its data
@@ -55,11 +55,12 @@ Load the SOFC model and its data
 model moesSOFC.mod;
 data moesSOFC.dat;
 
+
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the HP2stage model and its data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-model moesHP2stage.mod;
-data moesHP2stage.dat;
+#model moesHP2stage.mod;
+#data moesHP2stage.dat;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the HP1stage models and their data
@@ -67,14 +68,15 @@ Load the HP1stage models and their data
 model moesHP1stageLT.mod;
 data moesHP1stageLT.dat;
 
-model moesHP1stageMT.mod;
-data moesHP1stageMT.dat;
+#model moesHP1stageMT.mod;
+#data moesHP1stageMT.dat;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the Cogen model and its data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-model moesCogen.mod;
-data moesCogen.dat;
+#model moesCogen.mod;
+#data moesCogen.dat;
+
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the grid parameters: resource flow and fmax
@@ -117,11 +119,10 @@ display FlowOutUnit;
 
 display Buildings;
 
-display usedroofArea;
+#display usedroofArea;
 
 display InvCost;
 
 display OpCost;
 
 display use;
-
