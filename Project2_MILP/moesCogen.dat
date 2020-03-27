@@ -1,8 +1,10 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set efficiency parameters - Table 1, DOI 10.1016/j.applthermaleng.2014.02.051
+Set cost parameters
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-param Cogen_eta_bo default 0.9;
+let cinv1['Cogen'] := 0;			    # fixed investment cost [CHF]
 
-param Cogen_eta_Echp default 0.3;
+let cinv2['Cogen'] := 0;			    # variable investment cost [CHF/kW_capacity]
 
-param Cogen_eta_Hchp default 0.9;
+let cop1t['Cogen'] := 0;			    # fixed operating cost [CHF]
+
+let cop2t['Cogen'] := 0;			    # variable operating cost [CHF/kW_production]
