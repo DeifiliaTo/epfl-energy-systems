@@ -14,7 +14,7 @@ Set the electricity output as a function of Th, Tc and Heat to supply to the bui
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
 /*?????LOOP LOW TEMPERATURE OR LOOP HIGH TEMPERATURE */
-let Flowin['Electricity','HP2stage'] := sum{h in HeatingLevel} (Qheatingsupply['HP2stage'] * (Theating[h] - Tlmc_HP2stage)) / (eff_carnot * Theating[h]) ;
+let Flowin['Electricity','HP2stage'] := sum{h in HeatingLevel} (Qheatingsupply['HP2stage'] * (Theating[h] - Tlmc_HP2stage)) / (eff_carnot * (Theating[h]+273)) ;
 /* Qheatingsupply is Q+calculated or the name of de variable is not correct?*/
 
 # Flowin['Heat','HP2stage'] = Qheatingsupply['HP2stage'] - Electricity['HP2stage'] ;
