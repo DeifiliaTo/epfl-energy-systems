@@ -9,6 +9,6 @@ let Tminheating['HP2stage'] := 110;
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let cinv1['HP2stage'] := 10;			#  [CHF]
+let cinv1['HP2stage'] := 0;			#  [CHF]
 
-let cinv2['HP2stage'] := 10;			# continious investment cost [CHF/kWp]
+let cinv2['HP2stage'] := 890;			# continious investment cost [CHF/kWp]
