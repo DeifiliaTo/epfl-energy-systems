@@ -7,7 +7,7 @@ param eff_carnot := 0.64;
 Set the hot and cold temperature
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-param Tlmc_HP2stage := 5;             # water is taken from the lake at 4C and is rejected at 6C
+param Tlmc_HP2stage := 5.5;             # water is taken from the lake at 7C and is rejected at 4C (max 3C of difference)
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the electricity output as a function of Th, Tc and Heat to supply to the buildings
