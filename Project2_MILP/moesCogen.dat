@@ -1,15 +1,4 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set cost parameters (Excel; based on Table 9 of https://ec.europa.eu/energy/sites/ener/files/documents/Article%2014_1EEDGermanyEN.pdf)
----------------------------------------------------------------------------------------------------------------------------------------*/
-# annualised costs (investment + fixed OpEx) [CHF/y] = [CHF/kW_capacity/y * kW_capacity]
-let cinv1['Cogen'] := (146.69 + 30.512) * Flowout['Electricity','Cogen'];   # fixed
-let cinv2['Cogen'] := (-7e-6 + 3e-5) * Flowout['Electricity','Cogen']^2;	# variable
-
-# operating cost [CHF/h] = [CHF/(kW_production * h) * kW_production]
-let cop1t['Cogen'] := 7478 * Flowout['Electricity','Cogen'];                # fixed
-let cop2t['Cogen'] := -0.0167 * Flowout['Electricity','Cogen']^2;	        # variable
-
-/*---------------------------------------------------------------------------------------------------------------------------------------
 Set reference size and permissible scaling of Cogen unit
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 # unit is defined by electrical output
@@ -21,3 +10,14 @@ let Fmax['Cogen'] := 225;
 
 # typical heat output temperature (Klotz et al., p. 4)
 let Tminheating['Cogen'] := 300;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set cost parameters (Excel; based on Table 9 of https://ec.europa.eu/energy/sites/ener/files/documents/Article%2014_1EEDGermanyEN.pdf)
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# annualised costs (investment + fixed OpEx) [CHF/y] = [CHF/kW_capacity/y * kW_capacity]
+let cinv1['Cogen'] := (146.69 + 30.512) * Flowout['Electricity','Cogen'];   # fixed
+let cinv2['Cogen'] := (-7e-6 + 3e-5) * Flowout['Electricity','Cogen']^2;	# variable
+
+# operating cost [CHF/h] = [CHF/(kW_production * h) * kW_production]
+let cop1t['Cogen'] := 7478 * Flowout['Electricity','Cogen'];                # fixed
+let cop2t['Cogen'] := -0.0167 * Flowout['Electricity','Cogen']^2;	        # variable
