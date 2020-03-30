@@ -1,15 +1,23 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set cost parameters
+Set cost parameters (Excel; based on Table 9 of https://ec.europa.eu/energy/sites/ener/files/documents/Article%2014_1EEDGermanyEN.pdf)
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let cinv1['Cogen'] := 0;			    # fixed investment cost [CHF]
-let cinv2['Cogen'] := 0;			    # variable investment cost [CHF/kW_capacity]
+# annualised costs (investment + fixed OpEx) [CHF/y] = [CHF/kW_capacity/y * kW_capacity]
+let cinv1['Cogen'] := (146.69 + 30.512) * Flowout['Electricity','Cogen'];   # fixed
+let cinv2['Cogen'] := (-7e-6 + 3e-5) * Flowout['Electricity','Cogen']^2;	# variable
 
-let cop1t['Cogen'] := 0;			    # fixed operating cost [CHF]
-let cop2t['Cogen'] := 0;			    # variable operating cost [CHF/kW_production]
+# operating cost [CHF/h] = [CHF/(kW_production * h) * kW_production]
+let cop1t['Cogen'] := 7478 * Flowout['Electricity','Cogen'];                # fixed
+let cop2t['Cogen'] := -0.0167 * Flowout['Electricity','Cogen']^2;	        # variable
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set reference size of Cogen unit
+Set reference size and permissible scaling of Cogen unit
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let Flowout['Electricity','Cogen'] := 1000;
-# let Qheatingsupply['Cogen'] := 1000; # or could define from heat output
-let Tminheating['Cogen'] := 120;
+# unit is defined by electrical output
+let Flowout['Electricity','Cogen'] := 2000;
+
+# acceptable range for scaling is 2000-450000 kW
+let Fmin['Cogen'] := 1;
+let Fmax['Cogen'] := 225;
+
+# typical heat output temperature (Klotz et al., p. 4)
+let Tminheating['Cogen'] := 300;
