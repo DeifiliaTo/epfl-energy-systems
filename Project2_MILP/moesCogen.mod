@@ -15,5 +15,5 @@ let Cogen_eta_Hchp := 0.5102 - 5e-7 * Flowout['Electricity','Cogen'];
 Equations
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let Qheatingsupply['Cogen'] := Flowout['Electricity','Cogen'] * Cogen_eta_Hchp/Cogen_eta_Echp;
-let Flowin['Natgas','Cogen'] := Qheatingsupply['Cogen']/Cogen_eta_Hchp + Flowout['Electricity','Cogen']/Cogen_eta_Echp;
+let Flowin['Natgas','Cogen'] := Flowout['Electricity','Cogen']/Cogen_eta_Echp;
+let Qheatingsupply['Cogen'] := Flowin['Natgas','Cogen'] * Cogen_eta_Hchp;
