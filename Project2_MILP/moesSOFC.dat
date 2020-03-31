@@ -7,6 +7,7 @@ let  Fmax['SOFC'] := 8620;
 #let  Flowout['Electricity','SOFC'] := refSize;
 let Qheatingsupply['SOFC'] := 30; #kW
 
+let Flowout['Electricity', 'SOFC'] := 58;
 let Tminheating['SOFC'] := 176; #�C
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
@@ -17,11 +18,10 @@ Set cost parameter
 
 let cinv1['SOFC'] := 0;			# fixed investment [CHF]
 
-# Cost 8788 annualised to 895.0772
-let cinv2['SOFC'] := 895.0772*Flowout['Electricity', 'SOFC']+ 72*Flowout['Electricity', 'SOFC'];			# continious investment cost & maintenance [CHF/kWp] #!!!needs annualisation for 8788!!!!
+let cinv2['SOFC'] := 57091; #8788*Flowout['Electricity', 'SOFC']+ 72*Flowout['Electricity', 'SOFC'];			# continious investment cost & maintenance [CHF/kWp] #!!!needs annualisation for 8788!!!!
 
 # operating cost (fixed + variable)
 
 let cop1t['SOFC'] := 0;
 
-let cop2t['SOFC'] := 0.0577*Flowin['Biogas', 'SOFC'] ; #price of biogas
+let cop2t['SOFC'] := 0.0577*109.73 ; #price of biogas * Flowin['Biogas', 'SOFC']

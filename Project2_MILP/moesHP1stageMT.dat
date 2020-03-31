@@ -1,9 +1,9 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the maximum scaling factor of 2stageHP
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let  Fmax['HP1stageMT'] := 10000;
+let  Fmax['HP1stageMT'] := 10;
 
-let Qheatingsupply['HP1stageMT'] := 120;
+let Qheatingsupply['HP1stageMT'] := 1000;
 let Tminheating['HP1stageMT'] := 110;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
@@ -20,6 +20,6 @@ Set the hot and cold temperature
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let cinv1['HP1stageMT'] := 2;			#  [CHF]
+let cinv1['HP1stageMT'] := 326.19;			#  [CHF]
 
-let cinv2['HP1stageMT'] := 2;			# continious investment cost [CHF/kWp]
+let cinv2['HP1stageMT'] := 17803;			# continious investment cost [CHF/year]
