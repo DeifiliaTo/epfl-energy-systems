@@ -1,7 +1,8 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the maximum scaling factor
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let Fmax ['Boiler'] := 1000;
+let Fmax ['Boiler'] := 1.42;
+let Fmin ['Boiler'] := 0.6;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the minimum temperature of the boiler
@@ -12,10 +13,10 @@ let Tminheating['Boiler'] := 120;
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-/* Source: https://ec.europa.eu/energy/sites/ener/files/documents/Report%20WP2.pdf
+/* Source: https://ec.europa.eu/energy/sites/ener/files/documents/mapping-hc-final_report-wp2.pdf
  Values from Germany taken (No specific Swiss data available)
  "Assume Swiss and German markets are tightly linked"*/
-let Qheatingsupply['Boiler'] := 1000;
+let Qheatingsupply['Boiler'] := 175;
 
 let cinv1['Boiler'] := 352*Qheatingsupply['Boiler'];			#  [CHF] = [CHF/kW] * kW
 
