@@ -17,6 +17,8 @@ Set cost parameter
  "Assume Swiss and German markets are tightly linked"*/
 let Qheatingsupply['Boiler'] := 1000;
 
-let cinv1['Boiler'] := 352*Qheatingsupply['Boiler'];			#  [CHF] = [CHF/kW] * kW
+let cinv1['Boiler'] := 0;			#  [CHF] = [CHF/kW] * kW
 
-let cinv2['Boiler'] := cinv1['Boiler']*0.02;			# continious investment cost [CHF/kW] ... for 25 - 100 kW. Condensing gas boiler.
+let cinv2['Boiler'] := 352*Qheatingsupply['Boiler'];			#  [CHF] = [CHF/kW] * kW
+
+let cop2t['Boiler'] := cinv1['Boiler']*0.02;			# continious investment cost [CHF/kW] ... for 25 - 100 kW. Condensing gas boiler.
