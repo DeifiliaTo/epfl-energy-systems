@@ -11,5 +11,5 @@ Set cost parameter
 let cinv1['HP2stage'] := 0;			#  [CHF] /*10*/
 
 # Cost 890 annualised to 83.3741
-let cinv2['HP2stage'] := 83.3741;			# 890 [CHF/kWp] continious investment cost (n=25) 
+let cinv2['HP2stage'] := 83.3741*Qheatingsupply['HP2stage'];			# 890 [CHF/kWp] continious investment cost (n=25) 
 
