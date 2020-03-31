@@ -7,6 +7,7 @@ let  Fmax['SOFC'] := 8620;
 #let  Flowout['Electricity','SOFC'] := refSize;
 let Qheatingsupply['SOFC'] := 30; #kW
 
+let Flowout['Electricity', 'SOFC'] := 58;
 let Tminheating['SOFC'] := 176; #�C
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
