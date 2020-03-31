@@ -8,13 +8,13 @@ clc
 
 Utility = {'Boiler'; 'PV'; 'SOFC'; 'Geothermal'; 'HP2stage'; ...
     'HP1stageLT'; 'HP1stageMT'; 'Cogen'}; % Utility name
-n =     [35; 25; 0; 30; 0; 0; 0; 0]; % Lifetime in [years]
-cinv1 = [32000; 773; 383; 0; 0; 0; 0; 0]; % Fixed investment cost in [CHF]
-cinv2 = [34500; 1; 8788; 3922; 0; 0; 0; 0]; % Variable investment cost in [CHF / (kWcapacity * year)]
-cop1 =  [0; 0; 0; 0; 0; 0; 0; 0]; % Fixed operating cost in [CHF / hr]
-cop2 =  [0; 0; 0.0577; 0.0245; 0; 0; 0; 0]; % Variable operating cost in [CHF / (kWproduction * hr)]
+n =     [35; 25; 20; 30; 25; 0; 0; 0]; % Lifetime in [years]
+cinv1 = [63.9836; 11241; 0; 0; 0; 0; 0; 0]; % Fixed investment cost in [CHF]
+cinv2 = [68.9950; 0; 8788; 3922; 890; 0; 0; 0]; % Variable investment cost in [CHF / (kWcapacity * year)]
+%cop1 =  [0; 0; 0; 0; 0; 0; 0; 0]; % Fixed operating cost in [CHF / hr]
+%cop2 =  [0; 0; 0.0577; 0.0245; 0; 0; 0; 0]; % Variable operating cost in [CHF / (kWproduction * hr)]
 
-T = table (Utility, n, cinv1, cinv2, cop1, cop2);
+T = table (Utility, n, cinv1, cinv2);
 
 T_an = T;
 

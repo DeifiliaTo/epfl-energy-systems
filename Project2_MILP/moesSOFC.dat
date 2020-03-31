@@ -17,7 +17,7 @@ Set cost parameter
 
 let cinv1['SOFC'] := 0;			# fixed investment [CHF]
 
-let cinv2['SOFC'] := 523045; #8788*Flowout['Electricity', 'SOFC']+ 72*Flowout['Electricity', 'SOFC'];			# continious investment cost & maintenance [CHF/kWp] #!!!needs annualisation for 8788!!!!
+let cinv2['SOFC'] := 57091; #8788*Flowout['Electricity', 'SOFC']+ 72*Flowout['Electricity', 'SOFC'];			# continious investment cost & maintenance [CHF/kWp] #!!!needs annualisation for 8788!!!!
 
 # operating cost (fixed + variable)
 
