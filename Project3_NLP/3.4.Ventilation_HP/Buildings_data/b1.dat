@@ -1,0 +1,14 @@
+let Buildings:= Buildings union {'Building1'};
+let MediumTempBuildings:=MediumTempBuildings union {'Building1'};
+let specElec['Building1',1]:=0.01;
+let specElec['Building1',2]:=0.01;
+let specElec['Building1',3]:=0.01;
+let specElec['Building1',4]:=0.01;
+let specElec['Building1',5]:=0.01;
+let specElec['Building1',6]:=0.01;
+let FloorArea['Building1']:=2000;
+let k_th['Building1']:=0.01;
+let k_sun['Building1']:=0.01;
+let specQ_people['Building1']:=0.01;
+
+##REPLACE BY YOUR VALUES OF PART 1/2
