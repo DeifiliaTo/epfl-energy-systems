@@ -60,10 +60,10 @@ subject to COPerformance{t in Time}: #the COP can be computed using the carnot e
 
 
 subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K
-
+    TLMCond [t] = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
 
 subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K
-
+    TLMEvapHP [t] = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
 
