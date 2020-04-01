@@ -31,6 +31,11 @@ display COP;
 display MassEPFL;
 display Flow;
 
+display top;
+
+display Cel;
+
 display OPEX;
+
 
 
