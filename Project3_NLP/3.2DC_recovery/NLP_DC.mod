@@ -119,20 +119,20 @@ subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the co
 
 
 subject to dTLMEvaporator{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K
-
+    TLMEvapHP[t] = (THPin[t] - THPhighout) / log( (THPin[t] + 273) / (THPhighout + 273) );
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be the sum of the heat delivered by the 2 systems;
-
+    Qheating[t] = Qcond[t] + Qrad[t];
 
 ## COSTS and OBJECTIVE
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP
-
+    OPEX = sum{t in Time: Qheating[t] > 0} (E[t] * top[t] * Cel);
 
 subject to CAPEXcost: #the investment cost can be computed using the area of the heat recovery heat exchanger and annuity factor
-
+    CAPEX = #f(A)
 
 subject to TCost: #the total cost can be computed using the operating and investment cost
-
+    TC = OPEX + CAPEX
 
 ################################
 minimize obj : TC;
