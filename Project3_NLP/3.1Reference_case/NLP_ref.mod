@@ -66,7 +66,7 @@ subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be
     TLMEvapHP[t] = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the HP.
-    Qcond[t] = Qheating[t]; # Qheating is in kW
+    Qheating[t] = Qcond[t]; # Qheating is in kW
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP;
     OPEX = sum{t in Time: Qheating[t] > 0} (E[t] * top[t] * Cel);
