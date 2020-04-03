@@ -40,7 +40,7 @@ var MassEPFL{Time} 	>= 0.001; # MCp of EPFL heating system [kJ/(s degC)]
 ## MASS BALANCE
 
 #subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
-
+	#MassEPFL[t] = Qheating[t] / (EPFLMediumT - EPFLMediumOut); We don't need this equation because linear combination of others
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
