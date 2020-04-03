@@ -64,11 +64,18 @@ var MassEPFL{Time} 	>= 0.001; # MCp of EPFL heating system [KJ/(s degC)]
 ####### Direct Heat Exchanger;
 
 ## TEMPERATURE CONTROL CONSTRAINS exist to be sure the temperatures in the HEX do not cross, meaning to make sure there is a certain DTmin. (3 are recommended, but you can have more or less)
-subject to Tcontrol1{t in Time}: 
+# Thin-Tcout > DeltaTmin and Thout-Tcin > DeltaTmin
+#DeltaTmin=2 very good HE (to expensive for us)
 
+subject to Tcontrol1{t in Time}: 
+#HE added
+TDCin-TRadin[t] > 2
+TDCout[t]-EPFLMediumOut > 2
 
 subject to Tcontrol2 {t in Time}:
-
+#HE freecooling
+TDCout[t]-THPin[t] > 2
+Tret-THPhighin > 2
 
 subject to Tcontrol3 {t in Time}:
 	 
@@ -129,7 +136,10 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
     OPEX = sum{t in Time: Qheating[t] > 0} (E[t] * top[t] * Cel);
 
 subject to CAPEXcost: #the investment cost can be computed using the area of the heat recovery heat exchanger and annuity factor
-    CAPEX = #f(A)
+     Cp = (INew/IRef) * 10^(aHE + bHE * log(AHEDC))
+     #Cp = (INew/IRef) * (AHEDC/aHE)^(bHE)
+     IC = Cp * FBMHE
+    CAPEX =  IC * (i*(1+i)^n)/((1+i)^n-1)
 
 subject to TCost: #the total cost can be computed using the operating and investment cost
     TC = OPEX + CAPEX;
