@@ -76,8 +76,8 @@ subject to Tcontrol3 {t in Time}:
 ## MASS BALANCE
 
 subject to McpEPFL{t in Time}: #MCp of EPFL heating fluid calculation.
-
-
+	MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut)
+	
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 subject to dTLMDataCenter {t in Time}: #the logarithmic mean temperature difference in the heat recovery HE can be computed
     dTLMDC[t] = ((TDCin - TRadin[t]) - (TDCout[t] - EPFLMediumOut)) / log( (TDCin - TRadin[t]) / (TDCout[t] - EPFLMediumOut) );#In case of a counter-current HEX!! Check equation, not sure...
@@ -86,7 +86,7 @@ subject to HeatBalance1{t in Time}: #Heat balance in DC HEX from DC side
     Qrad[t] = MassDC * (TDCin - TDCout[t]);
 
 subject to HeatBalance2{t in Time}: # Heat balance from the other side of DC HEX
-    Qrad[t] = MassEPFL * (TRadin[t] - EPFLMediumOut);
+    Qrad[t] = MassEPFL[t] * (TRadin[t] - EPFLMediumOut);
 
 subject to AreaHEDC{t in Time}: #the area of the heat recovery HE can be computed using the heat extracted from DC, the heat transfer coefficient and the logarithmic mean temperature difference 
     Qrad[t] = AHEDC * UDC * dTLMDC[t];
@@ -116,7 +116,7 @@ subject to COPerformance{t in Time}: #the COP can be computed using the carnot e
     COP[t] = CarnotEff * ( TLMCond[t] / (TLMCond[t] - TLMEvapHP[t]));
 
 subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K
-    TLMCond[t] = (EPFLMediumT - TRadin[t]) / log( (EPFLMediumT + 273) / (TRadin[t]) );
+    TLMCond[t] = (EPFLMediumT - TRadin[t]) / log( (EPFLMediumT + 273) / (TRadin[t] +273) );
 
 subject to dTLMEvaporator{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K
     TLMEvapHP[t] = (THPin[t] - THPhighout) / log( (THPin[t] + 273) / (THPhighout + 273) );
