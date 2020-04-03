@@ -14,9 +14,9 @@ param top{Time}; 		#your operating time from the MILP part
 param Areabuilding		>=0.001; #defined .dat file.
 
 param Tint 				:= 21; # internal set point temperature [C]
-param mair 				:= 2.5; # m3/m2/h
+param mair 				:= 2.5/3600; # m3/m2/s
 param Cpair 			:= 1.152; # kJ/m3K
-param Uvent 			:= 0.025; # air-air HEX
+param Uvent 			:= 0.025; # air-air HEX [kW/m2K]
 
 
 param EPFLMediumT 		:= 65; #[degC]
@@ -63,7 +63,7 @@ var DTLNVent{Time} 	>= 0.001; #[degC]
 var Area_Vent 		>= 0.001; #[m2]
 var DTminVent 		>= 2; #[degC]
 
-var Flow{Time} 		>= 0; #lake water entering free coling HEX
+var Flow{Time} 		>= 0; #lake water entering free coling HEX [kg/s]
 var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
 
 var Uenv{Buildings} >= 0; # overall heat transfer coefficient of the building envelope 
@@ -85,70 +85,72 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 ## VENTILATION
 
 subject to Uenvbuilding{b in MediumTempBuildings}: # Uenv calculation for each building based on k_th and mass of air used
-	
+	 Uenv[b] = k_th[b] - mair*Cpair;
 
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
-	
+    Qheating[t] = sum{b in MediumTempBuildings} (FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]);
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	
+	Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
-	
+	Heat_Vent[t] = mair*Cpair*(Text_new[t] - Text[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	
+	DTLNVent[t] = ((Text[t]-Trelease[t]) - (Text_new[t] - Tint))/log( (Text[t]-Trelease[t])/(Text_new[t] - Tint));
 
 subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
-	
+	Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
 
 subject to DTminVent1 {t in Time}: #DTmin needed on one side of HEX
-	
+	DTminVent <= abs(Text[t] - Trelease[t]);
 
 subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX 
+    DTminVent <= abs(Tint - Text_new[t]);
 	
 
 ## MASS BALANCE
 
 subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
-		
+    MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
 subject to QEvaporator{t in Time}: #water side of evaporator that takes flow from lake (Reference case)
-	
+	Qevap[t] = Flow[t] * Cpwater * (THPhighin - THPhighout);
 
 subject to QCondensator{t in Time}: #EPFL side of condenser delivering heat to EFPL (Reference case)
-		
+	Qcond[t] = MassEPFL[t] * (EPFLMediumT - EPFLMediumOut);
 
 subject to Electricity1{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted (Reference case)
-	
+	E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
-	
+	E[t] = Qcond[t] / COP[t];
 
 subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
-	
+	COP[t] = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
 
 subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
-	
+	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
 
 subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
-	
+	TLMEvapHP = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
-	
+    Qheating[t] = Qcond[t];
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
-	
+# Only calc for time points when Qheating > 0?
+	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
 
 subject to CAPEXcost: #the investment cost can be computed using the area of the ventilation heat exchanegr
-	
+	CAPEX = aHE*Area_Vent^bHE*INew/IRef; # NOTE: Not annualized yet
 
 subject to TCost: #the total cost can be computed using the operating and investment cost
-	
+	TC = OPEX + CAPEX;
 
 ################################
 minimize obj : TC;
