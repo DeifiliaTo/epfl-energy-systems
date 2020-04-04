@@ -49,6 +49,8 @@ var COP{Time} 		>= 0.001; #coefficient of performance of the heating HP (using p
 var OPEX 			>= 0.001; #[CHF/year] operating cost
 var CAPEX 			>= 0.001; #[CHF/year] annualized investment cost
 var TC 				>= 0.001; #[CHF/year] total cost
+var Cp              >= 0.001; 
+var IC              >= 0.001;
 
 var TLMEvapHP{Time} >= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP
 
@@ -68,22 +70,23 @@ var MassEPFL{Time} 	>= 0.001; # MCp of EPFL heating system [KJ/(s degC)]
 #DeltaTmin=2 very good HE (too expensive for us)
 
 subject to Tcontrol1{t in Time}: 
-#HE added
-    TDCin - TRadin[t] > 2
-    TDCout[t] - EPFLMediumOut > 2
+#HE
+    TDCin - TRadin[t] >= 2;
 
-subject to Tcontrol2 {t in Time}:
-#HE freecooling
-    TDCout[t] - THPin[t] > 2
-    Tret - THPhighin > 2
+subject to Tcontrol2{t in Time}:
+#HE
+    TDCout[t] - EPFLMediumOut >= 2;
 
-subject to Tcontrol3 {t in Time}:
-	 
+subject to Tcontrol3{t in Time}:
+#Freecooling
+    TDCout[t] - THPin[t] >= 2;
+    #Tret - THPhighin > 2; This is already OK!
+
 
 ## MASS BALANCE
 
 subject to McpEPFL{t in Time}: #MCp of EPFL heating fluid calculation.
-	MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut)
+	MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
 	
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 subject to dTLMDataCenter {t in Time}: #the logarithmic mean temperature difference in the heat recovery HE can be computed
@@ -136,10 +139,9 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
     OPEX = sum{t in Time: Qheating[t] > 0} (E[t] * top[t] * Cel);
 
 subject to CAPEXcost: #the investment cost can be computed using the area of the heat recovery heat exchanger and annuity factor
-     Cp = (INew / IRef) * 10^(aHE + bHE * log(AHEDC))
-     #Cp = (INew/IRef) * (AHEDC/aHE)^(bHE)
-     IC = Cp * FBMHE
-    CAPEX =  IC * (i * (1 + i)^n) / ((1 + i)^n - 1)
+    Cp = (INew / IRef) * 10^(aHE + bHE * log(AHEDC)); #Cp = (INew/IRef) * (AHEDC/aHE)^(bHE)
+    IC = Cp * FBMHE;
+    CAPEX =  IC * (i * (1 + i)^n) / ((1 + i)^n - 1);
 
 subject to TCost: #the total cost can be computed using the operating and investment cost
     TC = OPEX + CAPEX;
