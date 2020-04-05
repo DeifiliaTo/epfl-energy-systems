@@ -32,6 +32,7 @@ display dTLMDC;
 display Qrad;
 display E;
 display TLMCond;
+display TLMEvapHP;
 display Qevap;
 display Qcond;
 display COP;
