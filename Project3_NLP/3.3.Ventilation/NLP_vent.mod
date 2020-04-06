@@ -91,19 +91,23 @@ subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum o
     Qheating[t] = sum{b in MediumTempBuildings} (FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]);
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
+	#CHANGE #Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
+	Heat_Vent[t] = mair*Cpair*(Tint - Trelease[t]);  
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair*Cpair*(Text_new[t] - Text[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((Text[t]-Trelease[t]) - (Text_new[t] - Tint))/log( (Text[t]-Trelease[t])/(Text_new[t] - Tint));
-
+	#CHANGE #DTLNVent[t] = ((Text[t]-Trelease[t]) - (Text_new[t] - Tint))/log( (Text[t]-Trelease[t])/(Text_new[t] - Tint));
+	DTLNVent[t] = ((Tint-Text_new[t])-(Trelease[t]-Text[t]))/log( (Tint-Text_new[t])/(Trelease[t]-Text[t]));
+	
 subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
-	Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
+	#CHANGE #Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
+	Area_Vent = Heat_Vent[t] / (DTLNVent[t]*Uvent);
 
 subject to DTminVent1 {t in Time}: #DTmin needed on one side of HEX
-	DTminVent <= abs(Text[t] - Trelease[t]);
+	#CHANGE # DTminVent <= abs(Text[t] - Trelease[t]);
+	DTminVent <= abs(Trelease[t] - Text[t]);
 
 subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX 
     DTminVent <= abs(Tint - Text_new[t]);
@@ -113,6 +117,7 @@ subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX
 
 subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
     MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
+    
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
@@ -147,7 +152,7 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
 	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
 
 subject to CAPEXcost: #the investment cost can be computed using the area of the ventilation heat exchanegr
-	CAPEX = aHE*Area_Vent^bHE*INew/IRef; # NOTE: Not annualized yet
+	CAPEX = ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE * (i * (1 + i)^n) / ((1 + i)^n - 1);
 
 subject to TCost: #the total cost can be computed using the operating and investment cost
 	TC = OPEX + CAPEX;
