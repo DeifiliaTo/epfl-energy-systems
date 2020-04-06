@@ -28,6 +28,8 @@ Display commands
 display TC;
 display OPEX;
 display CAPEX;
+display Profit;
+display Paybt;
 
 display Area_Vent;
 display Qheating;
@@ -50,4 +52,5 @@ display COP_2;
 display TLMCond_2;
 display TLMEvapHP_2;
 display Cost_HP;
+
 

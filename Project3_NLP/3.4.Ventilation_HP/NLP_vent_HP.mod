@@ -52,7 +52,10 @@ var COP{Time} 		>= 0.001; #coefficient of performance of the heating HP (using p
 
 var OPEX 			>= 0.001; #[CHF/year] operating cost
 var CAPEX 			>= 0.001; #[CHF/year] annualized investment cost
+var TIC				>= 0.001; #[CHF] total investment cost
 var TC 				>= 0.001; #[CHF/year] total cost
+var Profit			>= 0.001; #[CHF/year] Annual profit
+var Paybt			>= 0.001; #[year] payback time
 
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water
 
@@ -143,7 +146,7 @@ subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
 subject to QEvaporator{t in Time}: #water side of evaporator that takes flow from Free cooling HEX
 	Qevap[t] = Flow[t] * Cpwater * (THPhighin - THPhighout);
 
-subject to QCondensator{t in Time}: #water side of evaporator that takes flow from Free cooling HEX
+subject to QCondensator{t in Time}: #
 	Qcond[t] = MassEPFL[t] * (EPFLMediumT - EPFLMediumOut);
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted (Reference case)
@@ -215,19 +218,28 @@ subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evapora
 ## COST CONSIDERATIONS
 
 subject to Costs_HP {t in Time}: # new HP cost
-
+	# VERIFY FORMULA! Cost_HP = Cref_hp * (MS2017 / MS2000) * beta_hp;
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-
+	Qheating[t] = Qcond[t]; #equation already used! problem?
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
-
+	OPEX = sum{t in Time} ((E_2[t]+E[t]) * top[t] * Cel);
+	
+subject to TICost:
+	TIC = Cost_HP * BM_hp + ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
 
 subject to CAPEXcost: #the investment cost can be computed using the area of ventilation HEX and new HP and the annuity factor
-
+	CAPEX = TIC *(i * (1 + i)^n) / ((1 + i)^n - 1);
 
 subject to TCost: #the total cost can be computed using the operating and investment cost
+	TC= OPEX + CAPEX;
+	
+subject to Profitcost:
+	#Profit= OPEX_ref - TC ; # [CHF/year] How to express OPEX of the reference case (3.1)?
 
+subject to Paybbacktime:	
+	Paybt = TIC / Profit # [year]
 
 ################################
-minimize obj : OPEX;
+minimize obj : OPEX; #WHY??
