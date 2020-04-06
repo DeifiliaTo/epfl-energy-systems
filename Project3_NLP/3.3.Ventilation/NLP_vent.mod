@@ -52,8 +52,11 @@ var Qcond{Time} 	>= 0; #[kW] heat delivered in the condensor of the heating HP (
 var COP{Time} 		>= 0.001; #coefficient of performance of the heating HP (using pre-heated lake water)
 
 var OPEX 			>= 0.001; #[CHF/year] operating cost
+var IC 				>= 0.001; #[CHF] total investment cost
 var CAPEX 			>= 0.001; #[CHF/year] annualized investment cost
 var TC 				>= 0.001; #[CHF/year] total cost
+var Profit			>= 0.001; #[CHF/year] total profit compare to the reference case
+var Paybt 	>= 0.001; #[year] Time for this case to be profitable
 
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water
 
@@ -61,7 +64,7 @@ var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
 var Area_Vent 		>= 0.001; #[m2]
-var DTminVent 		>= 2; #[degC]
+var DTminVent 		>= 0; #[degC]
 
 var Flow{Time} 		>= 0; #lake water entering free coling HEX [kg/s]
 var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
@@ -91,28 +94,33 @@ subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum o
     Qheating[t] = sum{b in MediumTempBuildings} (FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]);
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
+	#CHANGE #Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
+	Heat_Vent[t] = mair*Cpair*(Tint - Trelease[t]);  
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair*Cpair*(Text_new[t] - Text[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((Text[t]-Trelease[t]) - (Text_new[t] - Tint))/log( (Text[t]-Trelease[t])/(Text_new[t] - Tint));
-
+	#CHANGE #DTLNVent[t] = ((Text[t]-Trelease[t]) - (Text_new[t] - Tint))/log( (Text[t]-Trelease[t])/(Text_new[t] - Tint));
+	DTLNVent[t] = ((Tint-Text_new[t])-(Trelease[t]-Text[t]))/log( (Tint-Text_new[t])/(Trelease[t]-Text[t]));
+	
 subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
-	Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
+	#CHANGE #Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
+	Area_Vent = Heat_Vent[t] / (DTLNVent[t]*Uvent);
 
 subject to DTminVent1 {t in Time}: #DTmin needed on one side of HEX
-	DTminVent <= abs(Text[t] - Trelease[t]);
+	#CHANGE # DTminVent <= abs(Text[t] - Trelease[t]);
+	DTminVent = abs(Trelease[t] - Text[t]);
 
 subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX 
-    DTminVent <= abs(Tint - Text_new[t]);
+    DTminVent = abs(Tint - Text_new[t]);
 	
 
 ## MASS BALANCE
 
 subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
     MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
+    
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
@@ -145,12 +153,21 @@ subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
 	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
+	
+subject to Icost:  #the investment cost can be computed using the area of the ventilation heat exchanegr
+	IC = ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
 
-subject to CAPEXcost: #the investment cost can be computed using the area of the ventilation heat exchanegr
-	CAPEX = aHE*Area_Vent^bHE*INew/IRef; # NOTE: Not annualized yet
-
+subject to CAPEXcost:
+	CAPEX = IC * (i * (1 + i)^n) / ((1 + i)^n - 1); #[CHF/year]
+	
 subject to TCost: #the total cost can be computed using the operating and investment cost
 	TC = OPEX + CAPEX;
 
+subject to Profitcost:
+	# Profit= OPEX_ref - TC ; # [CHF/year]
+
+subject to Paybbacktime:	
+	Paybt = IC / Profit # [year]
 ################################
 minimize obj : TC;
+

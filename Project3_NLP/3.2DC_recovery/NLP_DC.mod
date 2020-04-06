@@ -139,9 +139,10 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
     OPEX = sum{t in Time: Qheating[t] > 0} (E[t] * top[t] * Cel);
 
 subject to CAPEXcost: #the investment cost can be computed using the area of the heat recovery heat exchanger and annuity factor
-    Cp = (INew / IRef) * 10^(aHE + bHE * log(AHEDC)); #Cp = (INew/IRef) * (AHEDC/aHE)^(bHE)
-    IC = Cp * FBMHE;
-    CAPEX =  IC * (i * (1 + i)^n) / ((1 + i)^n - 1);
+    #Cp = (INew / IRef) * aHE * (AHEDC)^bHE;
+    #IC = Cp * FBMHE;
+    #CAPEX = IC * F_annualise
+    CAPEX =  ((INew / IRef) * aHE * (AHEDC)^bHE) * FBMHE * (i * (1 + i)^n) / ((1 + i)^n - 1);
 
 subject to TCost: #the total cost can be computed using the operating and investment cost
     TC = OPEX + CAPEX;
