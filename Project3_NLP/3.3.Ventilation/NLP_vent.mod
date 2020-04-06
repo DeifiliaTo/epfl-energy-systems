@@ -52,8 +52,11 @@ var Qcond{Time} 	>= 0; #[kW] heat delivered in the condensor of the heating HP (
 var COP{Time} 		>= 0.001; #coefficient of performance of the heating HP (using pre-heated lake water)
 
 var OPEX 			>= 0.001; #[CHF/year] operating cost
+var IC 				>= 0.001; #[CHF] total investment cost
 var CAPEX 			>= 0.001; #[CHF/year] annualized investment cost
 var TC 				>= 0.001; #[CHF/year] total cost
+var Profit			>= 0.001; #[CHF/year] total profit compare to the reference case
+var Paybt 	>= 0.001; #[year] Time for this case to be profitable
 
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water
 
@@ -61,7 +64,7 @@ var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
 var Area_Vent 		>= 0.001; #[m2]
-var DTminVent 		>= 2; #[degC]
+var DTminVent 		>= 0; #[degC]
 
 var Flow{Time} 		>= 0; #lake water entering free coling HEX [kg/s]
 var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
@@ -107,10 +110,10 @@ subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
 
 subject to DTminVent1 {t in Time}: #DTmin needed on one side of HEX
 	#CHANGE # DTminVent <= abs(Text[t] - Trelease[t]);
-	DTminVent <= abs(Trelease[t] - Text[t]);
+	DTminVent = abs(Trelease[t] - Text[t]);
 
 subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX 
-    DTminVent <= abs(Tint - Text_new[t]);
+    DTminVent = abs(Tint - Text_new[t]);
 	
 
 ## MASS BALANCE
@@ -150,12 +153,21 @@ subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
 	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
+	
+subject to Icost:  #the investment cost can be computed using the area of the ventilation heat exchanegr
+	IC = ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
 
-subject to CAPEXcost: #the investment cost can be computed using the area of the ventilation heat exchanegr
-	CAPEX = ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE * (i * (1 + i)^n) / ((1 + i)^n - 1);
-
+subject to CAPEXcost:
+	CAPEX = IC * (i * (1 + i)^n) / ((1 + i)^n - 1); #[CHF/year]
+	
 subject to TCost: #the total cost can be computed using the operating and investment cost
 	TC = OPEX + CAPEX;
 
+subject to Profitcost:
+	# Profit= OPEX_ref - TC ; # [CHF/year]
+
+subject to Paybbacktime:	
+	Paybt = IC / Profit # [year]
 ################################
 minimize obj : TC;
+
