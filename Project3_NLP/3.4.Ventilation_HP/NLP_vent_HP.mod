@@ -202,17 +202,18 @@ subject to dTLMEvaporatorHP_2{t in Time}: #the logarithmic mean temperature in t
 
 
 ## IF SOME PROBLEMS OF COP and TEMPERATURE ARRIVE -> Remember that the log mean is always smaller than the aritmetic mean, but larger than the geometric mean. 
+#TO VERIFY!!
 subject to dTLMCondensor_rule{t in Time}: # One of inequalities for Condenser
-
+	TLMCond_2 <= (Tair_in[t] + Tex_new[t]) / 2;
 
 subject to dTLMCondensor_rule2{t in Time}: # The other inequality for Condenser
-
+	TLMCond_2 >= (Tair_in[t] * Tex_new[t])^(1/2);
 
 subject to dTLMEvaporatorHP_rule{t in Time}: # One of inequalities for Evaporator
-
+	TLMEvapHP_2 <= (Trelease[t] + Trelease_2[t]) / 2;
 
 subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evaporator
-
+	TLMEvapHP_2 >= (Trelease[t] * Trelease_2[t])^(1/2);
 
 
 ## COST CONSIDERATIONS
