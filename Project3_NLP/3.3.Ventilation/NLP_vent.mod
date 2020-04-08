@@ -153,8 +153,9 @@ subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
-subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
-    Qheating[t] = Qcond[t]; #equation already used! problem?
+#combinaison linéaire  
+#subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
+   # Qheating[t] = Qcond[t]; #equation already used! problem?
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
