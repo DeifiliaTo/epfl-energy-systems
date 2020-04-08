@@ -91,7 +91,12 @@ subject to Uenvbuilding{b in MediumTempBuildings}: # Uenv calculation for each b
 	 Uenv[b] = k_th[b] - mair*Cpair;
 
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
-    Qheating[t] = sum{b in MediumTempBuildings} (FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]);
+    Qheating[t] = 
+		if Text[t] < 16 then
+			max (sum{b in MediumTempBuildings} (FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]), 0)
+			else 
+			0
+		;
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 	#CHANGE #Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
@@ -102,7 +107,8 @@ subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	#CHANGE #DTLNVent[t] = ((Text[t]-Trelease[t]) - (Text_new[t] - Tint))/log( (Text[t]-Trelease[t])/(Text_new[t] - Tint));
-	DTLNVent[t] = ((Tint-Text_new[t])-(Trelease[t]-Text[t]))/log( (Tint-Text_new[t])/(Trelease[t]-Text[t]));
+	#DTLNVent[t] = ((Tint-Text_new[t])-(Trelease[t]-Text[t]))/log( (Tint-Text_new[t])/(Trelease[t]-Text[t]));
+	DTLNVent[t] = (log(Tint-Text_new[t])*(log(Trelease[t]-Text[t])^2)+log(Trelease[t]-Text[t])*log(Tint-Text_new[t])^2)^(1/3)/2;
 	
 subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
 	#CHANGE #Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
@@ -163,11 +169,11 @@ subject to CAPEXcost:
 subject to TCost: #the total cost can be computed using the operating and investment cost
 	TC = OPEX + CAPEX;
 
-subject to Profitcost:
-	# Profit= OPEX_ref - TC ; # [CHF/year]
+#subject to Profitcost:
+#	 Profit= OPEX_ref - TC ; # [CHF/year]
 
-subject to Paybbacktime:	
-	Paybt = IC / Profit # [year]
+#subject to Paybbacktime:	
+#	Paybt = IC / Profit # [year]
 ################################
 minimize obj : TC;
 
