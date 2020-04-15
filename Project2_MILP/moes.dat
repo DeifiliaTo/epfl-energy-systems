@@ -154,9 +154,11 @@ Boiler 120
 ;
 
 param c_spec :=															# specific cost of resources
-NatGasGrid 0.0303
-ElecGridBuy 0.0916
-ElecGridSell -0.06
-;
+#NatGasGrid 0.0303
+#ElecGridBuy 0.0916
+#ElecGridSell -0.06
+NatGasGrid 0.111
+ElecGridBuy 0.2514
+ElecGridSell -0.1066;
 
 end;
