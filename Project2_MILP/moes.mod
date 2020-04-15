@@ -96,7 +96,7 @@ var use{Utilities} binary;										# binary variable to decide if a utility is 
 var use_t{Utilities, Time} binary;								# binary variable to decide if a utility is used or not at time t
 var mult{Utilities}>=0;											# continuous variable to decide the size of the utility
 var mult_t{Utilities, Time}>=0;									# continuous variable to decide the size of the utility at time t
-
+var COP{Technologies, Time}>=0;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Resource variables
