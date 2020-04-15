@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the maximum scaling factor of PV
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let Fmax['PV'] := 100;
+let Fmax['PV'] := 1000;
 let Fmin['PV'] := 1;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ Set cost parameter
 #let cop1t['PV'] := 21* Flowout['Electricity', 'PV'] / 8760; # Fixed
 # value is in CHF/kWp
 
-let cinv1['PV'] := 65; # Fixed [CHF/year] --> 65 CHF/year to connect to grid
+let cinv1['PV'] := 367; # Fixed [CHF/year] --> 30.6CHF/month to connect to grid
 
 let cinv2['PV'] := 9105; # continious investment cost [CHF/kWp] -> 1025 CHF/kw --> annualized over 30 years --> 91 CHF/kW*100 kW
 
