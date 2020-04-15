@@ -213,6 +213,7 @@ plot(t_hour,Text_season_avg,'r.');       %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Text [°C]'; 
 legend('Text','zero','Mean');
+title('Means of Text based on time');
 hold off;
 
 % Plot of the irradiation
@@ -225,6 +226,7 @@ plot(t_hour,Irr_season_avg,'r.');   %in red the mean value over a season
 xlabel 'Time [hours]';
 ylabel 'Irradiation [W/m2]'; 
 legend('Irr','zero','Mean');
+title('Means of Irradiation based on time');
 hold off;
 
 % % Normalization of Text_season and Irr-season
@@ -256,4 +258,5 @@ hold on;
 xlabel 'Temperature normalized';
 ylabel 'Irradiation normalized'; 
 legend('Jan-Feb','Mar-Apr','May-Jun','Jul-Aug','Sep-Oct','Nov-Dec');
+title('Clustering with the manual method');
 hold off;
