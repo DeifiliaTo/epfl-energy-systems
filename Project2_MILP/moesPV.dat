@@ -1,13 +1,13 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the maximum scaling factor of PV
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let Fmax['PV'] := refSize;
-let Fmin['PV'] := 0.001;
+let Fmax['PV'] := 100;
+let Fmin['PV'] := 1;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the reference size of electricity flow (will be scaled with mult_t)
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-let  Flowout['Electricity','PV'] := refSize;
+let  Flowout['Electricity','PV'] := 100; #kW
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set cost parameter
@@ -17,8 +17,17 @@ Set cost parameter
 # Lifetime: 25 years. In 2014.
 # WACC = 5%
 
-let cinv1['PV'] := 1053*Flowout['Electricity', 'PV'];			# Fixed [CHF/year] - already annualized
+#let cinv1['PV'] := 1053*Flowout['Electricity', 'PV'];			# Fixed [CHF/year] - already annualized
 
 # [CHF/h] = [CHF/y/kW] * kW / hours/year
-let cop1t['PV'] := 21* Flowout['Electricity', 'PV'] / 8760; # Fixed
+#let cop1t['PV'] := 21* Flowout['Electricity', 'PV'] / 8760; # Fixed
 # value is in CHF/kWp
+
+let cinv1['PV'] := 65; # Fixed [CHF/year] --> 65 CHF/year to connect to grid
+
+let cinv2['PV'] := 9105; # continious investment cost [CHF/kWp] -> 1025 CHF/kw --> annualized over 30 years --> 91 CHF/kW*100 kW
+
+
+let cop1t['SOFC'] := 0; 
+
+let cop2t['SOFC'] := 2000 / 8760 ; # variable OPEX --> 20 CHF/kW/year --> convert to CHF/h
