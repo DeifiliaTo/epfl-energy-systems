@@ -126,8 +126,8 @@ subject to DTminVent2 {t in Time}: #DTmin needed on the other end of HEX
 
 ## MASS BALANCE
 
-subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
-    MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut); 
+# subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
+#     MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut); 
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
