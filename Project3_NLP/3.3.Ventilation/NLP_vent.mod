@@ -14,7 +14,7 @@ param top{Time}; 		#your operating time from the MILP part
 param Areabuilding		>=0.001; #defined .dat file.
 
 param Tint 				:= 21; # internal set point temperature [C]
-param mair 				:= 2.5/3600; # m3/m2/s
+param mair 				:= 2.5; # m3/m2/h
 param Cpair 			:= 1.152; # kJ/m3K
 param Uvent 			:= 0.025; # air-air HEX [kW/m2K]
 
@@ -40,7 +40,7 @@ param bHE 				:= 0.6; #HE cost parameter
 ################################
 # Variables
 
-var Text_new{Time} 	>= 0; #[degC]
+var Text_new{Time} 	<= 21; #[degC]
 var Trelease{Time}	>= 0; #[degC]
 var Qheating{Time} 	>= 0; #your heat demand from the MILP part, is now a variable.
 
@@ -58,18 +58,23 @@ var TC 				>= 0.001; #[CHF/year] total cost
 var Profit			>= 0.001; #[CHF/year] total profit compare to the reference case
 var Paybt 	>= 0.001; #[year] Time for this case to be profitable
 
-var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water
+var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
 
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
 var Area_Vent 		>= 0.001; #[m2]
 var DTminVent 		>= 0; #[degC]
+var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
+var theta_2{Time};
 
 var Flow{Time} 		>= 0; #lake water entering free coling HEX [kg/s]
 var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
 
-var Uenv{Buildings} >= 0; # overall heat transfer coefficient of the building envelope 
+var Opex_positive{Time} >= 0;
+
+var Qpositive{Time, MediumTempBuildings} >= 0;
+var Qtemp{Time, MediumTempBuildings};
 
 #### Building dependent parameters
 
@@ -77,6 +82,7 @@ param irradiation{Time};# solar irradiation [kW/m2] at each time step
 param specElec{Buildings,Time} default 0;
 param FloorArea{Buildings} default 0; #area [m2]
 param k_th{Buildings} default 0; # thermal losses and ventilation coefficient in (kW/m2/K)
+param U_env{Buildings} default 0; #>= 0; # overall heat transfer coefficient of the building envelope  (kW/m2/K)
 param k_sun{Buildings} default 0;# solar radiation coefficient [âˆ’]
 param share_q_e default 0.8; # share of internal gains from electricity [-]
 param specQ_people{Buildings} default 0;# specific average internal gains from people [kW/m2]
@@ -87,16 +93,17 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 
 ## VENTILATION
 
-subject to Uenvbuilding{b in MediumTempBuildings}: # Uenv calculation for each building based on k_th and mass of air used
-	 Uenv[b] = k_th[b] - mair*Cpair;
+subject to Qconstr {t in Time, b in MediumTempBuildings}:
+	Qtemp[t, b] = FloorArea[b]*(U_env[b]*(Tint-Text[t])+mair/3600*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t]);
+
+# This if-statement doesn't really work
+
+subject to Qpositive1 {t in Time, b in MediumTempBuildings}:
+	Qpositive[t, b] = max(Qtemp[t, b], 0);
 
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
-    Qheating[t] = 
-		if Text[t] < 16 then
-			max (sum{b in MediumTempBuildings} (FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]), 0)
-			else 
-			0
-		;
+    Qheating[t] = sum{b in MediumTempBuildings} Qpositive[t, b];
+		
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 	#CHANGE #Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
@@ -105,10 +112,16 @@ subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair*Cpair*(Text_new[t] - Text[t]);
 
+subject to Theta_1 {t in Time}:
+	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
+	theta_1[t] = log(Trelease[t] - Text[t]);
+
+subject to Theta_2 {t in Time}:
+	#theta_2[t] = (Tint - Text_new[t]) / log((Tint + 273) / (Text_new[t] + 273));
+	theta_2[t] = log(Tint - Text_new[t]);
+
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	#CHANGE #DTLNVent[t] = ((Text[t]-Trelease[t]) - (Text_new[t] - Tint))/log( (Text[t]-Trelease[t])/(Text_new[t] - Tint));
-	#DTLNVent[t] = ((Tint-Text_new[t])-(Trelease[t]-Text[t]))/log( (Tint-Text_new[t])/(Trelease[t]-Text[t]));
-	DTLNVent[t] = (log(Tint-Text_new[t])*(log(Trelease[t]-Text[t])^2)+log(Trelease[t]-Text[t])*log(Tint-Text_new[t])^2)^(1/3)/2;
+	DTLNVent[t] = ((theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 	
 subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
 	#CHANGE #Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
@@ -116,10 +129,10 @@ subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
 
 subject to DTminVent1 {t in Time}: #DTmin needed on one side of HEX
 	#CHANGE # DTminVent <= abs(Text[t] - Trelease[t]);
-	DTminVent = abs(Trelease[t] - Text[t]);
+	DTminVent <= Trelease[t] - Text[t];
 
 subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX 
-    DTminVent = abs(Tint - Text_new[t]);
+    DTminVent <= Tint - Text_new[t];
 	
 
 ## MASS BALANCE
@@ -153,9 +166,9 @@ subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
-#combinaison linéaire  
-#subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
-   # Qheating[t] = Qcond[t]; #equation already used! problem?
+#combinaison linï¿½aire  
+subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
+    Qcond[t] = Qheating[t] - Heat_Vent[t]; #equation already used! problem?
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
@@ -170,11 +183,6 @@ subject to CAPEXcost:
 subject to TCost: #the total cost can be computed using the operating and investment cost
 	TC = OPEX + CAPEX;
 
-#subject to Profitcost:
-#	 Profit= OPEX_ref - TC ; # [CHF/year]
-
-#subject to Paybbacktime:	
-#	Paybt = IC / Profit # [year]
-################################
+################################5
 minimize obj : TC;
 

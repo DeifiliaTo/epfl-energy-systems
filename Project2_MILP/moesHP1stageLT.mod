@@ -21,7 +21,7 @@ Set the electricity output as a function of Th, Tc and Heat to supply to the bui
 
 
 #subject to HP1stageLT_elecIn{t in Time}:
-#Flowin['Electricity','HP1stageLT']  = (Qheatingsupply['HP1stageLT'] * mult_t['HP1stageLT',t]* (Th_HP1stageLT - Tlmc_HP1stageLT[t])) / (eff_carnotLT * Th_HP1stageLT) ;
+#FlowInUnit['Electricity','HP1stageLT', t]  = (Qheatingsupply['HP1stageLT'] * mult_t['HP1stageLT',t]* (Th_HP1stageLT - Tlmc_HP1stageLT[t])) / (eff_carnotLT * Th_HP1stageLT) ;
  
  subject to COP_LT{t in Time}:
  COP['HP1stageLT',t] =  (eff_carnotLT * Th_HP1stageLT) / (Th_HP1stageLT - Tlmc_HP1stageLT[t]);

@@ -20,8 +20,8 @@ Set the electricity output as a function of Th, Tc and Heat to supply to the bui
 # why are we trying to calculate heat supplied to the pump? we don't care about this afaik...
 
 
-#subject to HP1stageMT_elecIn{t in Time}:
- #Flowin['Electricity','HP1stageMT']  = (Qheatingsupply['HP1stageMT']* mult_t['HP1stageMT',t] * (Th_HP1stageMT - Tlmc_HP1stageMT[t])) / (eff_carnotMT * Th_HP1stageMT) ;
+subject to HP1stageMT_elecIn{t in Time}:
+Flowin['Electricity','HP1stageMT']  = (Qheatingsupply['HP1stageMT']* mult_t['HP1stageMT',t] * (Th_HP1stageMT - Tlmc_HP1stageMT[t])) / (eff_carnotMT * Th_HP1stageMT) ;
  
  subject to COP_MT{t in Time}:
  COP['HP1stageMT',t]=  (eff_carnotLT * Th_HP1stageMT)/(Th_HP1stageMT - Tlmc_HP1stageMT[t]);

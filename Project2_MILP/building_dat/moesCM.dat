@@ -5,6 +5,7 @@ let MediumTempBuildings := MediumTempBuildings union {'CM'};
 let FloorArea['CM'] := 18663;     # [m2]
 let k_th['CM']:= 0.00357;   # [kW/m2/K]
 let k_sun['CM']:= 0.06;
+let U_env['CM']:= 0.00277;
 let specQ_people['CM']:= 0.002261; 
 
 ###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################

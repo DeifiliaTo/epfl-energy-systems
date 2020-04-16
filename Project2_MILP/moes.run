@@ -95,7 +95,7 @@ let  Fmax['ElecGridSell'] := refSize;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver 'cplex';											# choose the solver
+option solver '/home/deifilia/AMPL/ampl_linux-intel64/cplex';											# choose the solver
 option omit_zero_rows 1;										# to not display 0 in rows
 option omit_zero_cols 1;										# to not display 0 in columns
 

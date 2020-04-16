@@ -39,16 +39,13 @@ param refSize default 1000;										# reference size of the utilities
 param Text{t in Time};  										# ambient temperature [C]
 param Tint default 21;											# internal set point temperature [C]
 param specElec{Buildings,Time} default 0;						# specific  electricity consumption [kW/m2]
-<<<<<<< HEAD
-param Tlake{Time}												# lake temperature [C]
-=======
-param Tlake{t in Time};											# lake temperature [°C]
->>>>>>> 24d66c108b84d1aeeb1420ecf28e0ab284a3be8d
+param Tlake{t in Time};											# lake temperature [ï¿½C]
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Calculation of heating demand
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 param FloorArea{Buildings} default 0;
 param k_th{Buildings} default 0;								# thermal losses and ventilation coefficient in (kW/m2/K)
+param U_env{Buildings} default 0;
 param k_sun{Buildings} default 0;								# solar radiation coefficient [âˆ’]
 param share_q_e default 0.8; 									# share of internal gains from electricity [-]
 param specQ_people{Buildings} default 0;						# specific average internal gains from people [kW/m2]
