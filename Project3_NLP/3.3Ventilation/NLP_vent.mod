@@ -181,6 +181,18 @@ subject to CAPEXcost:
 subject to TCost: #the total cost can be computed using the operating and investment cost
 	TC = OPEX + CAPEX;
 
+# # subtract savings relative to reference case from cost to give net cost(+)/benefit(-)
+# # TODO: define savings (i.e. multiply Heat_Vent, which reduces required Qcond, by the cost of supplying heat in the reference case -- could take average price of heat from Part 1, or assume boiler price)
+# subject to profits:
+# 	Profit = TC - savings; # [CHF]
+ 
+# subject to payback_time:
+# 	Paybt = IC / Profit; # [year]
+
+# # payback time must be within expected lifetime
+# subject to payback_limit:
+# 	Paybt <= n;
+
 ################################
 minimize obj : TC;
 
