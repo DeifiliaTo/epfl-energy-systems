@@ -10,10 +10,10 @@ set LowTempBuildings default {};			# set of buildings heated by low temperature 
 
 param Text{t in Time};  #external temperature - Part 1
 param top{Time}; 		#your operating time from the MILP part
-param Areabuilding		>=0.001; #defined .dat file.
+param Areabuilding default 1; #defined .dat file.
 
 param Tint 				:= 21; # internal set point temperature [C]
-param mair 				:= 2.5; # m3/m2/h
+param mair 				:= 2.5; # m3/m2/h ASSUMPTION: ventilation flow per unit _building floor_ area
 param Cpair 			:= 1.152; # kJ/m3K
 param Uvent 			:= 0.025; # air-air HEX [kW/m2K]
 
@@ -62,8 +62,8 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
-var Area_Vent 		>= 0.00; #[m2]
-var DTminVent 		>= 0; #[degC]
+var Area_Vent 		>= 0; #[m2]
+var DTminVent 		>= 1; #[degC]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
 
@@ -94,13 +94,17 @@ subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum o
 		sum{b in MediumTempBuildings} max (0, FloorArea[b]*(U_env[b]*(Tint-Text[t])+mair/3600*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t]))
 		else 
 		0;
-		
+
+# total area of building
+# for some reason AMPL only returns Areabuilding = 0, no matter what I try
+# hence in the Heat_Vent constraints I've replaced Areabuilding with its expression
+let Areabuilding := sum{b in MediumTempBuildings} (FloorArea[b]);
+
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	#CHANGE #Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
-	Heat_Vent[t] = mair*Cpair*(Tint - Trelease[t]);  
+	Heat_Vent[t] = sum{b in MediumTempBuildings} mair/3600*FloorArea[b]*Cpair*(Tint - Trelease[t]); # kW
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
-	Heat_Vent[t] = mair*Cpair*(Text_new[t] - Text[t]);
+	Heat_Vent[t] = sum{b in MediumTempBuildings} mair/3600*FloorArea[b]*Cpair*(Text_new[t] - Text[t]); # kW
 
 subject to Theta_1 {t in Time}:
 	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
