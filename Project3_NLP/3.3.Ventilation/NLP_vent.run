@@ -52,5 +52,3 @@ display Text;
 display DTLNVent;
 display theta_1;
 display theta_2;
-display Qtemp;
-display Qpositive;

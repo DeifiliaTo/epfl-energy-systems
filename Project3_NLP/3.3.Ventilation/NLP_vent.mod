@@ -64,7 +64,7 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
-var Area_Vent 		>= 0.001; #[m2]
+var Area_Vent 		>= 0.00; #[m2]
 var DTminVent 		>= 0; #[degC]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
@@ -74,16 +74,13 @@ var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
 
 var Opex_positive{Time} >= 0;
 
-var Qpositive{Time, MediumTempBuildings} >= 0;
-var Qtemp{Time, MediumTempBuildings};
-
 #### Building dependent parameters
 
 param irradiation{Time};# solar irradiation [kW/m2] at each time step									
 param specElec{Buildings,Time} default 0;
 param FloorArea{Buildings} default 0; #area [m2]
 param k_th{Buildings} default 0; # thermal losses and ventilation coefficient in (kW/m2/K)
-param U_env{Buildings} default 0; #>= 0; # overall heat transfer coefficient of the building envelope  (kW/m2/K)
+param U_env{Buildings} default 0; # overall heat transfer coefficient of the building envelope  (kW/m2/K)
 param k_sun{Buildings} default 0;# solar radiation coefficient [−]
 param share_q_e default 0.8; # share of internal gains from electricity [-]
 param specQ_people{Buildings} default 0;# specific average internal gains from people [kW/m2]
@@ -94,16 +91,11 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 
 ## VENTILATION
 
-subject to Qconstr {t in Time, b in MediumTempBuildings}:
-	Qtemp[t, b] = FloorArea[b]*(U_env[b]*(Tint-Text[t])+mair/3600*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t]);
-
-# This if-statement doesn't really work
-
-subject to Qpositive1 {t in Time, b in MediumTempBuildings}:
-	Qpositive[t, b] = max(Qtemp[t, b], 0);
-
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
-    Qheating[t] = sum{b in MediumTempBuildings} Qpositive[t, b];
+    Qheating[t] = if (Text[t] < 16) then 
+		sum{b in MediumTempBuildings} max (0, FloorArea[b]*(U_env[b]*(Tint-Text[t])+mair/3600*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t]))
+		else 
+		0;
 		
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 	#CHANGE #Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
@@ -167,14 +159,15 @@ subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be
 
 #combinaison lin�aire  
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
-    Qcond[t] = Qheating[t] + Heat_Vent[t]; #equation already used! problem?
+    Qcond[t] = Qheating[t] - Heat_Vent[t]; #equation already used! problem?
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
+# This doesn't converge -> reaches iter limit
 	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
 	
 subject to Icost:  #the investment cost can be computed using the area of the ventilation heat exchanegr
-	IC = ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
+	IC = ((INew / IRef) * aHE * (Area_Vent+eps)^bHE) * FBMHE; #[CHF]
 
 subject to CAPEXcost:
 	CAPEX = IC * (i * (1 + i)^n) / ((1 + i)^n - 1); #[CHF/year]

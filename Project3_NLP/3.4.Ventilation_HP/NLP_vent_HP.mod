@@ -35,6 +35,7 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
+param eps				:= 1e-5; # Epsilon
 
 ################################
 # Variables
@@ -64,6 +65,8 @@ var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
 var Area_Vent 		>= 0.001; #[m2]
 var DTminVent 		>= 2; #[degC]
+var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
+var theta_2{Time};
 
 var Flow{Time} 		>= 0; #lake water entering free coling HEX
 var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
@@ -97,6 +100,7 @@ param specElec{Buildings,Time} default 0;
 param FloorArea{Buildings} default 0; #area [m2]
 param k_th{Buildings} default 0; # thermal losses and ventilation coefficient in (kW/m2/K)
 param k_sun{Buildings} default 0;# solar radiation coefficient [−]
+param U_env{Buildings} default 0;
 param share_q_e default 0.8; # share of internal gains from electricity [-]
 param specQ_people{Buildings} default 0;# specific average internal gains from people [kW/m2]
 
@@ -106,11 +110,8 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 
 ## VENTILATION
 
-subject to overallHeatTransfer{b in MediumTempBuildings}: # Uenv calculation for each building based on k_th and mass of air used
-	Uenv[b] = k_th[b] - mair*Cpair;
-
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
-	Qheating[t] = sum{b in MediumTempBuildings} (FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair*(Tint-Tair_in[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]);
+	Qheating[t] = sum{b in MediumTempBuildings} (max (0, FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair/3600*(Tint-Tair_in[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]));
 	
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 	Heat_Vent[t] = mair*Cpair*(Tint - Trelease[t]);  
@@ -118,18 +119,25 @@ subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair*Cpair*(Text_new[t] - Text[t]);
 
+subject to Theta_1 {t in Time}:
+	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
+	theta_1[t] = log(Trelease[t] - Text[t]);
+
+subject to Theta_2 {t in Time}:
+	#theta_2[t] = (Tint - Text_new[t]) / log((Tint + 273) / (Text_new[t] + 273));
+	theta_2[t] = log(Tint - Text_new[t]);
+
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((Tint-Text_new[t])-(Trelease[t]-Text[t]))/log( (Tint-Text_new[t])/(Trelease[t]-Text[t]));
-	#not the good formula
+	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 
 subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
 	Area_Vent = Heat_Vent[t] / (DTLNVent[t]*Uvent);
 
 subject to DTminVent1 {t in Time}: #DTmin needed on one side of HEX
-	DTminVent = abs(Trelease[t] - Text[t]);
+	DTminVent <= abs(Trelease[t] - Text[t]);
 
 subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX 
-	DTminVent = abs(Tint - Text_new[t]);
+	DTminVent <= abs(Tint - Text_new[t]);
 
 
 ################################
