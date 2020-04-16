@@ -39,6 +39,11 @@ param refSize default 1000;										# reference size of the utilities
 param Text{t in Time};  										# ambient temperature [C]
 param Tint default 21;											# internal set point temperature [C]
 param specElec{Buildings,Time} default 0;						# specific  electricity consumption [kW/m2]
+<<<<<<< HEAD
+param Tlake{Time}												# lake temperature [C]
+=======
+param Tlake{t in Time};											# lake temperature [°C]
+>>>>>>> 24d66c108b84d1aeeb1420ecf28e0ab284a3be8d
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Calculation of heating demand
 ---------------------------------------------------------------------------------------------------------------------------------------*/
@@ -95,7 +100,7 @@ var use{Utilities} binary;										# binary variable to decide if a utility is 
 var use_t{Utilities, Time} binary;								# binary variable to decide if a utility is used or not at time t
 var mult{Utilities}>=0;											# continuous variable to decide the size of the utility
 var mult_t{Utilities, Time}>=0;									# continuous variable to decide the size of the utility at time t
-
+var COP{Technologies, Time}>=0;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Resource variables

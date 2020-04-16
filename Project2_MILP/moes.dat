@@ -146,6 +146,15 @@ param irradiation :=													# irradiation at each time step ATTENTION --> [
 5 0.097
 6 0
 ;
+
+param Tlake :=
+1 8
+2 9
+3 11
+4 13
+5 14
+6 5
+;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Utility paremeters
 ---------------------------------------------------------------------------------------------------------------------------------------*/
@@ -154,9 +163,11 @@ Boiler 120
 ;
 
 param c_spec :=															# specific cost of resources
-NatGasGrid 0.0303
-ElecGridBuy 0.0916
-ElecGridSell -0.06
-;
+#NatGasGrid 0.0303
+#ElecGridBuy 0.0916
+#ElecGridSell -0.06
+NatGasGrid 0.111
+ElecGridBuy 0.2514
+ElecGridSell -0.1066;
 
 end;

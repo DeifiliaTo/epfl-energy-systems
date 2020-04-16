@@ -130,3 +130,7 @@ display InvCost;
 display OpCost;
 
 display use;
+
+display Tlmc_HP1stageMT;
+
+display COP;

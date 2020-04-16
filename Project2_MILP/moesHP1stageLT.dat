@@ -13,7 +13,7 @@ Set the reference size of Heat flow (will be scaled with mult_t)????
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the hot and cold temperature
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-param Th_HP1stage := 323.15;      # 50C
+#param Th_HP1stage := 323.15;      # 50C
 
 let Qheatingsupply['HP1stageLT'] := 1000;
 let Tminheating['HP1stageLT'] := 110;
