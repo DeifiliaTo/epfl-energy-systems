@@ -3,11 +3,10 @@
 ################################
 # Sets & Parameters
 reset;
-set Time default {};        				#your time set from the MILP 
+set Time default {};        				# your time set from the MILP 
 set Buildings default {};					# set of buildings
 set MediumTempBuildings default {};			# set of buildings heated by medium temperature loop
 set LowTempBuildings default {};			# set of buildings heated by low temperature loop
-
 
 param Text{t in Time};  #external temperature - Part 1
 param top{Time}; 		#your operating time from the MILP part
@@ -17,7 +16,6 @@ param Tint 				:= 21; # internal set point temperature [C]
 param mair 				:= 2.5; # m3/m2/h
 param Cpair 			:= 1.152; # kJ/m3K
 param Uvent 			:= 0.025; # air-air HEX [kW/m2K]
-
 
 param EPFLMediumT 		:= 65; #[degC]
 param EPFLMediumOut 	:= 30; #[degC]
@@ -50,7 +48,7 @@ var TLMCond 	 	>= 0.001; #[K] logarithmic mean temperature in the condensor of t
 var TLMEvap 		>= 0.001; # K] logarithmic mean temperature in the evaporator of the heating HP (using pre-heated lake water)
 var Qevap{Time} 	>= 0; #[kW] heat extracted in the evaporator of the heating HP (using pre-heated lake water)
 var Qcond{Time} 	>= 0; #[kW] heat delivered in the condensor of the heating HP (using pre-heated lake water)
-var COP{Time} 		>= 0.001; #coefficient of performance of the heating HP (using pre-heated lake water)
+var COP 			>= 0.001; #coefficient of performance of the heating HP (using pre-heated lake water)
 
 var OPEX 			>= 0.001; #[CHF/year] operating cost
 var IC 				>= 0.001; #[CHF] total investment cost
@@ -144,15 +142,15 @@ subject to Electricity1{t in Time}: #the electricity consumed in the HP can be c
 	E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
-	E[t] = Qcond[t] / COP[t];
+	E[t] = Qcond[t] / COP;
 
-subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
-	COP[t] = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
+subject to COPerformance: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
+	COP = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
 
-subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
+subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
 	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
 
-subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
+subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
 	TLMEvapHP = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
