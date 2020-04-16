@@ -35,20 +35,18 @@ Display commands
 display TC;
 display OPEX;
 display CAPEX;
-display Profit;
-display Paybt;
+# display Profit;
+# display Paybt;
 
 display Area_Vent;
 display DTminVent;
 display Qheating;
 display Heat_Vent;
-display Trelease;
-display Text;
 display E;
-display Uvent;
-display FloorArea;
-display Text_new;
+# display FloorArea;
 display Text;
-display DTLNVent;
-display theta_1;
-display theta_2;
+display Text_new;
+display Trelease;
+# display DTLNVent;
+# display theta_1;
+# display theta_2;

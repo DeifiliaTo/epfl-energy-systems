@@ -106,6 +106,12 @@ subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = sum{b in MediumTempBuildings} mair/3600*FloorArea[b]*Cpair*(Text_new[t] - Text[t]); # kW
 
+subject to DTHX_1 {t in Time}:
+	Tint >= Trelease[t];
+
+subject to DTHX_2 {t in Time}:
+	Text_new[t] >= Text[t];
+
 subject to Theta_1 {t in Time}:
 	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
 	theta_1[t] = log(Trelease[t] - Text[t]);
