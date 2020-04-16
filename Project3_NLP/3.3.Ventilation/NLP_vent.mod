@@ -36,6 +36,7 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
+param eps				:= 1e-5; #Epsilon to avoid singularities
 
 ################################
 # Variables
@@ -104,7 +105,6 @@ subject to Qpositive1 {t in Time, b in MediumTempBuildings}:
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
     Qheating[t] = sum{b in MediumTempBuildings} Qpositive[t, b];
 		
-
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 	#CHANGE #Heat_Vent[t] = mair*Cpair*(Trelease[t] - Tint);
 	Heat_Vent[t] = mair*Cpair*(Tint - Trelease[t]);  
@@ -121,7 +121,7 @@ subject to Theta_2 {t in Time}:
 	theta_2[t] = log(Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
+	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 	
 subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
 	#CHANGE #Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
@@ -138,8 +138,7 @@ subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX
 ## MASS BALANCE
 
 subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
-    MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
-    
+    MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut); 
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
@@ -168,7 +167,7 @@ subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be
 
 #combinaison lin�aire  
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
-    Qcond[t] = Qheating[t] - Heat_Vent[t]; #equation already used! problem?
+    Qcond[t] = Qheating[t] + Heat_Vent[t]; #equation already used! problem?
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
