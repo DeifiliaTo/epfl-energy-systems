@@ -55,7 +55,7 @@ var IC 				>= 0.001; #[CHF] total investment cost
 var CAPEX 			>= 0.001; #[CHF/year] annualized investment cost
 var TC 				>= 0.001; #[CHF/year] total cost
 var Profit			>= 0.001; #[CHF/year] total profit compare to the reference case
-var Paybt 	>= 0.001; #[year] Time for this case to be profitable
+var Paybt 			>= 0.001; #[year] Time for this case to be profitable
 
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
 
@@ -70,7 +70,7 @@ var theta_2{Time};
 var Flow{Time} 		>= 0; #lake water entering free coling HEX [kg/s]
 var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
 
-var Opex_positive{Time} >= 0;
+# var Opex_positive{Time} >= 0;
 
 #### Building dependent parameters
 
@@ -117,11 +117,10 @@ subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
 	#CHANGE #Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
 	Area_Vent = Heat_Vent[t] / (DTLNVent[t]*Uvent);
 
-subject to DTminVent1 {t in Time}: #DTmin needed on one side of HEX
-	#CHANGE # DTminVent <= abs(Text[t] - Trelease[t]);
+subject to DTminVent1 {t in Time}: #DTmin needed on one end of HEX
 	DTminVent <= Trelease[t] - Text[t];
 
-subject to DTminVent2 {t in Time}: #DTmin needed on the other side of HEX 
+subject to DTminVent2 {t in Time}: #DTmin needed on the other end of HEX 
     DTminVent <= Tint - Text_new[t];
 	
 
@@ -155,7 +154,6 @@ subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed u
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
-#combinaison lin�aire  
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
     Qcond[t] = Qheating[t] - Heat_Vent[t]; #equation already used! problem?
 
@@ -173,6 +171,6 @@ subject to CAPEXcost:
 subject to TCost: #the total cost can be computed using the operating and investment cost
 	TC = OPEX + CAPEX;
 
-################################5
+################################
 minimize obj : TC;
 
