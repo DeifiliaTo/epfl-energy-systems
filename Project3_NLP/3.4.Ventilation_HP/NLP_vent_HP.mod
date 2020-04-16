@@ -176,22 +176,22 @@ subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be
 ## Air Air HP
 
 subject to temperature_gap{t in Time}: #relation between Text and Text_new;
- 	
+ 	Text_new[t] >= Text[t];
 
 subject to temperature_gap2{t in Time}: #relation between Trelease and Trelease2;
-
+	Trelease[t] >= Trelease_2[t];
 
 subject to temperature_gap3{t in Time}: # relation between Tair_in and Text_new;
-
+	Text_new[t] >= Tair_in[t];
 
 subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
-
+	TLMCond_2[t] >= TLMEvapHP_2[t];
 
  subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
 	Qevap_2[t] = mair * Cpair * (Trelease[t] - Trelease_2[t]);
 
 subject to QCondensator_2{t in Time}: #Condeser heat from air side
-	Qcond_2[t] = mair * Cpair * (Tair_in[t] - Tex_new[t]);
+	Qcond_2[t] = mair * Cpair * (Tair_in[t] - Text_new[t]);
 
 subject to Electricity_2{t in Time}: #the electricity consumed in the new HP can be computed using the heat delivered and the heat extracted
 	E_2[t] = Qcond_2[t] - Qevap_2[t];
@@ -200,34 +200,35 @@ subject to Electricity_3{t in Time}: #the electricity consumed in the new HP can
 	E_2[t] = Qcond_2[t] / COP_2[t];
 
 subject to COPerformance_2{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
-	COP_2[t] = CarnotEff * ( TLMCond_2 / (TLMCond_2 - TLMEvapHP_2));
+	COP_2[t] = CarnotEff * ( TLMCond_2[t] / (TLMCond_2[t] - TLMEvapHP_2[t]));
 
 subject to dTLMCondensor_2{t in Time}: #the logarithmic mean temperature in the new condenser. Note: should be in K
-	TLMCond_2 = (Tair_in[t] - Tex_new[t] ) /  log( (Tair_in[t]+ 273) / (Tex_new[t] + 273) );
+	TLMCond_2[t] = (Tair_in[t] - Text_new[t] ) /  log( (Tair_in[t]+ 273) / (Text_new[t] + 273) );
 
 subject to dTLMEvaporatorHP_2{t in Time}: #the logarithmic mean temperature in the new Evaporator, Note: should be in K
-	TLMEvapHP_2 = (Trelease[t] - Trelease_2[t]) /  log( (Trelease[t] + 273) / (Trelease_2[t] + 273) );
+	TLMEvapHP_2[t] = (Trelease[t] - Trelease_2[t]) /  log( (Trelease[t] + 273) / (Trelease_2[t] + 273) );
 
 
 ## IF SOME PROBLEMS OF COP and TEMPERATURE ARRIVE -> Remember that the log mean is always smaller than the aritmetic mean, but larger than the geometric mean. 
 #TO VERIFY!!
 subject to dTLMCondensor_rule{t in Time}: # One of inequalities for Condenser
-	TLMCond_2 <= (Tair_in[t] + Tex_new[t]) / 2;
+	TLMCond_2[t] <= (Tair_in[t] + Text_new[t]) / 2;
 
 subject to dTLMCondensor_rule2{t in Time}: # The other inequality for Condenser
-	TLMCond_2 >= (Tair_in[t] * Tex_new[t])^(1/2);
+	TLMCond_2[t] >= (Tair_in[t] * Text_new[t])^(1/2);
 
 subject to dTLMEvaporatorHP_rule{t in Time}: # One of inequalities for Evaporator
-	TLMEvapHP_2 <= (Trelease[t] + Trelease_2[t]) / 2;
+	TLMEvapHP_2[t] <= (Trelease[t] + Trelease_2[t]) / 2;
 
 subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evaporator
-	TLMEvapHP_2 >= (Trelease[t] * Trelease_2[t])^(1/2);
+	TLMEvapHP_2[t] >= (Trelease[t] * Trelease_2[t])^(1/2);
 
 
 ## COST CONSIDERATIONS
 
 subject to Costs_HP {t in Time}: # new HP cost
-	# VERIFY FORMULA! Cost_HP = Cref_hp * (MS2017 / MS2000) * beta_hp;
+	# VERIFY FORMULA! 
+	Cost_HP = Cref_hp * (MS2017 / MS2000) * beta_hp;
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
 	Qheating[t] = Qcond[t]; #equation already used! problem?
@@ -236,7 +237,7 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
 	OPEX = sum{t in Time} ((E_2[t]+E[t]) * top[t] * Cel);
 	
 subject to TICost:
-	TIC = Cost_HP * BM_hp + ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
+	TIC = Cost_HP * BM_hp + ((INew / IRef) * aHE * (Area_Vent + eps)^bHE) * FBMHE; #[CHF]
 
 subject to CAPEXcost: #the investment cost can be computed using the area of ventilation HEX and new HP and the annuity factor
 	CAPEX = TIC *(i * (1 + i)^n) / ((1 + i)^n - 1);
@@ -244,11 +245,6 @@ subject to CAPEXcost: #the investment cost can be computed using the area of ven
 subject to TCost: #the total cost can be computed using the operating and investment cost
 	TC= OPEX + CAPEX;
 	
-subject to Profitcost:
-	#Profit= OPEX_ref - TC ; # [CHF/year] How to express OPEX of the reference case (3.1)?
-
-subject to Paybbacktime:	
-	Paybt = TIC / Profit # [year]
 
 ################################
-minimize obj : OPEX; #WHY??
+minimize obj : TC;
