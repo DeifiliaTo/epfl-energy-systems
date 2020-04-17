@@ -107,7 +107,7 @@ subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Text_new[t] - Text[t]); # kW
 
 subject to DTHX_1 {t in Time}:
-	Tint >= Trelease[t];
+	Trelease[t] <= Tint;
 
 subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t];
@@ -187,7 +187,7 @@ subject to TCost: #the total cost can be computed using the operating and invest
  let reference_cost := 796197; #796197 is the OPEX from reference case
 
  subject to profits:
- 	savings = TC - reference_cost; # [CHF]
+ 	savings = reference_cost - TC; # [CHF]
  
 # subject to payback_time:
 # 	Paybt = IC / Profit; # [year]
@@ -197,5 +197,5 @@ subject to TCost: #the total cost can be computed using the operating and invest
 #	Paybt <= n;
 
 ################################
-maximize obj : Area_Vent;
+maximize obj : savings;
 
