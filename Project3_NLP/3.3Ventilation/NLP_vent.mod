@@ -10,7 +10,7 @@ set LowTempBuildings default {};			# set of buildings heated by low temperature 
 
 param Text{t in Time};  #external temperature - Part 1
 param top{Time}; 		#your operating time from the MILP part
-param Areabuilding default 1; #defined .dat file.
+var Areabuilding >= 0.001; #defined .dat file.
 
 param Tint 				:= 21; # internal set point temperature [C]
 param mair 				:= 2.5; # m3/m2/h ASSUMPTION: ventilation flow per unit _building floor_ area
@@ -63,8 +63,8 @@ var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
 var Area_Vent 		>= 0.001; #[m2]
-var DTminVent 		>= 1; #[degC]
-var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
+var DTminVent 		>= 2; #[degC]
+var theta_1{Time};	# Temperary variabes to make DTLn calculation more readable
 var theta_2{Time};
 
 var Flow{Time} 		>= 0; #lake water entering free coling HEX [kg/s]
@@ -97,15 +97,14 @@ subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum o
 		0;
 
 # total area of building
-# for some reason AMPL only returns Areabuilding = 0, no matter what I try
-# hence in the Heat_Vent constraints I've replaced Areabuilding with its expression
-let Areabuilding := sum{b in MediumTempBuildings} (FloorArea[b]);
+subject to buildingarea:
+ Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	Heat_Vent[t] = sum{b in MediumTempBuildings} mair/3600*FloorArea[b]*Cpair*(Tint - Trelease[t]); # kW
+	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
-	Heat_Vent[t] = sum{b in MediumTempBuildings} mair/3600*FloorArea[b]*Cpair*(Text_new[t] - Text[t]); # kW
+	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Text_new[t] - Text[t]); # kW
 
 subject to DTHX_1 {t in Time}:
 	Tint >= Trelease[t];
@@ -198,5 +197,5 @@ subject to TCost: #the total cost can be computed using the operating and invest
 #	Paybt <= n;
 
 ################################
-minimize obj : savings;
+maximize obj : Area_Vent;
 
