@@ -19,5 +19,5 @@ let cinv1['Cogen'] := (146.69 + 30.512) * Flowout['Electricity','Cogen'];   # fi
 let cinv2['Cogen'] := (-7e-6 + 3e-5) * Flowout['Electricity','Cogen']^2;	# variable
 
 # operating cost [CHF/h] = [CHF/(kW_production * h) * kW_production]
-let cop1t['Cogen'] := 7478 * Flowout['Electricity','Cogen'];                # fixed
-let cop2t['Cogen'] := -0.0167 * Flowout['Electricity','Cogen']^2;	        # variable
+let cop1t['Cogen'] := 0.0075 * Flowout['Electricity','Cogen'];                # fixed
+let cop2t['Cogen'] := -2e-8 * Flowout['Electricity','Cogen']^2;	        # variable
