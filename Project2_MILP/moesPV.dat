@@ -28,6 +28,6 @@ let cinv1['PV'] := 367; # Fixed [CHF/year] --> 30.6CHF/month to connect to grid
 let cinv2['PV'] := 9105; # continious investment cost [CHF/kWp] -> 1025 CHF/kw --> annualized over 30 years --> 91 CHF/kW*100 kW
 
 
-let cop1t['SOFC'] := 0; 
+let cop1t['PV'] := 0; 
 
-let cop2t['SOFC'] := 2000 / 8760 ; # variable OPEX --> 20 CHF/kW/year --> convert to CHF/h
+let cop2t['PV'] := 2000 / 8760 ; # variable OPEX --> 20 CHF/kW/year --> convert to CHF/h
