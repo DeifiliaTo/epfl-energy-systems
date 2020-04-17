@@ -54,7 +54,7 @@ var OPEX 			>= 0.001; #[CHF/year] operating cost
 var IC 				>= 0.001; #[CHF] total investment cost
 var CAPEX 			>= 0.001; #[CHF/year] annualized investment cost
 var TC 				>= 0.001; #[CHF/year] total cost
-var Profit			>= 0.001; #[CHF/year] total profit compare to the reference case
+var savings; #[CHF/year] total profit compare to the reference case
 var Paybt 			>= 0.001; #[year] Time for this case to be profitable
 
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
@@ -62,13 +62,14 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
-var Area_Vent 		>= 0; #[m2]
+var Area_Vent 		>= 0.001; #[m2]
 var DTminVent 		>= 1; #[degC]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
 
 var Flow{Time} 		>= 0; #lake water entering free coling HEX [kg/s]
 var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
+param reference_cost default 0;
 
 # var Opex_positive{Time} >= 0;
 
@@ -183,16 +184,19 @@ subject to TCost: #the total cost can be computed using the operating and invest
 
 # # subtract savings relative to reference case from cost to give net cost(+)/benefit(-)
 # # TODO: define savings (i.e. multiply Heat_Vent, which reduces required Qcond, by the cost of supplying heat in the reference case -- could take average price of heat from Part 1, or assume boiler price)
-# subject to profits:
-# 	Profit = TC - savings; # [CHF]
+ 
+ let reference_cost := 796197; #796197 is the OPEX from reference case
+
+ subject to profits:
+ 	savings = TC - reference_cost; # [CHF]
  
 # subject to payback_time:
 # 	Paybt = IC / Profit; # [year]
 
-# # payback time must be within expected lifetime
-# subject to payback_limit:
-# 	Paybt <= n;
+# payback time must be within expected lifetime
+#subject to payback_limit:
+#	Paybt <= n;
 
 ################################
-minimize obj : TC;
+minimize obj : savings;
 
