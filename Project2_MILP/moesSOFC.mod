@@ -12,4 +12,4 @@ Set flow rate of biogas as a function of efficiencies
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
 let Flowin['Biogas', 'SOFC']  := Qheatingsupply['SOFC'] / eff_thermal;
-let Flowout['Electricity', 'SOFC']  := Flowin['Biogas', 'SOFC'] * eff_electrical; 
+#let Flowout['Electricity', 'SOFC']  := Flowin['Biogas', 'SOFC'] * eff_electrical; 
