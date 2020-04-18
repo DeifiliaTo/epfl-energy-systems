@@ -182,7 +182,7 @@ subject to temperature_gap2{t in Time}: #relation between Trelease and Trelease2
 	Trelease[t] >= Trelease_2[t];
 
 subject to temperature_gap3{t in Time}: # relation between Tair_in and Text_new;
-	Text_new[t] >= Tair_in[t];
+	Tair_in[t] >= Text_new[t] ;
 
 subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
 	TLMCond_2[t] >= TLMEvapHP_2[t];
