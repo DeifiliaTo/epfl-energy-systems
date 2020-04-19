@@ -9,8 +9,8 @@ clc
 Utility = {'Boiler'; 'PV'; 'SOFC'; 'Geothermal'; 'HP2stage'; ...
     'HP1stageLT'; 'HP1stageMT'; 'Cogen'}; % Utility name
 n =     [35; 30; 20; 30; 25; 25; 25; 0]; % Lifetime in [years]
-cinv1 = [63.9836; 0; 0; 0; 0; 326.19; 326.19; 0]; % Fixed investment cost in [CHF]
-cinv2 = [68.9950; 1025; 8788; 3922; 890; 17803; 17803; 0]; % Variable investment cost in [CHF / (kWcapacity * year)]
+cinv1 = [63.9836; 0; 0; 0; 0; 5680; 5680; 0]; % Fixed investment cost in [CHF]
+cinv2 = [68.9950; 1025; 8788; 3922; 890; 1240; 1240; 0]; % Variable investment cost in [CHF / (kWcapacity * year)]
 %cop1 =  [0; 0; 0; 0; 0; 0; 0; 0]; % Fixed operating cost in [CHF / hr]
 %cop2 =  [0; 0; 0.0577; 0.0245; 0; 0; 0; 0]; % Variable operating cost in [CHF / (kWproduction * hr)]
 

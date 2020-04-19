@@ -22,6 +22,6 @@ let Tminheating['HP1stageLT'] := 110;
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let cinv1['HP1stageLT'] := 30.5571;			#  [CHF]
+let cinv1['HP1stageLT'] := 532.0955;			#  [CHF]
 
-let cinv2['HP1stageLT'] := 1667;			# continious investment cost [CHF/year]
+let cinv2['HP1stageLT'] := 116.1617*Qheatingsupply['HP1stageLT'];			# continious investment cost [CHF/year]
