@@ -20,6 +20,6 @@ Set the hot and cold temperature
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let cinv1['HP1stageMT'] := 30.5571;			#  [CHF]
+let cinv1['HP1stageMT'] := 532.0955;			#  [CHF]
 
-let cinv2['HP1stageMT'] := 1667;			# continious investment cost [CHF/year]
+let cinv2['HP1stageMT'] := 116.1617*Qheatingsupply['HP1stageMT'];			# continious investment cost [CHF/year]
