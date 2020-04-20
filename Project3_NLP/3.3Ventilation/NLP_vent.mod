@@ -108,29 +108,30 @@ subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 
 subject to DTHX_1 {t in Time}:
 	Trelease[t] <= Tint;
-Area_Vent
+
 subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t];
 
 subject to Theta_1 {t in Time}:
 	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
-	theta_1[t] = log(Trelease[t] - Text[t]);
+	theta_1[t] = (Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
 	#theta_2[t] = (Tint - Text_new[t]) / log((Tint + 273) / (Text_new[t] + 273));
-	theta_2[t] = log(Tint - Text_new[t]);
+	theta_2[t] = (Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 	
-subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
-	Area_Vent = Heat_Vent[t] / (DTLNVent[t]*Uvent);
+subject to Area_Vent1: #Area of ventilation HEX
+	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
 
-subject to DTminVent1 {t in Time}: #DTmin needed on one end of HEX
-	DTminVent <= Trelease[t] - Text[t];
+subject to DTminVent1: #DTmin needed on one end of HEX
+	#DTminVent <= Trelease[t] - Text[t];
+	DTminVent <= min{t in Time} (Trelease[t] - Text[t]);
 
-subject to DTminVent2 {t in Time}: #DTmin needed on the other end of HEX 
-    DTminVent <= Tint - Text_new[t];
+subject to DTminVent2: #DTmin needed on the other end of HEX 
+    DTminVent <= min{t in Time} (Tint - Text_new[t]);
 	
 
 ## MASS BALANCE
