@@ -11,7 +11,6 @@ set LowTempBuildings default {};			# set of buildings heated by low temperature 
 
 param Text{t in Time};  #external temperature - Part 1
 param top{Time}; 		#your operating time from the MILP part
-param Areabuilding		>=0.001; #defined .dat file.
 
 param Tint 				:= 21; # internal set point temperature [C]
 param mair 				:= 2.5; # m3/m2/h
@@ -71,7 +70,7 @@ var theta_2{Time};
 var Flow{Time} 		>= 0; #lake water entering free coling HEX
 var MassEPFL{Time} 	>= 0; # MCp of EPFL heating system [KJ/(s degC)]
 
-var Uenv{Buildings} >= 0; # overall heat transfer coefficient of the building envelope 
+var Areabuilding		>= 0.001; #defined .dat file.
 
 ## Variables and parameters Air-Air HP
 
@@ -107,25 +106,33 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 ################################
 # Constraints
 ################################
+## Building area
+
+# total area of building
+subject to buildingarea:
+ Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
 
 ## VENTILATION
 
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
-	Qheating[t] = sum{b in MediumTempBuildings} (max (0, FloorArea[b]*(Uenv[b]*(Tint-Text[t])+mair*Cpair/3600*(Tint-Tair_in[t])-k_sun[b]*irradiation[t]-specQ_people[b])-specElec[b, t]));
+	Qheating[t] = if (Text[t] < 16) then 
+		sum{b in MediumTempBuildings} (max (0, FloorArea[b]*(k_th[b]*(Tint-Tair_in[t])-k_sun[b]*irradiation[t]-specQ_people[b]-specElec[b, t])))
+		else 
+		0;
 	
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	Heat_Vent[t] = mair*Cpair*(Tint - Trelease[t]);  
+	Heat_Vent[t] = Areabuilding/3600*mair*Cpair*(Tint - Trelease[t]);  # [kW]
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
-	Heat_Vent[t] = mair*Cpair*(Text_new[t] - Text[t]);
+	Heat_Vent[t] = Areabuilding/3600*mair*Cpair*(Text_new[t] - Text[t]); # [kW]
 
 subject to Theta_1 {t in Time}:
-	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
-	theta_1[t] = log(Trelease[t] - Text[t]);
+	theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
+	#theta_1[t] = log(Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
-	#theta_2[t] = (Tint - Text_new[t]) / log((Tint + 273) / (Text_new[t] + 273));
-	theta_2[t] = log(Tint - Text_new[t]);
+	theta_2[t] = (Tint - Text_new[t]) / log((Tint + 273) / (Text_new[t] + 273));
+	#theta_2[t] = log(Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
@@ -182,16 +189,16 @@ subject to temperature_gap2{t in Time}: #relation between Trelease and Trelease2
 	Trelease[t] >= Trelease_2[t];
 
 subject to temperature_gap3{t in Time}: # relation between Tair_in and Text_new;
-	Tair_in[t] >= Text_new[t] ;
+	Tair_in[t] <= Text_new[t];
 
 subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
 	TLMCond_2[t] >= TLMEvapHP_2[t];
 
  subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
-	Qevap_2[t] = mair * Cpair * (Trelease[t] - Trelease_2[t]);
+	Qevap_2[t] = mair * Cpair / 3600 * (Trelease[t] - Trelease_2[t]);
 
 subject to QCondensator_2{t in Time}: #Condeser heat from air side
-	Qcond_2[t] = mair * Cpair * (Tair_in[t] - Text_new[t]);
+	Qcond_2[t] = mair * Cpair  / 3600 * (Tair_in[t] - Text_new[t]);
 
 subject to Electricity_2{t in Time}: #the electricity consumed in the new HP can be computed using the heat delivered and the heat extracted
 	E_2[t] = Qcond_2[t] - Qevap_2[t];
@@ -209,8 +216,7 @@ subject to dTLMEvaporatorHP_2{t in Time}: #the logarithmic mean temperature in t
 	TLMEvapHP_2[t] = (Trelease[t] - Trelease_2[t]) /  log( (Trelease[t] + 273) / (Trelease_2[t] + 273) );
 
 
-## IF SOME PROBLEMS OF COP and TEMPERATURE ARRIVE -> Remember that the log mean is always smaller than the aritmetic mean, but larger than the geometric mean. 
-#TO VERIFY!!
+### IF SOME PROBLEMS OF COP and TEMPERATURE ARRIVE -> Remember that the log mean is always smaller than the aritmetic mean, but larger than the geometric mean. 
 subject to dTLMCondensor_rule{t in Time}: # One of inequalities for Condenser
 	TLMCond_2[t] <= (Tair_in[t] + Text_new[t]) / 2;
 
@@ -231,7 +237,7 @@ subject to Costs_HP {t in Time}: # new HP cost
 	Cost_HP = Cref_hp * (MS2017 / MS2000) * beta_hp;
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-	Qheating[t] = Qcond[t]; #equation already used! problem?
+	Qheating[t] = Qcond[t];
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
 	OPEX = sum{t in Time} ((E_2[t]+E[t]) * top[t] * Cel);
@@ -243,7 +249,7 @@ subject to CAPEXcost: #the investment cost can be computed using the area of ven
 	CAPEX = TIC *(i * (1 + i)^n) / ((1 + i)^n - 1);
 
 subject to TCost: #the total cost can be computed using the operating and investment cost
-	TC= OPEX + CAPEX;
+	TC = OPEX + CAPEX;
 	
 
 ################################

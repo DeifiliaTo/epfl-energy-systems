@@ -63,7 +63,7 @@ var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
 var Area_Vent 		>= 0.001; #[m2]
-var DTminVent 		>= 2; #[degC]
+var DTminVent 		>= 1; #[degC]
 var theta_1{Time};	# Temperary variabes to make DTLn calculation more readable
 var theta_2{Time};
 
@@ -108,7 +108,7 @@ subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 
 subject to DTHX_1 {t in Time}:
 	Trelease[t] <= Tint;
-
+Area_Vent
 subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t];
 
@@ -124,7 +124,6 @@ subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this val
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 	
 subject to Area_Vent1 {t in Time}: #Area of ventilation HEX
-	#CHANGE #Area_Vent = Qheating[t] / (DTLNVent[t]*Uvent);
 	Area_Vent = Heat_Vent[t] / (DTLNVent[t]*Uvent);
 
 subject to DTminVent1 {t in Time}: #DTmin needed on one end of HEX
@@ -197,5 +196,5 @@ subject to TCost: #the total cost can be computed using the operating and invest
 #	Paybt <= n;
 
 ################################
-maximize obj : savings;
+minimize obj : TC;
 
