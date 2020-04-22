@@ -19,12 +19,19 @@ let Qheatingsupply['Geothermal'] := 10000; #[kWh]
 Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
+# Investment cost: 10000 $/kW = 9700 CHF/kW annualised to 861.6261
+# Source: https://iea-etsap.org/E-TechDS/PDF/E07-geoth_energy-GS-gct_ADfinal_gs.pdf
+let cinv2['Geothermal'] := 861.6261*Flowout['Electricity','Geothermal'];		#  [CHF/kW]
+
+# Operating and maintenance costs: 250 $/kW year = 0.028 CHF/kWh
+# Source: https://iea-etsap.org/E-TechDS/PDF/E07-geoth_energy-GS-gct_ADfinal_gs.pdf
+let cop2t['Geothermal'] := 0.028*Flowout['Electricity','Geothermal'];			# continuous investment cost [CHF/h]
+
+
 # Investment cost: 4000 $/kW = 3922 CHF/kW annualised to 348.3812
 # Source: https://www.lazard.com/media/451086/lazards-levelized-cost-of-energy-version-130-vf.pdf
-let cinv2['Geothermal'] := 348.3812*Flowout['Electricity','Geothermal'];		#  [CHF/kW]
+# let cinv2['Geothermal'] := 348.3812*Flowout['Electricity','Geothermal'];		#  [CHF/kW]
 
 # Operating and maintenance costs: 0.025 $/kWh = 0.0245 CHF/kWh
 # Source: https://www.lazard.com/media/451086/lazards-levelized-cost-of-energy-version-130-vf.pdf
-let cop2t['Geothermal'] := 0.0245*Flowout['Electricity','Geothermal'];			# continuous investment cost [CHF/h]
-
-# Confirmation source: https://iea-etsap.org/E-TechDS/PDF/E07-geoth_energy-GS-gct_ADfinal_gs.pdf
+# let cop2t['Geothermal'] := 0.0245*Flowout['Electricity','Geothermal'];			# continuous investment cost [CHF/h]
