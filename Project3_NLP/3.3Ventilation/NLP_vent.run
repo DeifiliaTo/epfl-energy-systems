@@ -13,7 +13,6 @@ data ../../Project2_MILP/building_dat/moesCM.dat
 data ../../Project2_MILP/building_dat/moesBI.dat
 data ../../Project2_MILP/building_dat/moesCH.dat
 data ../../Project2_MILP/building_dat/moesPH.dat
-#includ
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
