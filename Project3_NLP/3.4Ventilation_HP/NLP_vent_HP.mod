@@ -38,7 +38,7 @@ param eps				:= 1e-5; #Epsilon to avoid singularities
 ################################
 # Variables
 
-var Text_new{Time} >= Text[t]; # air Temperature after air-air HEX;
+var Text_new{t in Time} >= Text[t]; # air Temperature after air-air HEX;
 var Trelease{Time}  <= Tint; #[degC]
 var Qheating{Time} 	>= 0; #your heat demand from the MILP part, is now a variable.
 
@@ -168,10 +168,10 @@ subject to Electricity1{t in Time}: #the electricity consumed in the HP can be c
 	E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
-	E[t] = Qcond[t] / COP;
+	E[t] = Qcond[t] / COP[t];
 
-subject to COPerformance: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
-	COP = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
+subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
+	COP[t] = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
 
 subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
 	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
