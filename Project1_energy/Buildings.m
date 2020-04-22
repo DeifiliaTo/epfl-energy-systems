@@ -106,7 +106,7 @@ deltaT = 3600;
 [kth, ksun, iters, err] = newtonraphson(k0, tol, deltaT, Build.ground, T_int, Text, Irr, q_people.year, f_el, p.elec.year.v, Build.Q, p.heat.year.f);
 
 Build.kth = kth;
-Build.ksun = ksun;
+Build.ksun = ksun;1000
 Build.Uenv = Build.kth - air_new*cp_air; %[W/(m^2.K)]
 Build.iters = iters;
 Build.err = err;

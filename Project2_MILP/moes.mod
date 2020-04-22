@@ -39,11 +39,15 @@ param refSize default 1000;										# reference size of the utilities
 param Text{t in Time};  										# ambient temperature [C]
 param Tint default 21;											# internal set point temperature [C]
 param specElec{Buildings,Time} default 0;						# specific  electricity consumption [kW/m2]
+#param Tlake{Time}												# lake temperature [C]
+param Tlake{t in Time};											# lake temperature [�C]
+
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Calculation of heating demand
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 param FloorArea{Buildings} default 0;
 param k_th{Buildings} default 0;								# thermal losses and ventilation coefficient in (kW/m2/K)
+param U_env{Buildings} default 0;
 param k_sun{Buildings} default 0;								# solar radiation coefficient [−]
 param share_q_e default 0.8; 									# share of internal gains from electricity [-]
 param specQ_people{Buildings} default 0;						# specific average internal gains from people [kW/m2]
@@ -96,7 +100,6 @@ var use_t{Utilities, Time} binary;								# binary variable to decide if a utili
 var mult{Utilities}>=0;											# continuous variable to decide the size of the utility
 var mult_t{Utilities, Time}>=0;									# continuous variable to decide the size of the utility at time t
 
-
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Resource variables
 ---------------------------------------------------------------------------------------------------------------------------------------*/
@@ -145,9 +148,9 @@ subject to zero_constraint2{t in Time}:
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Resource balance constraints (except for electricity): flowin = flowout
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-subject to inflow_cstr {l in Layers, u in UtilitiesOfLayer[l], t in Time}:
-	FlowInUnit[l, u, t] = mult_t[u,t] * Flowin[l,u]; 
-subject to outflow_cstr {l in Layers, u in UtilitiesOfLayer[l], t in Time}:
+subject to inflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageMT"}, t in Time}:
+    FlowInUnit[l, u, t] = mult_t[u,t] * Flowin[l,u];
+subject to outflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageMT"}, t in Time}:
 	FlowOutUnit[l, u, t] = mult_t[u,t] * Flowout[l,u]; 
 subject to balance_cstr {l in Layers, t in Time: l != 'Electricity'}:
 	sum{u in UtilitiesOfLayer[l]} FlowInUnit[l,u,t] = sum{u in UtilitiesOfLayer[l]} FlowOutUnit[l,u,t];

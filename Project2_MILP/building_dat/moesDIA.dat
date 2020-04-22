@@ -5,6 +5,7 @@ let LowTempBuildings := LowTempBuildings union {'DIA'};
 let FloorArea['DIA'] := 847;     # [m2]
 let k_th['DIA']:= 0.007690000000000001;   # [kW/m2/K]
 let k_sun['DIA']:= 0.15;
+let U_env['DIA']:= 0.00689;
 let specQ_people['DIA']:= 0.002261; 
 
 ###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################

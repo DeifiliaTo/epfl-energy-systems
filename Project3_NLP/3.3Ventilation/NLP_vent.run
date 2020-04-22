@@ -13,15 +13,14 @@ data ../../Project2_MILP/building_dat/moesCM.dat
 data ../../Project2_MILP/building_dat/moesBI.dat
 data ../../Project2_MILP/building_dat/moesCH.dat
 data ../../Project2_MILP/building_dat/moesPH.dat
-#includ
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-/*option solver './snopt';*/
-option solver snopt;
-#option omit_zero_rows 1;
-#option omit_zero_cols 1;
+option solver 'snopt';
+#  option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+# option omit_zero_rows 1;
+# option omit_zero_cols 1;
 option presolve_eps 8.53e-15;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
@@ -35,18 +34,18 @@ Display commands
 display TC;
 display OPEX;
 display CAPEX;
-display Profit;
-display Paybt;
+# display Profit;
+# display Paybt;
 
 display Area_Vent;
 display DTminVent;
 display Qheating;
 display Heat_Vent;
-display Trelease;
-display Text;
 display E;
-display Uvent;
-display Uenv;
-display FloorArea;
+# display FloorArea;
+display Text;
 display Text_new;
-
+display Trelease;
+# display DTLNVent;
+# display theta_1;
+# display theta_2;

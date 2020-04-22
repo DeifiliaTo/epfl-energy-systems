@@ -5,6 +5,7 @@ let LowTempBuildings := LowTempBuildings union {'CRPP'};
 let FloorArea['CRPP'] := 10831;     # [m2]
 let k_th['CRPP']:= 0.00525;   # [kW/m2/K]
 let k_sun['CRPP']:= 0.12;
+let U_env['CRPP']:= 0.004450000000000001;
 let specQ_people['CRPP']:= 0.002261; 
 
 ###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################

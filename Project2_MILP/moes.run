@@ -73,7 +73,6 @@ model moesHP1stageLT.mod;
 
 
 data moesHP1stageMT.dat;
-
 model moesHP1stageMT.mod;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
@@ -81,6 +80,12 @@ Load the Cogen model and its data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 data moesCogen.dat;
 model moesCogen.mod;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the geothermal model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data moesGeothermal.dat;
+model moesGeothermal.mod;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the grid parameters: resource flow and fmax
@@ -95,7 +100,7 @@ let  Fmax['ElecGridSell'] := refSize;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver 'cplex';											# choose the solver
+option solver cplex;											# choose the solver
 option omit_zero_rows 1;										# to not display 0 in rows
 option omit_zero_cols 1;										# to not display 0 in columns
 
@@ -130,3 +135,7 @@ display InvCost;
 display OpCost;
 
 display use;
+
+display Tlmc_HP1stageMT;
+
+#display COP;
