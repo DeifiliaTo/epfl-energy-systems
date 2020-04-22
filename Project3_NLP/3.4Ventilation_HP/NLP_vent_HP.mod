@@ -3,29 +3,28 @@
 ################################
 # Sets & Parameters
 reset;
-set Time default {};        				#your time set from the MILP 
+set Time default {};        				# your time set from the MILP 
 set Buildings default {};					# set of buildings
 set MediumTempBuildings default {};			# set of buildings heated by medium temperature loop
 set LowTempBuildings default {};			# set of buildings heated by low temperature loop
-
 
 param Text{t in Time};  #external temperature - Part 1
 param top{Time}; 		#your operating time from the MILP part
 
 param Tint 				:= 21; # internal set point temperature [C]
-param mair 				:= 2.5; # m3/m2/h
+param mair 				:= 2.5; # m3/m2/h ASSUMPTION: ventilation flow per unit _building floor_ area
 param Cpair 			:= 1.152; # kJ/m3K
-param Uvent 			:= 0.025; # air-air HEX
+param Uvent 			:= 0.025; # air-air HEX [kW/m2K]
 
 param EPFLMediumT 		:= 65; #[degC]
-param EPFLMediumOut 	:= 30; 
+param EPFLMediumOut 	:= 30; #[degC]
 
 param CarnotEff 		:= 0.55; #assumption: carnot efficiency of heating heat pumps
 param Cel 				:= 0.20; #[CHF/kWh] operating cost for buying electricity from the grid
 
 param THPhighin 		:= 7; #[deg C] temperature of water coming from lake into the evaporator of the HP
 param THPhighout 		:= 3; #[deg C] temperature of water coming from lake into the evaporator of the HP
-param Cpwater           := 4.18; #[kJ/kgC]
+param Cpwater			:= 4.18; #[kJ/kgC]
 
 param i 				:= 0.06 ; #interest rate
 param n 				:= 20; #[y] life-time
@@ -34,14 +33,14 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
-param eps				:= 1e-5; # Epsilon
+param eps				:= 1e-5; #Epsilon to avoid singularities
 
 ################################
 # Variables
 
-var Text_new{t in Time} >= Text[t]; # air Temperature after air-air HEX;
+var Text_new{Time} >= Text[t]; # air Temperature after air-air HEX;
 var Trelease{Time}  <= Tint; #[degC]
-var Qheating{Time} 	>= 0; #your heat demand from the MILP part, will become a variable in the case of heat recovery from air ventilation
+var Qheating{Time} 	>= 0; #your heat demand from the MILP part, is now a variable.
 
 var E{Time} 		>= 0; # [kW] electricity consumed by the reference heat pump (using pre-heated lake water)
 var TLMCond 	 	>= 0.001; #[K] logarithmic mean temperature in the condensor of the heating HP (using pre-heated lake water)
@@ -57,7 +56,7 @@ var TC 				>= 0.001; #[CHF/year] total cost
 var Profit			>= 0.001; #[CHF/year] Annual profit
 var Paybt			>= 0.001; #[year] payback time
 
-var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water
+var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
 
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} >= 0; #[kW]
@@ -98,19 +97,14 @@ param irradiation{Time};# solar irradiation [kW/m2] at each time step
 param specElec{Buildings,Time} default 0;
 param FloorArea{Buildings} default 0; #area [m2]
 param k_th{Buildings} default 0; # thermal losses and ventilation coefficient in (kW/m2/K)
+param U_env{Buildings} default 0; # overall heat transfer coefficient of the building envelope  (kW/m2/K)
 param k_sun{Buildings} default 0;# solar radiation coefficient [−]
-param U_env{Buildings} default 0;
 param share_q_e default 0.8; # share of internal gains from electricity [-]
 param specQ_people{Buildings} default 0;# specific average internal gains from people [kW/m2]
 
 ################################
 # Constraints
 ################################
-## Building area
-
-# total area of building
-subject to buildingarea:
- Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
 
 ## VENTILATION
 
@@ -119,12 +113,22 @@ subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum o
 		sum{b in MediumTempBuildings} (max (0, FloorArea[b]*(k_th[b]*(Tint-Tair_in[t])-k_sun[b]*irradiation[t]-specQ_people[b]-specElec[b, t])))
 		else 
 		0;
-	
+
+# total area of building
+subject to buildingarea:
+ Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
+
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	Heat_Vent[t] = Areabuilding/3600*mair*Cpair*(Tint - Trelease[t]);  # [kW]
+	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
-	Heat_Vent[t] = Areabuilding/3600*mair*Cpair*(Text_new[t] - Text[t]); # [kW]
+	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Text_new[t] - Text[t]); # kW
+
+subject to DTHX_1 {t in Time}:
+	Trelease[t] <= Tint;
+
+subject to DTHX_2 {t in Time}:
+	Text_new[t] >= Text[t];
 
 subject to Theta_1 {t in Time}:
 	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
@@ -140,16 +144,12 @@ subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this val
 subject to Area_Vent1: #Area of ventilation HEX
 	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
 
-subject to DTminVent1: #DTmin needed on one side of HEX
+subject to DTminVent1: #DTmin needed on one end of HEX
+	#DTminVent <= Trelease[t] - Text[t];
 	DTminVent <= min{t in Time} (Trelease[t] - Text[t]);
 
-subject to DTminVent2: #DTmin needed on the other side of HEX 
-	DTminVent <= min{t in Time} (Tint - Text_new[t]);
-
-
-################################
-# Constraints
-################################
+subject to DTminVent2: #DTmin needed on the other end of HEX 
+    DTminVent <= min{t in Time} (Tint - Text_new[t]);
 
 ## MASS BALANCE
 
@@ -164,19 +164,19 @@ subject to QEvaporator{t in Time}: #water side of evaporator that takes flow fro
 subject to QCondensator{t in Time}: #
 	Qcond[t] = MassEPFL[t] * (EPFLMediumT - EPFLMediumOut);
 
-subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted (Reference case)
+subject to Electricity1{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted (Reference case)
 	E[t] = Qcond[t] - Qevap[t];
 
-subject to Electricity_1{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
-	E[t] = Qcond[t] / COP[t];
+subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
+	E[t] = Qcond[t] / COP;
 
-subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
-	COP[t] = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
+subject to COPerformance: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
+	COP = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
 
-subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
+subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
 	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
 
-subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
+subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
 	TLMEvapHP = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
 
 

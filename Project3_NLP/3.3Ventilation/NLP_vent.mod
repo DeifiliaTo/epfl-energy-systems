@@ -64,7 +64,7 @@ var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
 var Area_Vent 		>= 0.001; #[m2]
 var DTminVent 		>= 1; #[degC]
-var theta_1{Time};	# Temperary variabes to make DTLn calculation more readable
+var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
 
 var Flow{Time} 		>= 0; #lake water entering free coling HEX [kg/s]
@@ -122,17 +122,15 @@ subject to Theta_2 {t in Time}:
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
-	
+
 subject to Area_Vent1: #Area of ventilation HEX
 	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
 
 subject to DTminVent1: #DTmin needed on one end of HEX
-	#DTminVent <= Trelease[t] - Text[t];
 	DTminVent <= min{t in Time} (Trelease[t] - Text[t]);
 
 subject to DTminVent2: #DTmin needed on the other end of HEX 
     DTminVent <= min{t in Time} (Tint - Text_new[t]);
-	
 
 ## MASS BALANCE
 
@@ -198,4 +196,3 @@ subject to TCost: #the total cost can be computed using the operating and invest
 
 ################################
 minimize obj : TC;
-
