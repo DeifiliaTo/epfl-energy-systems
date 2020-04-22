@@ -8,7 +8,7 @@ set Buildings default {};					# set of buildings
 set MediumTempBuildings default {};			# set of buildings heated by medium temperature loop
 set LowTempBuildings default {};			# set of buildings heated by low temperature loop
 
-param Text{t in Time};  #external temperature - Part 1
+param Text{Time};  		#external temperature - Part 1
 param top{Time}; 		#your operating time from the MILP part
 
 param Tint 				:= 21; # internal set point temperature [C]
@@ -38,7 +38,7 @@ param eps				:= 1e-5; #Epsilon to avoid singularities
 ################################
 # Variables
 
-var Text_new{Time} >= Text[t]; # air Temperature after air-air HEX;
+var Text_new{t in Time} >= Text[t]; # air Temperature after air-air HEX;
 var Trelease{Time}  <= Tint; #[degC]
 var Qheating{Time} 	>= 0; #your heat demand from the MILP part, is now a variable.
 
@@ -47,7 +47,7 @@ var TLMCond 	 	>= 0.001; #[K] logarithmic mean temperature in the condensor of t
 var TLMEvap 		>= 0.001; # K] logarithmic mean temperature in the evaporator of the heating HP (using pre-heated lake water)
 var Qevap{Time} 	>= 0; #[kW] heat extracted in the evaporator of the heating HP (using pre-heated lake water)
 var Qcond{Time} 	>= 0; #[kW] heat delivered in the condensor of the heating HP (using pre-heated lake water)
-var COP{Time} 		>= 0.001; #coefficient of performance of the heating HP (using pre-heated lake water)
+var COP				>= 0.001; #coefficient of performance of the heating HP (using pre-heated lake water)
 
 var OPEX 			>= 0.001; #[CHF/year] operating cost
 var CAPEX 			>= 0.001; #[CHF/year] annualized investment cost
