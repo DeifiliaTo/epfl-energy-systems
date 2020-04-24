@@ -83,12 +83,12 @@ var Trelease_2{Time}     	>=0; #release temperature (check drawing);
 var Tair_in{Time}        	<= 40; #lets assume EPFL cannot take ventilation above 40 degrees (safety)
 var Cost_HP       		 	>=0; #HP cost 
 
-var E_2{Time} 				>= 0.01; # kW] Electricity used in the Air-Air HP
-var TLMCond_2{t in Time} 	>= Text[t]; #[K] logarithmic mean temperature in the condensor of the new HP 
+var E_2{Time} 				>= 0; # kW] Electricity used in the Air-Air HP
+var TLMCond_2{t in Time} 	>= 0.001; #Text[t]; #[K] logarithmic mean temperature in the condensor of the new HP 
 var TLMEvapHP_2{Time} 		>= 0.001; # K] logarithmic mean temperature in the evaporator of the new HP 
 var Qevap_2{Time} 			>= 0; #[kW] heat extracted in the evaporator of the new HP 
 var Qcond_2{Time} 			>= 0; #[kW] heat delivered in the condensor of the new HP 
-var COP_2{Time} 			>= 0; #coefficient of performance of the new HP 
+var COP_2{Time} 			>= 0.001; #coefficient of performance of the new HP 
 
 
 #### Building dependent parameters
@@ -110,7 +110,7 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
 	Qheating[t] = if (Text[t] < 16) then 
-		sum{b in MediumTempBuildings} (max (0, FloorArea[b]*(k_th[b]*(Tint-Tair_in[t])-k_sun[b]*irradiation[t]-specQ_people[b]-specElec[b, t])))
+		sum{b in MediumTempBuildings} (max (0, FloorArea[b]*(U_env[b]*(Tint-Text[t]) + mair/3600*Cpair*(Tint-Tair_in[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t])))
 		else 
 		0;
 
@@ -131,21 +131,18 @@ subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t];
 
 subject to Theta_1 {t in Time}:
-	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
-	theta_1[t] = (Trelease[t] - Text[t]);
+	theta_1[t] = Trelease[t] - Text[t];
 
 subject to Theta_2 {t in Time}:
-	#theta_2[t] = (Tint - Text_new[t]) / log((Tint + 273) / (Text_new[t] + 273));
-	theta_2[t] = (Tint - Text_new[t]);
+	theta_2[t] = Tint - Text_new[t];
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
+	DTLNVent[t] = ((theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 
 subject to Area_Vent1: #Area of ventilation HEX
 	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
 
 subject to DTminVent1: #DTmin needed on one end of HEX
-	#DTminVent <= Trelease[t] - Text[t];
 	DTminVent <= min{t in Time} (Trelease[t] - Text[t]);
 
 subject to DTminVent2: #DTmin needed on the other end of HEX 
@@ -162,16 +159,16 @@ subject to QEvaporator{t in Time}: #water side of evaporator that takes flow fro
 	Qevap[t] = Flow[t] * Cpwater * (THPhighin - THPhighout);
 
 subject to QCondensator{t in Time}: #
-	Qcond[t] = MassEPFL[t] * (EPFLMediumT - EPFLMediumOut);
+	Qcond[t] = MassEPFL[t] * (EPFLMediumT - EPFLMediumOut); # From previous constraints, Qcond = Qheating
 
 subject to Electricity1{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted (Reference case)
 	E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
-	E[t] = Qcond[t] / COP[t];
+	E[t] = Qcond[t] / COP;
 
 subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
-	COP[t] = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
+	COP = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
 
 subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
 	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
@@ -194,20 +191,20 @@ subject to temperature_gap3{t in Time}: # relation between Tair_in and Text_new;
 subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
 	TLMCond_2[t] >= TLMEvapHP_2[t];
 
- subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
+subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
 	Qevap_2[t] = mair * Cpair / 3600 * (Trelease[t] - Trelease_2[t]);
 
-subject to QCondensator_2{t in Time}: #Condeser heat from air side
+subject to QCondensator_2{t in Time}: #Condenser heat from air side
 	Qcond_2[t] = mair * Cpair  / 3600 * (Tair_in[t] - Text_new[t]);
 
 subject to Electricity_2{t in Time}: #the electricity consumed in the new HP can be computed using the heat delivered and the heat extracted
 	E_2[t] = Qcond_2[t] - Qevap_2[t];
 
 subject to Electricity_3{t in Time}: #the electricity consumed in the new HP can be computed using the heat delivered and the COP
-	E_2[t] = Qcond_2[t] / (COP_2[t]+eps);
+	E_2[t] = Qcond_2[t] / COP_2[t];
 
 subject to COPerformance_2{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
-	COP_2[t] = CarnotEff * ( TLMCond_2[t] / (TLMCond_2[t] - TLMEvapHP_2[t] + eps));
+	COP_2[t] = CarnotEff * ( TLMCond_2[t] / (TLMCond_2[t] - TLMEvapHP_2[t]));
 
 subject to dTLMCondensor_2{t in Time}: #the logarithmic mean temperature in the new condenser. Note: should be in K
 	TLMCond_2[t] = (Tair_in[t] - Text_new[t] ) /  log( (Tair_in[t]+ 273) / (Text_new[t] + 273) );
@@ -237,13 +234,13 @@ subject to Costs_HP {t in Time}: # new HP cost
 	Cost_HP = Cref_hp * (MS2017 / MS2000) * beta_hp;
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-	Qheating[t] = Qcond[t] + Heat_Vent[t];
+	Qheating[t] + Qcond_2[t] = Heat_Vent[t];
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
 	OPEX = sum{t in Time} ((E_2[t]+E[t]) * top[t] * Cel);
 	
 subject to TICost:
-	TIC = Cost_HP * BM_hp + ((INew / IRef) * aHE * (Area_Vent + eps)^bHE) * FBMHE; #[CHF]
+	TIC = Cost_HP * BM_hp + ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
 
 subject to CAPEXcost: #the investment cost can be computed using the area of ventilation HEX and new HP and the annuity factor
 	CAPEX = TIC *(i * (1 + i)^n) / ((1 + i)^n - 1);
