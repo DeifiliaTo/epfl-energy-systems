@@ -126,11 +126,11 @@ subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this val
 subject to Area_Vent1: #Area of ventilation HEX
 	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
 
-subject to DTminVent1: #DTmin needed on one end of HEX
-	DTminVent <= min{t in Time} (Trelease[t] - Text[t]);
+subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
+	DTminVent <= Trelease[t] - Text[t];
 
-subject to DTminVent2: #DTmin needed on the other end of HEX 
-    DTminVent <= min{t in Time} (Tint - Text_new[t]);
+subject to DTminVent2{t in Time}: #DTmin needed on the other end of HEX 
+    DTminVent <= Tint - Text_new[t];
 
 ## MASS BALANCE
 
