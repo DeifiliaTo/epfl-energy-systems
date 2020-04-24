@@ -98,8 +98,70 @@ DevTot_kmean = sum(DevPart_kmean);
 
 % Maximum load duration curve difference
 
+%Essai clustering
+k=1;
+for i = 1:14
+    for j = 1:265
+        Weather_norm_select2 (k,1) = Weather_norm_select(j,i);
+        Weather_norm_select2 (k,2) = Weather_norm_select(j,i+14);
+        k=k+1;
+    end
+end
 
+k=1;
+for i = 1:14
+    for j = 151:250
+        SummerDay2 (k,1) = Weather_norm_select(j,i);
+        SummerDay2 (k,2) = Weather_norm_select(j,i+14);
+        k=k+1;
+    end
+end
 
+for i=1:8760
+    if Text_norm(i)==0
+        CoolHour(1,1)=Text_norm(i);
+        CoolHour(1,2)=Irr_norm(i);
+    end
+end
+
+[idx2,C2] = kmeans(Weather_norm_select2,4);
+[idx3,C3]= kmeans(SummerDay2,1);
+[idx4,C4]= kmeans(CoolHour,1);
+
+figure(6)
+gscatter(Weather_norm_select2(:,1),Weather_norm_select2(:,2),idx2,'bryg')
+hold on
+gscatter(SummerDay2(:,1),SummerDay2(:,2),idx3,'m')
+hold on
+gscatter(CoolHour(:,1),CoolHour(:,2),idx4,'c');
+hold on
+plot(C2(:,1),C2(:,2),'kx','MarkerSize',12,'LineWidth',2)
+hold on
+plot(C3(:,1),C3(:,2),'kx','MarkerSize',12,'LineWidth',2)
+hold on
+xlabel 'Temperature normalized';
+ylabel 'Irradiation normalized'; 
+title('Clustering with the kmean method');
+legend('Period 1','Period 2','Period 3','Period 4','Period 5','Period 6','Cluster Centroid')
+saveas(figure(6),"plots/clust_kmean_method.png")
+
+count1=0;
+count2=0;
+count3=0;
+count4=0;
+for i=1:3710
+    if idx2(i)==1
+        count1=count1+1;
+    elseif idx2(i)==2
+        count2=count2+1;
+    elseif idx2(i)==3
+        count3=count3+1;
+    else
+        count4=count4+1;
+    end
+end
+count5=8760-3710;
+count6=1;
 %% Clustering without kmeans
 
 % Clustering into 6 period
@@ -214,6 +276,7 @@ xlabel 'Time [hours]';
 ylabel 'Text [°C]'; 
 legend('Text','zero','Mean');
 title('Means of Text based on time');
+saveas(figure(1),"plots/clust_man_Text.png")
 hold off;
 
 % Plot of the irradiation
@@ -227,6 +290,7 @@ xlabel 'Time [hours]';
 ylabel 'Irradiation [W/m2]'; 
 legend('Irr','zero','Mean');
 title('Means of Irradiation based on time');
+saveas(figure(2),"plots/clust_man_Irr.png")
 hold off;
 
 % % Normalization of Text_season and Irr-season
@@ -259,4 +323,20 @@ xlabel 'Temperature normalized';
 ylabel 'Irradiation normalized'; 
 legend('Jan-Feb','Mar-Apr','May-Jun','Jul-Aug','Sep-Oct','Nov-Dec');
 title('Clustering with the manual method');
+saveas(figure(3),"plots/clust_man_method.png")
 hold off;
+
+figure(4)
+plot(t_hour,Irr);             
+hold on;
+xlabel 'Time [hours]';
+ylabel 'Irradiation [W/m2]';
+title('Weather data of irradiation over one year');
+saveas(figure(4),"plots/irr_year.png")
+
+figure(5)
+plot(t_hour,Text);
+xlabel 'Time [hours]';
+ylabel 'Text [°C]'; 
+title('Weather data of temperature over one year');
+saveas(figure(5),"plots/text_year.png")
