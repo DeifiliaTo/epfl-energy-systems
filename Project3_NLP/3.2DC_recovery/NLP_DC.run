@@ -10,6 +10,8 @@ AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 /*option solver './snopt';*/
 option solver snopt;
+option snopt_options 'major_iterations=10000';
+
 #option omit_zero_rows 1;
 #option omit_zero_cols 1;
 
@@ -22,28 +24,34 @@ solve;
 Display commands
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 #These variables might be interest to print. Feel free to choose new ones!
-display TC;
 
+display Qrad;
 display TRadin;
 display TDCout;
 display AHEDC;
 display dTLMDC;
 
-display Qrad;
 display E;
-display TLMCond;
-display TLMEvapHP;
-display Qevap;
-display Qcond;
 display COP;
+
+display Qcond;
+display TLMCond;
+
+display Qevap;
+display TLMEvapHP;
+display THPin;
+
 display MassEPFL;
 display MassDC;
 display Qfree;
-display THPin;
 display Flow;
 
+display TC;
 display OPEX;
 display CAPEX;
 
+display Qheating;
+display Qcond;
+display Qrad;
 
 
