@@ -61,7 +61,7 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 
 var TEvap 			>= 0.001; #[deg C] Unused.
 var Heat_Vent{Time} >= 0; #[kW]
-var DTLNVent{Time} 	>= 0.001; #[K]
+var DTLNVent{Time} 	>= 1; #[K]
 var Area_Vent 		>= 0.001; #[m2]
 var DTminVent 		>= 0.001; #[C]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
@@ -144,7 +144,7 @@ subject to Theta_2 {t in Time}:
 	theta_2[t] = Tint - Text_new[t];
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
+	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 
 subject to Area_Vent1: #Area of ventilation HEX
 	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
@@ -225,13 +225,13 @@ subject to dTLMCondensor_rule{t in Time}: # One of inequalities for Condenser
 	TLMCond_2[t] <= (Tair_in[t] + Text_new[t]) / 2;
 
 subject to dTLMCondensor_rule2{t in Time}: # The other inequality for Condenser
-	TLMCond_2[t] >= (Tair_in[t] * Text_new[t])^(1/2);
+	TLMCond_2[t] >= ((Tair_in[t] + 273) * (Text_new[t] + 273))^(1/2) - 273;
 
 subject to dTLMEvaporatorHP_rule{t in Time}: # One of inequalities for Evaporator
 	TLMEvapHP_2[t] <= (Trelease[t] + Trelease_2[t]) / 2;
 
 subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evaporator
-	TLMEvapHP_2[t] >= (Trelease[t] * Trelease_2[t])^(1/2);
+	TLMEvapHP_2[t] >= ((Trelease[t] + 273) * (Trelease_2[t] + 273))^(1/2) - 273;
 
 
 ## COST CONSIDERATIONS
