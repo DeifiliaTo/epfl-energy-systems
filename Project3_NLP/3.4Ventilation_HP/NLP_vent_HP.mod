@@ -8,16 +8,16 @@ set Buildings default {};					# set of buildings
 set MediumTempBuildings default {};			# set of buildings heated by medium temperature loop
 set LowTempBuildings default {};			# set of buildings heated by low temperature loop
 
-param Text{Time};  		#external temperature - Part 1
+param Text{Time};  		#external temperature - Part 1 [deg C]
 param top{Time}; 		#your operating time from the MILP part
 
-param Tint 				:= 21; # internal set point temperature [C]
+param Tint 				:= 21; # internal set point temperature [deg C]
 param mair 				:= 2.5; # m3/m2/h ASSUMPTION: ventilation flow per unit _building floor_ area
 param Cpair 			:= 1.152; # kJ/m3K
 param Uvent 			:= 0.025; # air-air HEX [kW/m2K]
 
-param EPFLMediumT 		:= 65; #[degC]
-param EPFLMediumOut 	:= 30; #[degC]
+param EPFLMediumT 		:= 65; #[deg C]
+param EPFLMediumOut 	:= 30; #[deg C]
 
 param CarnotEff 		:= 0.55; #assumption: carnot efficiency of heating heat pumps
 param Cel 				:= 0.20; #[CHF/kWh] operating cost for buying electricity from the grid
@@ -25,6 +25,7 @@ param Cel 				:= 0.20; #[CHF/kWh] operating cost for buying electricity from the
 param THPhighin 		:= 7; #[deg C] temperature of water coming from lake into the evaporator of the HP
 param THPhighout 		:= 3; #[deg C] temperature of water coming from lake into the evaporator of the HP
 param Cpwater			:= 4.18; #[kJ/kgC]
+param Tcoolant			:= -29.6; #[deg C]
 
 param i 				:= 0.06 ; #interest rate
 param n 				:= 20; #[y] life-time
@@ -58,11 +59,11 @@ var Paybt			>= 0.001; #[year] payback time
 
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
 
-var TEvap 			>= 0.001; #[degC]
+var TEvap 			>= 0.001; #[deg C] Unused.
 var Heat_Vent{Time} >= 0; #[kW]
-var DTLNVent{Time} 	>= 0.001; #[degC]
+var DTLNVent{Time} 	>= 0.001; #[K]
 var Area_Vent 		>= 0.001; #[m2]
-var DTminVent 		>= 2; #[degC]
+var DTminVent 		>= 0.001; #[C]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
 
@@ -85,7 +86,7 @@ var Cost_HP       		 	>=0; #HP cost
 
 var E_2{Time} 				>= 0; # kW] Electricity used in the Air-Air HP
 var TLMCond_2{t in Time} 	>= 0.001; #Text[t]; #[K] logarithmic mean temperature in the condensor of the new HP 
-var TLMEvapHP_2{Time} 		>= 0.001; # K] logarithmic mean temperature in the evaporator of the new HP 
+var TLMEvapHP_2{Time} 		>= 0.001; # [K] logarithmic mean temperature in the evaporator of the new HP 
 var Qevap_2{Time} 			>= 0; #[kW] heat extracted in the evaporator of the new HP 
 var Qcond_2{Time} 			>= 0; #[kW] heat delivered in the condensor of the new HP 
 var COP_2{Time} 			>= 0.001; #coefficient of performance of the new HP 
@@ -130,6 +131,12 @@ subject to DTHX_1 {t in Time}:
 subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t];
 
+subject to DTHX_3{t in Time}:
+	Trelease[t] >= Text[t];
+
+subject to DTHX_4{t in Time}:
+	Tint >= Text_new[t];
+
 subject to Theta_1 {t in Time}:
 	theta_1[t] = Trelease[t] - Text[t];
 
@@ -171,10 +178,10 @@ subject to COPerformance{t in Time}: #the COP can be computed using the carnot e
 	COP = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
 
 subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
-	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
+	TLMCond * log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) ) = (EPFLMediumT - EPFLMediumOut);
 
 subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
-	TLMEvapHP = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
+	TLMEvapHP * log( (THPhighin + 273) / (THPhighout + 273) ) = (THPhighin - THPhighout);
 
 
 ## Air Air HP
@@ -204,13 +211,13 @@ subject to Electricity_3{t in Time}: #the electricity consumed in the new HP can
 	E_2[t] = Qcond_2[t] / COP_2[t];
 
 subject to COPerformance_2{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
-	COP_2[t] = CarnotEff * ( TLMCond_2[t] / (TLMCond_2[t] - TLMEvapHP_2[t]));
+	COP_2[t] * (TLMCond_2[t] - TLMEvapHP_2[t]) = CarnotEff * TLMCond_2[t];
 
 subject to dTLMCondensor_2{t in Time}: #the logarithmic mean temperature in the new condenser. Note: should be in K
-	TLMCond_2[t] = (Tair_in[t] - Text_new[t] ) /  log( (Tair_in[t]+ 273) / (Text_new[t] + 273) );
+	TLMCond_2[t] * log( (Tair_in[t] + 273) / (Text_new[t] + 273)) = (Tair_in[t] - Text_new[t]);
 
 subject to dTLMEvaporatorHP_2{t in Time}: #the logarithmic mean temperature in the new Evaporator, Note: should be in K
-	TLMEvapHP_2[t] = (Trelease[t] - Trelease_2[t]) /  log( (Trelease[t] + 273) / (Trelease_2[t] + 273) );
+	TLMEvapHP_2[t] * log( (Trelease[t] + 273) / (Trelease_2[t] + 273)) = (Trelease[t] - Trelease_2[t]);
 
 
 ### IF SOME PROBLEMS OF COP and TEMPERATURE ARRIVE -> Remember that the log mean is always smaller than the aritmetic mean, but larger than the geometric mean. 
@@ -234,7 +241,10 @@ subject to Costs_HP {t in Time}: # new HP cost
 	Cost_HP = Cref_hp * (MS2017 / MS2000) * beta_hp;
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-	Qheating[t] + Qcond_2[t] = Heat_Vent[t];
+	Qheating[t] + Qcond_2[t] = Qevap_2[t] + Heat_Vent[t];
+
+subject to QEPFLausanne_2{t in Time}: #the heat demand of EPFL should be met;
+	Qheating[t] = Qcond[t];
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
 	OPEX = sum{t in Time} ((E_2[t]+E[t]) * top[t] * Cel);
