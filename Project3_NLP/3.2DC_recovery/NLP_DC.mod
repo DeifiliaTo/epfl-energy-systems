@@ -32,6 +32,7 @@ param HeatDC 		:= 574; #amount of heat to be removed from data center (kW)
 param Tret 			:= 17; #temperature of air entering DC
 param MassDC 		:= HeatDC/(TDCin-Tret); #[KJ/(s degC)] MCp of air in DC
 param Cpwater		:= 4.18; #[kJ/kgC]
+
 ################################
 ##Variables
 
@@ -80,17 +81,16 @@ subject to Tcontrol2{t in Time}:
 subject to Tcontrol3{t in Time}:
 #Freecooling
     TDCout[t] - THPin[t] >= 2;
-    #Tret - THPhighin > 2; This is already OK!
 
 
 ## MASS BALANCE
 
 subject to McpEPFL{t in Time}: #MCp of EPFL heating fluid calculation.
-	MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
+	MassEPFL[t] * (EPFLMediumT - EPFLMediumOut) = Qheating[t];
 	
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 subject to dTLMDataCenter {t in Time}: #the logarithmic mean temperature difference in the heat recovery HE can be computed
-    dTLMDC[t] = ((TDCin - TRadin[t]) - (TDCout[t] - EPFLMediumOut)) / log( (TDCin - TRadin[t]) / (TDCout[t] - EPFLMediumOut) );#In case of a counter-current HEX!! Check equation, not sure...
+    dTLMDC[t] * log( (TDCin - TRadin[t]) / (TDCout[t] - EPFLMediumOut) ) = ((TDCin - TRadin[t]) - (TDCout[t] - EPFLMediumOut));#In case of a counter-current HEX!! Check equation, not sure...
 
 subject to HeatBalance1{t in Time}: #Heat balance in DC HEX from DC side
     Qrad[t] = MassDC * (TDCin - TDCout[t]);
@@ -113,30 +113,30 @@ subject to QEvaporator{t in Time}: #water side of evaporator that takes flow fro
 subject to QCondensator{t in Time}: #EPFL side of condenser delivering heat to EFPL
 	Qcond[t] = MassEPFL[t] * (EPFLMediumT - TRadin[t]);
 
-subject to HeatBalanceDC{t in Time}: #makes sure all HeatDC is removed;
-	Qrad[t] + Qfree[t] = HeatDC;
+#subject to HeatBalanceDC{t in Time}: #makes sure all HeatDC is removed;
+#	Qrad[t] + Qfree[t] = HeatDC;
 
 subject to Electricity1{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted
     E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP
-    E[t] = Qcond[t] / COP[t];
+    E[t] * COP[t] = Qcond[t];
 
 subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
-    COP[t] = CarnotEff * ( TLMCond[t] / (TLMCond[t] - TLMEvapHP[t]));
+    COP[t] * (TLMCond[t] - TLMEvapHP[t]) = CarnotEff * TLMCond[t];
 
 subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K
-    TLMCond[t] = (EPFLMediumT - TRadin[t]) / log( (EPFLMediumT + 273) / (TRadin[t] + 273) );
+    TLMCond[t] * log( (EPFLMediumT + 273) / (TRadin[t] + 273) ) = (EPFLMediumT - TRadin[t]);
 
 subject to dTLMEvaporator{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K
-    TLMEvapHP[t] = (THPin[t] - THPhighout) / log( (THPin[t] + 273) / (THPhighout + 273) );
+    TLMEvapHP[t] * log( (THPin[t] + 273) / (THPhighout + 273) ) = (THPin[t] - THPhighout);
 
-subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be the sum of the heat delivered by the 2 systems;
-    Qheating[t] = Qcond[t] + Qrad[t];
+#subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be the sum of the heat delivered by the 2 systems;
+#    Qheating[t] = Qcond[t] + Qrad[t];
 
 ## COSTS and OBJECTIVE
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP
-    OPEX = sum{t in Time: Qheating[t] > 0} (E[t] * top[t] * Cel);
+    OPEX = sum{t in Time} (E[t] * top[t] * Cel);
 
 subject to CAPEXcost: #the investment cost can be computed using the area of the heat recovery heat exchanger and annuity factor
     #Cp = (INew / IRef) * aHE * (AHEDC)^bHE;
