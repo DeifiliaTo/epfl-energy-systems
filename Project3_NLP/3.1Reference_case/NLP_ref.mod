@@ -54,16 +54,16 @@ subject to Electricity1{t in Time}: #the electricity consumed in the HP (using p
     E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP (using pre-heated lake water) can be computed using the heat delivered and the COP
-    E[t] = Qcond[t] / COP[t];
+    E[t] * COP[t] = Qcond[t];
 
 subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
-    COP[t] = CarnotEff * ( TLMCond[t] / (TLMCond[t] - TLMEvapHP[t]));
+    COP[t] * (TLMCond[t] - TLMEvapHP[t]) = CarnotEff * ( TLMCond[t] );
 
 subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K
-    TLMCond[t] = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
+    TLMCond[t] * log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) ) = (EPFLMediumT - EPFLMediumOut);
 
 subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K
-    TLMEvapHP[t] = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
+    TLMEvapHP[t] * log( (THPhighin + 273) / (THPhighout + 273) ) = (THPhighin - THPhighout);
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the HP.
     Qheating[t] = Qcond[t]; # Qheating is in kW
