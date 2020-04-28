@@ -41,7 +41,7 @@ param eps				:= 1e-5; #Epsilon to avoid singularities
 
 var Text_new{t in Time} >= Text[t]; # air Temperature after air-air HEX;
 var Trelease{Time}  <= Tint; #[degC]
-var Qheating{Time} 	>= 0; #your heat demand from the MILP part, is now a variable.
+var Qheating{Time} 	:= 8000		>= 0; #your heat demand from the MILP part, is now a variable.
 
 var E{Time} 		>= 0; # [kW] electricity consumed by the reference heat pump (using pre-heated lake water)
 var TLMCond 	 	>= 0.001; #[K] logarithmic mean temperature in the condensor of the heating HP (using pre-heated lake water)
@@ -60,9 +60,9 @@ var Paybt			>= 0.001; #[year] payback time
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
 
 var TEvap 			>= 0.001; #[deg C] Unused.
-var Heat_Vent{Time} >= 0; #[kW]
+var Heat_Vent{Time} := 2000		>= 0; #[kW]
 var DTLNVent{Time} 	>= 1; #[K]
-var Area_Vent 		:= 40000 >= 0.001; #[m2]
+var Area_Vent 		:= 40000	>= 0.001; #[m2]
 var DTminVent 		>= 0.001; #[C]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
@@ -89,7 +89,7 @@ var TLMCond_2{t in Time} 	:=	20	>= 0.001; #Text[t]; #[K] logarithmic mean temper
 var TLMEvapHP_2{Time} 		:=	10	>= 0.001; # [K] logarithmic mean temperature in the evaporator of the new HP 
 var Qevap_2{Time} 			:=	5	>= 0; #[kW] heat extracted in the evaporator of the new HP 
 var Qcond_2{Time} 			:=	5	>= 0; #[kW] heat delivered in the condensor of the new HP 
-var COP_2{Time} 			:=	3	>= 0.001; #coefficient of performance of the new HP 
+var COP_2{Time} 			:=	1	>= 0.001; #coefficient of performance of the new HP 
 
 
 #### Building dependent parameters
@@ -131,17 +131,11 @@ subject to DTHX_1 {t in Time}:
 subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t] + eps;
 
-subject to DTHX_3{t in Time}:
-	Trelease[t] >= Text[t] + eps;
-
-subject to DTHX_4{t in Time}:
-	Tint >= Text_new[t];
-
 subject to Theta_1 {t in Time}:
-	theta_1[t] = Trelease[t] - Text[t];
+	theta_1[t] = abs (Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
-	theta_2[t] = Tint - Text_new[t];
+	theta_2[t] = abs(Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
@@ -237,7 +231,7 @@ subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evapora
 ## COST CONSIDERATIONS
 
 subject to Costs_HP {t in Time}: # new HP cost
-	Cost_HP = Cref_hp * (MS2017 / MS2000) * ((abs(E_2[t]+eps))^beta_hp);
+	Cost_HP = max (Cref_hp * (MS2017 / MS2000) * ((abs(E_2[t]+eps))^beta_hp));
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
 	Qheating[t] + Qcond_2[t] = Qevap_2[t];
