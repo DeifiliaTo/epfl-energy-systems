@@ -82,6 +82,9 @@ subject to Tcontrol3{t in Time}:
 #Freecooling
     TDCout[t] - THPin[t] >= 2;
 
+subject to COP_cons{t in Time}:
+    COP[t] <= 10;
+
 
 ## MASS BALANCE
 
@@ -113,8 +116,8 @@ subject to QEvaporator{t in Time}: #water side of evaporator that takes flow fro
 subject to QCondensator{t in Time}: #EPFL side of condenser delivering heat to EFPL
 	Qcond[t] = MassEPFL[t] * (EPFLMediumT - TRadin[t]);
 
-#subject to HeatBalanceDC{t in Time}: #makes sure all HeatDC is removed;
-#	Qrad[t] + Qfree[t] = HeatDC;
+subject to HeatBalanceDC{t in Time}: #makes sure all HeatDC is removed;
+	Qrad[t] + Qfree[t] = HeatDC;
 
 subject to Electricity1{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted
     E[t] = Qcond[t] - Qevap[t];
@@ -131,8 +134,8 @@ subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the co
 subject to dTLMEvaporator{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K
     TLMEvapHP[t] * log( (THPin[t] + 273) / (THPhighout + 273) ) = (THPin[t] - THPhighout);
 
-#subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be the sum of the heat delivered by the 2 systems;
-#    Qheating[t] = Qcond[t] + Qrad[t];
+subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be the sum of the heat delivered by the 2 systems;
+    Qheating[t] = Qcond[t] + Qrad[t];
 
 ## COSTS and OBJECTIVE
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP
