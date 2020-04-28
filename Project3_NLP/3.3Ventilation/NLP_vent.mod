@@ -60,9 +60,9 @@ var Paybt 			>= 0.001; #[year] Time for this case to be profitable
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
 
 var TEvap 			>= 0.001; #[degC]
-var Heat_Vent{Time} >= 0; #[kW]
+var Heat_Vent{Time} := 1000 >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
-var Area_Vent 		>= 0.001; #[m2]
+var Area_Vent 		:= 4000 >= 0.001; #[m2]
 var DTminVent 		>= 1; #[degC]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
@@ -163,7 +163,7 @@ subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed u
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
-    Qcond[t] = Qheating[t] - Heat_Vent[t]; #equation already used! problem?
+    Qcond[t] = Qheating[t]; #equation already used! problem?
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
