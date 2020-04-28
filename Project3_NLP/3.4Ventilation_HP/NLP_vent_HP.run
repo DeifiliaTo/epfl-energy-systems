@@ -57,6 +57,10 @@ display Qcond_2;
 display COP_2;
 display TLMCond_2;
 display TLMEvapHP_2;
+
+display TLMCond;
+display TLMEvapHP;
+
 display Cost_HP;
 
 
