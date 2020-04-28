@@ -199,7 +199,7 @@ subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvap
 	TLMCond_2[t] >= TLMEvapHP_2[t] + 5;
 
 subject to temperature_gap5{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
-	TLMCond >= TLMEvapHP;
+	TLMCond >= TLMEvapHP + eps;
 
 subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
 	Qevap_2[t] = mair * Cpair / 3600 * (Trelease[t] - Trelease_2[t]);
