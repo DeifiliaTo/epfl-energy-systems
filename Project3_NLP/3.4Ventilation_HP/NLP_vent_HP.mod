@@ -62,7 +62,7 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 var TEvap 			>= 0.001; #[deg C] Unused.
 var Heat_Vent{Time} >= 0; #[kW]
 var DTLNVent{Time} 	>= 1; #[K]
-var Area_Vent 		>= 0.001; #[m2]
+var Area_Vent 		:= 40000 >= 0.001; #[m2]
 var DTminVent 		>= 0.001; #[C]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
@@ -84,12 +84,12 @@ var Trelease_2{Time}     	>=0; #release temperature (check drawing);
 var Tair_in{Time}        	<= 40; #lets assume EPFL cannot take ventilation above 40 degrees (safety)
 var Cost_HP       		 	>=0; #HP cost 
 
-var E_2{Time} 				>= 0; # kW] Electricity used in the Air-Air HP
-var TLMCond_2{t in Time} 	>= 0.001; #Text[t]; #[K] logarithmic mean temperature in the condensor of the new HP 
-var TLMEvapHP_2{Time} 		>= 0.001; # [K] logarithmic mean temperature in the evaporator of the new HP 
-var Qevap_2{Time} 			>= 0; #[kW] heat extracted in the evaporator of the new HP 
-var Qcond_2{Time} 			>= 0; #[kW] heat delivered in the condensor of the new HP 
-var COP_2{Time} 			>= 0.001; #coefficient of performance of the new HP 
+var E_2{Time} 				:=	2	>= 0; # kW] Electricity used in the Air-Air HP
+var TLMCond_2{t in Time} 	:=	20	>= 0.001; #Text[t]; #[K] logarithmic mean temperature in the condensor of the new HP 
+var TLMEvapHP_2{Time} 		:=	10	>= 0.001; # [K] logarithmic mean temperature in the evaporator of the new HP 
+var Qevap_2{Time} 			:=	5	>= 0; #[kW] heat extracted in the evaporator of the new HP 
+var Qcond_2{Time} 			:=	5	>= 0; #[kW] heat delivered in the condensor of the new HP 
+var COP_2{Time} 			:=	3	>= 0.001; #coefficient of performance of the new HP 
 
 
 #### Building dependent parameters
@@ -126,13 +126,13 @@ subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Text_new[t] - Text[t]); # kW
 
 subject to DTHX_1 {t in Time}:
-	Trelease[t] <= Tint;
+	Trelease[t] + eps <= Tint;
 
 subject to DTHX_2 {t in Time}:
-	Text_new[t] >= Text[t];
+	Text_new[t] >= Text[t] + eps;
 
 subject to DTHX_3{t in Time}:
-	Trelease[t] >= Text[t];
+	Trelease[t] >= Text[t] + eps;
 
 subject to DTHX_4{t in Time}:
 	Tint >= Text_new[t];
@@ -187,16 +187,16 @@ subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed u
 ## Air Air HP
 
 subject to temperature_gap{t in Time}: #relation between Text and Text_new;
- 	Text_new[t] >= Text[t];
+ 	Text_new[t] >= Text[t] + eps;
 
 subject to temperature_gap2{t in Time}: #relation between Trelease and Trelease2;
-	Trelease[t] >= Trelease_2[t];
+	Trelease[t] >= Trelease_2[t] + eps;
 
 subject to temperature_gap3{t in Time}: # relation between Tair_in and Text_new;
-	Tair_in[t] >= Text_new[t];
+	Tair_in[t] >= Text_new[t] + eps;
 
 subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
-	TLMCond_2[t] >= TLMEvapHP_2[t];
+	TLMCond_2[t] >= TLMEvapHP_2[t] + 5;
 
 subject to temperature_gap5{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
 	TLMCond >= TLMEvapHP;
@@ -214,7 +214,7 @@ subject to Electricity_3{t in Time}: #the electricity consumed in the new HP can
 	E_2[t] = Qcond_2[t] / COP_2[t];
 
 subject to COPerformance_2{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
-	COP_2[t] * (TLMCond_2[t] - TLMEvapHP_2[t]) = CarnotEff * TLMCond_2[t];
+	COP_2[t] * (TLMCond_2[t] - TLMEvapHP_2[t] + eps) = CarnotEff * TLMCond_2[t];
 
 subject to dTLMCondensor_2{t in Time}: #the logarithmic mean temperature in the new condenser. Note: should be in K
 	TLMCond_2[t] * log( (Tair_in[t] + 273) / (Text_new[t] + 273)) = (Tair_in[t] - Text_new[t]);
@@ -240,11 +240,10 @@ subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evapora
 ## COST CONSIDERATIONS
 
 subject to Costs_HP {t in Time}: # new HP cost
-	# VERIFY FORMULA! 
-	Cost_HP = Cref_hp * (MS2017 / MS2000) * beta_hp;
+	Cost_HP = Cref_hp * (MS2017 / MS2000) * ((abs(E_2[t]+eps))^beta_hp);
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-	Qheating[t] + Qcond_2[t] = Qevap_2[t] + Heat_Vent[t];
+	Qheating[t] + Qcond_2[t] = Qevap_2[t];
 
 subject to QEPFLausanne_2{t in Time}: #the heat demand of EPFL should be met;
 	Qheating[t] = Qcond[t];

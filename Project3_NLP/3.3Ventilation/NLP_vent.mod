@@ -10,7 +10,7 @@ set LowTempBuildings default {};			# set of buildings heated by low temperature 
 
 param Text{t in Time};  #external temperature - Part 1
 param top{Time}; 		#your operating time from the MILP part
-var Areabuilding >= 0.001; #defined .dat file.
+var Areabuilding 		>= 0.001; #defined .dat file.
 
 param Tint 				:= 21; # internal set point temperature [C]
 param mair 				:= 2.5; # m3/m2/h ASSUMPTION: ventilation flow per unit _building floor_ area
@@ -62,7 +62,7 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} := 1000 >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
-var Area_Vent 		:= 4000 >= 0.001; #[m2]
+var Area_Vent 		:= 40000 >= 0.001; #[m2]
 var DTminVent 		>= 1; #[degC]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
