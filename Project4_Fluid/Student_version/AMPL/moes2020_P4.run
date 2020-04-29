@@ -1,0 +1,52 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the main model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+reset;
+
+model moes2020_P4.mod;  # activate this to calculate carnot factor of high pressure stage
+#model moes2020_P4_2.mod; # activate this to calculate carnot factor of low pressure stage
+data moes2020_P4_R11.dat; # include your specific data for your working fluid
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+AMPL options
+---------------------------------------------------------------------------------------------------------------------------------------*/
+option solver './snopt';
+#option display_round 5;
+#option precision_round 5;
+#option solution_round 5;
+#option omit_zero_rows 1;
+#option omit_zero_cols 1;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Solve the problem
+---------------------------------------------------------------------------------------------------------------------------------------*/
+solve;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Display commands
+---------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+	
+
+display c_factor1;
+display c_factor2;
+display T_ext;
+display Q_cond;
+display a;
+display b;
+display c;
+display mse;
+display comp_cost;
+
+#for high pressure stage:
+# display Cond_cost;
+# display Cond_area;
+# display DTlnCond;
+
+#for low pressure stage: 
+display Evap_cost;
+display Evap_area;
+display DTlnEvap;    
+
+
