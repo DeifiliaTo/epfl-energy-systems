@@ -17,9 +17,9 @@ data ../../Project2_MILP/building_dat/moesPH.dat
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-#option solver 'snopt';
-  option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
-  option presolve 1;
+option solver 'snopt';
+# option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+option presolve 1;
 # option omit_zero_rows 1;
 # option omit_zero_cols 1;
 option presolve_eps 8.53e-15;
@@ -43,6 +43,7 @@ display DTminVent;
 display Qheating;
 display Heat_Vent;
 display E;
+display MassEPFL;
 # display FloorArea;
 display Text;
 display Text_new;

@@ -25,7 +25,6 @@ param Cel 				:= 0.20; #[CHF/kWh] operating cost for buying electricity from the
 param THPhighin 		:= 7; #[deg C] temperature of water coming from lake into the evaporator of the HP
 param THPhighout 		:= 3; #[deg C] temperature of water coming from lake into the evaporator of the HP
 param Cpwater			:= 4.18; #[kJ/kgC]
-param Tcoolant			:= -29.6; #[deg C]
 
 param i 				:= 0.06 ; #interest rate
 param n 				:= 20; #[y] life-time
@@ -60,9 +59,9 @@ var Paybt			>= 0.001; #[year] payback time
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
 
 var TEvap 			>= 0.001; #[deg C] Unused.
-var Heat_Vent{Time} >= 0.001; #[kW]
+var Heat_Vent{Time} := 1000		>= 0; #[kW]
 var DTLNVent{Time} 	>= 1; #[K]
-var Area_Vent 		:= 3000 >= 0.001; #[m2]
+var Area_Vent 		:= 40000	>= 0.001; #[m2]
 var DTminVent 		>= 0.001; #[C]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
@@ -82,14 +81,14 @@ param MS2017				:= 562;
 
 var Trelease_2{Time}     	>=0; #release temperature (check drawing);    
 var Tair_in{Time}        	<= 40; #lets assume EPFL cannot take ventilation above 40 degrees (safety)
-var Cost_HP       		 	>=0; #HP cost 
+var Cost_HP       		 	:= 4000	>=0; #HP cost 
 
-var E_2{Time} 				:= 2	>= 0; # kW] Electricity used in the Air-Air HP
-var TLMCond_2{t in Time} 	:= 20	>= 0.001; #Text[t]; #[K] logarithmic mean temperature in the condensor of the new HP 
-var TLMEvapHP_2{Time} 		:= 10	>= 0.001; # [K] logarithmic mean temperature in the evaporator of the new HP 
-var Qevap_2{Time} 			:= 300	>= 0; #[kW] heat extracted in the evaporator of the new HP 
-var Qcond_2{Time} 			:= 300	>= 0; #[kW] heat delivered in the condensor of the new HP 
-var COP_2{Time} 			:= 4	>= 0.001; #coefficient of performance of the new HP 
+var E_2{Time} 				:=	2	>= 0; # kW] Electricity used in the Air-Air HP
+var TLMCond_2{t in Time} 	:=	20	>= 0.001; #Text[t]; #[K] logarithmic mean temperature in the condensor of the new HP 
+var TLMEvapHP_2{Time} 		:=	10	>= 0.001; # [K] logarithmic mean temperature in the evaporator of the new HP 
+var Qevap_2{Time} 			:=	5	>= 0; #[kW] heat extracted in the evaporator of the new HP 
+var Qcond_2{Time} 			:=	5	>= 0; #[kW] heat delivered in the condensor of the new HP 
+var COP_2{Time} 			:=	1	>= 0.001; #coefficient of performance of the new HP 
 
 
 #### Building dependent parameters
@@ -129,19 +128,13 @@ subject to DTHX_1 {t in Time}:
 	Trelease[t] + eps <= Tint;
 
 subject to DTHX_2 {t in Time}:
-	Text_new[t] + eps >= Text[t];
-
-subject to DTHX_3{t in Time}:
-	Trelease[t] >= Text[t] + eps;
-
-subject to DTHX_4{t in Time}:
-	Tint >= Text_new[t] + eps;
+	Text_new[t] >= Text[t] + eps;
 
 subject to Theta_1 {t in Time}:
-	theta_1[t] = Trelease[t] - Text[t] + eps;
+	theta_1[t] =  (Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
-	theta_2[t] = Tint - Text_new[t] + eps;
+	theta_2[t] = (Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
@@ -196,7 +189,10 @@ subject to temperature_gap3{t in Time}: # relation between Tair_in and Text_new;
 	Tair_in[t] >= Text_new[t] + eps;
 
 subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
-	TLMCond_2[t] >= TLMEvapHP_2[t] + eps*500;
+	TLMCond_2[t] >= TLMEvapHP_2[t] + 2;
+
+#subject to temperature_gap5{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
+#	TLMCond >= TLMEvapHP + eps;
 
 subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
 	Qevap_2[t] = mair * Cpair / 3600 * (Trelease[t] - Trelease_2[t]);
@@ -211,7 +207,10 @@ subject to Electricity_3{t in Time}: #the electricity consumed in the new HP can
 	E_2[t] * COP_2[t] = Qcond_2[t];
 
 subject to COPerformance_2{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
-	COP_2[t] * (TLMCond_2[t] - TLMEvapHP_2[t]) = CarnotEff * TLMCond_2[t];
+	COP_2[t] * (TLMCond_2[t] - TLMEvapHP_2[t] + eps) = CarnotEff * TLMCond_2[t];
+
+subject to COP_2_limit{t in Time}:
+	COP_2[t] <= 5;
 
 subject to COPerformance_limit{t in Time}:
 	COP_2[t] <= 5;
