@@ -22,6 +22,8 @@ option solver snopt;
 #option omit_zero_rows 1;
 #option omit_zero_cols 1;
 option presolve_eps 8.53e-15;
+option snopt_options 'major_iterations=10000';
+
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Solve the problem
