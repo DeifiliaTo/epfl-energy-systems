@@ -23,19 +23,19 @@ param T_source 			:= 10;	# [deg C] Temperature of heat pump heat source at which
 param T_hp1             := 2; 	#[deg C] temperature in 2, see flowsheet
 
 #costing parameters 
-param k1  				:= ;	#parameter for compressor cost function
-param k2 			 	:= ; 	#parameter for compressor cost function
-param k3  				:= ;    #parameter for compressor cost function
-param k1_HEX			:= ; 	#parameter for HEX cost function
-param k2_HEX	 	 	:= ;	#parameter for HEX cost function
-param k3_HEX  			:= ;	#parameter for HEX cost function
-param f_BM 				:= ; 	# bare module factor for compressor (CS) 
-param f_BM_HEX			:= ; 	# bare module factor for HEX 
-param ref_index 		:= ; 	# CEPCI reference 2001 
-param index 			:= ;	# CEPCI 2016
+param k1  				:= 580000;	#parameter for compressor cost function
+param k2 			 	:= 20000; 	#parameter for compressor cost function
+param k3  				:= 0.6;    #parameter for compressor cost function
+param k1_HEX			:= 1600; 	#parameter for HEX cost function
+param k2_HEX	 	 	:= 210;	#parameter for HEX cost function
+param k3_HEX  			:= 0.95;	#parameter for HEX cost function
+param f_BM 				:= 2.15; 	# bare module factor for compressor (CS) 
+param f_BM_HEX			:= 1.80; 	# bare module factor for HEX 
+param ref_index 		:= 532.9; 	# CEPCI reference Jan 2010
+param index 			:= 596.2;	# CEPCI Jan 2020
 
-param U_water_ref       := ; 	#water-refrigerant global heat transfer coefficient (kW/m2.K)
-param U_air_ref         := ; 	#air-refrigerant global heat transfer coefficient (kW/m2.K)
+param U_water_ref       := 0.642; 	#water-refrigerant global heat transfer coefficient (kW/m2.K)
+param U_air_ref         := 0.150; 	#air-refrigerant global heat transfer coefficient (kW/m2.K)
   
   
 ################################
@@ -84,14 +84,14 @@ subject to Evaporator_area: #Area of evap HEX, calclated for extreme period
 	Q_evap[t = 12] = U_water_ref * Evap_area * DTlnEvap; #Set a certain time period!!
 
 subject to Comp2cost: #calculates the cost for comp2 for extreme period 
-
+    comp_cost = (index/ref_index) * (k1 + k2 * (W_comp2[t = 12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
 
 #subject to HEX1_cost: #calculates the cost forHEX1 for extreme period 
 subject to Evaporator_cost:
- 	
+ 	Evap_cost = (index/ref_index) * (k1_HEX + k2_HEX * (Evap_area)^k3_HEX) * f_BM_HEX * 0.96;
 
 subject to Error: #calculates the mean square error between carnot factors that needs to be minimized 
-	mse = sum{t in Time} ((c_factor2[t] - c_factor1[t])^2 / 12)
+	mse = sum{t in Time} ((c_factor2[t] - c_factor1[t])^2 / 12);
 
 ################################
 minimize obj : mse; 
