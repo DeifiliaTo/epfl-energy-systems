@@ -69,7 +69,7 @@ subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied 
     Qheating[t] = Qcond[t]; # Qheating is in kW
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP;
-    OPEX = sum{t in Time: Qheating[t] > 0} (E[t] * top[t] * Cel);
+    OPEX = sum{t in Time} (E[t] * top[t] * Cel);
 
 ################################
 minimize obj : OPEX;
