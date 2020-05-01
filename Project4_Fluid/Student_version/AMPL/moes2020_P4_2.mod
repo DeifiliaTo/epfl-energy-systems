@@ -5,16 +5,15 @@ reset;
 # Sets & Parameters
 ################################
 set Time default {}; 	#time steps for which we have results 
+
 #parameter defined in dat sheet: 
 param Q_cond{Time}; 	#[kW] heat condensor
 param Q_evap{Time}; 	#[kW] heat evaporator
 param W_hp{Time};  		#[kW] total power consumed by hp 
 param W_comp1{Time} ; 	#[kW] power of compressor 1 
 param T_cond{Time}; 	#[deg C] condensation temperature of the hp 
-param  T_ext {Time}; 	#[deg C] external temperature 
+param T_ext {Time}; 	#[deg C] external temperature 
 param T_hp_4{Time}; 	#[deg C] temperature in 4, see flowsheet
-
-
 
 
 #temperatures that are constant for all fluids and timesteps
@@ -60,8 +59,7 @@ var DTlnEvap				>= 0.001 ;
 ################################
 
 subject to Wcompressor2{t in Time}: #calculates the electricity demand of the second compressor 
-
-
+    W_comp2[t] = W_hp[t] - W_comp1[t];
 
 subject to CarnotFactor1{t in Time}:  
 #caculates the carnot factor for all time steps of low pressure stage
@@ -69,29 +67,31 @@ subject to CarnotFactor1{t in Time}:
 #for calculating the carnot factor, assume t_epfl_low as condenser temperature, and source temperature as evaporator temperature
 #How can you calculate the condensation heat that is available here? 
 #avoid dividing by 0! ,use conditions
+    c_factor1[t] = if (Q_cond[t] > 0) then
+        ((W_hp[t] + Q_evap[t] - Q_cond[t]) / W_comp1[t]) * ((T_epfl_low - T_source) / T_epfl_low)
+        else 0.001;
 
 subject to CarnotFactor2{t in Time}:  #caculates the carnot factor for all time steps with fitting function (2nd degree polynomial)
-#if you used conditions in CarnotFactor1,apply the same ones 
-
-
+#if you used conditions in CarnotFactor1,apply the same ones
+    c_factor2[t] = if (Q_cond[t] > 0) then
+        a * (T_ext[t] + 273)^2 - b * (T_ext[t] + 273) + c
+        else 0.001;
 
 subject to DTlnEvap_constraint: #calculated the DTLN of the evap heat exchanger,  source - heat pump
-	
+	DTlnEvap = ( (T_source - T_hp1) - (T_source - T_evap) ) / log ((T_source - T_hp1) / (T_source - T_evap));
 
 subject to Evaporator_area: #Area of evap HEX, calclated for extreme period 
-	
+	Q_evap[t = 12] = U_water_ref * Evap_area * DTlnEvap; #Set a certain time period!!
 
 subject to Comp2cost: #calculates the cost for comp2 for extreme period 
 
 
- #subject to HEX1_cost: #calculates the cost forHEX1 for extreme period 
- subject to Evaporator_cost:
+#subject to HEX1_cost: #calculates the cost forHEX1 for extreme period 
+subject to Evaporator_cost:
  	
 
- subject to Error: #calculates the mean square error between carnot factors that needs to be minimized 
-	
-
-
+subject to Error: #calculates the mean square error between carnot factors that needs to be minimized 
+	mse = sum{t in Time} ((c_factor2[t] - c_factor1[t])^2 / 12)
 
 ################################
 minimize obj : mse; 
