@@ -62,7 +62,7 @@ var TEvap 			>= 0.001; #[deg C] Unused.
 var Heat_Vent{Time} := 1000		>= 0; #[kW]
 var DTLNVent{Time} 	>= 1; #[K]
 var Area_Vent 		:= 40000	>= 0.001; #[m2]
-var DTminVent 		>= 0.001; #[C]
+var DTminVent 		:= 2	>= 0.001; #[C]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
 
@@ -80,7 +80,7 @@ param MS2000				:= 400;
 param MS2017				:= 562;
 
 var Trelease_2{Time}     	>=0; #release temperature (check drawing);    
-var Tair_in{Time}        	<= 40; #lets assume EPFL cannot take ventilation above 40 degrees (safety)
+var Tair_in{Time}        	<= 30; #lets assume EPFL cannot take ventilation above 30 degrees (safety)
 var Cost_HP       		 	:= 4000	>=0; #HP cost 
 
 var E_2{Time} 				:=	2	>= 0; # kW] Electricity used in the Air-Air HP
@@ -106,7 +106,7 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 # Constraints
 ################################
 
-## VENTILATION
+## MAIN HEAT BALANCE
 
 subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
 	Qheating[t] = if (Text[t] < 16) then 
@@ -116,7 +116,9 @@ subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum o
 
 # total area of building
 subject to buildingarea:
- Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
+	Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
+
+## HEAT EXCHANGER
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
 	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
@@ -131,7 +133,7 @@ subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t] + eps;
 
 subject to Theta_1 {t in Time}:
-	theta_1[t] =  (Trelease[t] - Text[t]);
+	theta_1[t] = (Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
 	theta_2[t] = (Tint - Text_new[t]);
@@ -150,13 +152,14 @@ subject to DTminVent2: #DTmin needed on the other end of HEX
 
 ## MASS BALANCE
 
-subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
-	MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
+# DUPLICATE of constraint QCondensator
+# subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
+# 	MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
 
 ## ENERGY BALANCE
 
-# subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
-#     Qcond[t] = Qheating[t]; #equation already used! problem?
+subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
+    Qcond[t] = Qheating[t]; #equation already used! problem?
 
 ## MAIN HEATING HEAT PUMP
 
@@ -248,8 +251,12 @@ subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evapora
 subject to Costs_HP: # new HP cost
 	Cost_HP = max{t in Time} (Cref_hp * (MS2017 / MS2000) * ((E_2[t] + eps)^beta_hp));
 
-subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-	mair/3600*Cpair*(Tint - Tair_in[t])*Areabuilding + Qcond_2[t] = Qevap_2[t] + E_2[t];
+# subject to QEPFLausanne2{t in Time}: #the heat demand of EPFL should be met;
+# 	mair/3600*Cpair*(Tint - Tair_in[t])*Areabuilding + Qcond_2[t] = Qevap_2[t];
+
+# heat balance on the air stream
+# subject to air_EB {t in Time}:
+# 	Text[t] - Text_new[t] + Tint = Trelease[t];
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
 	OPEX = sum{t in Time} ((E_2[t]+E[t]) * top[t] * Cel);
