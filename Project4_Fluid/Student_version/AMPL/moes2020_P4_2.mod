@@ -47,7 +47,6 @@ var a 						>= 0.000000001;
 var b 						>= 0.000000001;
 var c 						>= 0.000000001; 
 var mse 					>= 0.000000001; #mean squared error, to be minimized (c_factor- c_factor_rec)^2 /n 
-var W_comp2{Time}			>= 0; # electricity demand of second compressor 
 
 var comp_cost				>= 0.001 ;
 var Evap_cost				>= 0.001 ;
@@ -58,9 +57,6 @@ var DTlnEvap				>= 0.001 ;
 # Constraints
 ################################
 
-subject to Wcompressor2{t in Time}: #calculates the electricity demand of the second compressor 
-    W_comp2[t] = W_hp[t] - W_comp1[t];
-
 subject to CarnotFactor1{t in Time}:  
 #caculates the carnot factor for all time steps of low pressure stage
 #we assume that the low pressure stage can provide heat to the low temperature network of epfl over a free heat exchanger (no cost considered!)
@@ -68,7 +64,7 @@ subject to CarnotFactor1{t in Time}:
 #How can you calculate the condensation heat that is available here? 
 #avoid dividing by 0! ,use conditions
     c_factor1[t] = if (Q_cond[t] > 0) then
-        ((W_hp[t] + Q_evap[t] - Q_cond[t]) / W_comp1[t]) * ((T_epfl_low - T_source) / T_epfl_low)
+        ((W_comp1[t] + Q_evap[t]) / W_comp1[t]) * ((T_epfl_low - T_source) / (T_epfl_low + 273))
         else 0.001;
 
 subject to CarnotFactor2{t in Time}:  #caculates the carnot factor for all time steps with fitting function (2nd degree polynomial)
@@ -81,17 +77,17 @@ subject to DTlnEvap_constraint: #calculated the DTLN of the evap heat exchanger,
 	DTlnEvap = ( (T_source - T_hp1) - (T_source - T_evap) ) / log ((T_source - T_hp1) / (T_source - T_evap));
 
 subject to Evaporator_area: #Area of evap HEX, calclated for extreme period 
-	Q_evap[t = 12] = U_water_ref * Evap_area * DTlnEvap; #Set a certain time period!!
+	Q_evap[12] = U_water_ref * Evap_area * DTlnEvap; #Set a certain time period!!
 
 subject to Comp2cost: #calculates the cost for comp2 for extreme period 
-    comp_cost = (index/ref_index) * (k1 + k2 * (W_comp2[t = 12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
+    comp_cost = (index/ref_index) * (k1 + k2 * (W_comp1[12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
 
 #subject to HEX1_cost: #calculates the cost forHEX1 for extreme period 
 subject to Evaporator_cost:
  	Evap_cost = (index/ref_index) * (k1_HEX + k2_HEX * (Evap_area)^k3_HEX) * f_BM_HEX * 0.96;
 
 subject to Error: #calculates the mean square error between carnot factors that needs to be minimized 
-	mse = sum{t in Time} ((c_factor2[t] - c_factor1[t])^2 / 12);
+	mse = sum{t in Time} ((c_factor2[t] - c_factor1[t])^2);
 
 ################################
 minimize obj : mse; 

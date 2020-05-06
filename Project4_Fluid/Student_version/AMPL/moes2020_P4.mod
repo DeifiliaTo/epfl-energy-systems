@@ -57,10 +57,14 @@ var Cond_cost			>= 0.001 ; #cost of condenser hex
 var Cond_area			>= 0.001 ; #area of condenser hex 
 var DTlnCond			>= 0.001 ; #logarithmic mean temperature difference of condenser hex
 var TlnCond             >= 0.001; #logaritmic mean temperature of medium temperature loop epfl
+var W_comp2{Time}			>= 0; # electricity demand of second compressor 
 
 ################################
 # Constraints
 ################################
+
+subject to Wcompressor2{t in Time}: #calculates the electricity demand of the second compressor 
+    W_comp2[t] = W_hp[t] - W_comp1[t];
 
 subject to CarnotFactor1{t in Time}:  #caculates the carnot factor for all time steps, avoid dividing by 0 in summer! 
 #caculates the carnot factor for all time steps of high pressure stage
@@ -68,9 +72,8 @@ subject to CarnotFactor1{t in Time}:  #caculates the carnot factor for all time 
 #TlnCond  is the condensation temperature, what is the evaporation temperature of this stage? 
 #avoid dividing by 0! ,use conditions
     c_factor1[t] = if (Q_cond[t] > 0) then
-        (Q_cond[t] / W_hp[t]) * ((TlnCond - T_hp_4[t]) / (TlnCond + 273)) #W compressor 2!!!!!!!
+        (Q_cond[t] / W_comp2[t]) * ((TlnCond - (T_hp_4[t] + 273)) / TlnCond)
         else 0.001;
-	
 
 subject to CarnotFactor2{t in Time}:  #caculates the carnot factor for all time steps with fitting function (2nd degree polynomial)
 #if you used conditions in CarnotFactor1,apply the same ones 
@@ -78,29 +81,28 @@ subject to CarnotFactor2{t in Time}:  #caculates the carnot factor for all time 
         a * (T_ext[t] + 273)^2 - b * (T_ext[t] + 273) + c
         else 0.001;
 
-
 subject to TlnCond_constraint: #calculates the Log mean temperatrure of the epfl medium temperature loop 
 	TlnCond = (T_medium_in - T_medium_out) / log ((T_medium_in + 273) / (T_medium_out + 273));
 	
-subject to DTlnCond_constraint: #calculated the DTLN of the condenser heat exchanger EPFL medium temperature loop - heat pump for the expreme period, you can neglect the sensible heat transfer (T variation)
-    DTlnCond = ((T_cond[t=12] - T_medium_in) - (T_cond[t=12] - T_medium_out)) / log( (T_cond[t=12] - T_medium_in) / (T_cond[t=12] - T_medium_out) );
+subject to DTlnCond_constraint: #calculated the DTLN of the condenser heat exchanger EPFL medium temperature loop - heat pump for the extreme period, you can neglect the sensible heat transfer (T variation)
+    DTlnCond = ((T_cond[12] - T_medium_in) - (T_cond[12] - T_medium_out)) / log( (T_cond[12] - T_medium_in) / (T_cond[12] - T_medium_out) );
 
 subject to Heat_condenser: #Heat transferred to EPFL network on extreme period, this equation is needed to define T_medium_in
-	Q_cond[t = 12] = Mcp * (T_medium_in - T_medium_out);
+	Q_cond[12] = Mcp * (T_medium_in - T_medium_out);
 
 subject to Condenser_area: #Area of condenser HEX, calculated for extreme period 
-	Q_cond[t=12] = U_air_ref * Cond_area * DTlnCond;
+	Q_cond[12] = U_water_ref * Cond_area * DTlnCond;
 
 subject to Comp1cost: 
 #calculates the cost for comp1 for extreme period 
- 	comp_cost = (index/ref_index) * (k1 + k2 * (W_comp1[t = 12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
+ 	comp_cost = (index/ref_index) * (k1 + k2 * (W_comp2[12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
  	
 #subject to HEX2_cost: #calculates the cost for HEX2 for extreme period 
 subject to Condenser_cost:
  	Cond_cost = (index/ref_index) * (k1_HEX + k2_HEX * (Cond_area)^k3_HEX) * f_BM_HEX * 0.96;
 
 subject to Error: #calculates the mean square error that needs to be minimized 
-    mse = sum{t in Time} ((c_factor2[t] - c_factor1[t])^2 / 12);
+    mse = sum{t in Time} ((c_factor2[t] - c_factor1[t])^2);
 
 ################################
 minimize obj : mse; 
