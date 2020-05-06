@@ -132,12 +132,7 @@ subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
 subject to DTminVent2{t in Time}: #DTmin needed on the other end of HEX 
     DTminVent <= Tint - Text_new[t];
 
-## MASS BALANCE
-
-# subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
-#     MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut); 
-
-## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
+## MAIN HEATING HEAT PUMP
 
 subject to QEvaporator{t in Time}: #water side of evaporator that takes flow from lake (Reference case)
 	Qevap[t] = Flow[t] * Cpwater * (THPhighin - THPhighout);
@@ -160,10 +155,11 @@ subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, us
 subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
 	TLMEvapHP = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
 
-## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
-
+# energy balance
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
     Qcond[t] = Qheating[t]; #equation already used! problem?
+
+# FINANCIAL CALCULATIONS
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
