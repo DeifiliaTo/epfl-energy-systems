@@ -137,10 +137,10 @@ subject to Theta_2 {t in Time}:
 	theta_2[t] = (Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
+	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2; # K
 
 subject to Area_Vent1: #Area of ventilation HEX
-	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
+	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent)); # m2
 
 subject to DTminVent1: #DTmin needed on one end of HEX
 	DTminVent = min{t in Time} (Trelease[t] - Text[t]);
@@ -153,7 +153,12 @@ subject to DTminVent2: #DTmin needed on the other end of HEX
 subject to Flows{t in Time}: #MCp of EPFL heating fluid calculation.
 	MassEPFL[t] = Qheating[t] / (EPFLMediumT-EPFLMediumOut);
 
-## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
+## ENERGY BALANCE
+
+# subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
+#     Qcond[t] = Qheating[t]; #equation already used! problem?
+
+## MAIN HEATING HEAT PUMP
 
 subject to QEvaporator{t in Time}: #water side of evaporator that takes flow from Free cooling HEX
 	Qevap[t] = Flow[t] * Cpwater * (THPhighin - THPhighout);
@@ -177,10 +182,11 @@ subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed u
 	TLMEvapHP * log( (THPhighin + 273) / (THPhighout + 273) ) = (THPhighin - THPhighout);
 
 
-## Air Air HP
+## AIR VENTILATION HP
 
-subject to temperature_gap{t in Time}: #relation between Text and Text_new;
- 	Text_new[t] >= Text[t] + eps;
+# DUPLICATE of constraint DTHX_2
+# subject to temperature_gap{t in Time}: #relation between Text and Text_new;
+#  	Text_new[t] >= Text[t] + eps;
 
 subject to temperature_gap2{t in Time}: #relation between Trelease and Trelease2;
 	Trelease[t] >= Trelease_2[t] + eps;
@@ -188,17 +194,18 @@ subject to temperature_gap2{t in Time}: #relation between Trelease and Trelease2
 subject to temperature_gap3{t in Time}: # relation between Tair_in and Text_new;
 	Tair_in[t] >= Text_new[t] + eps;
 
+# CHECK is this constraint strictly necessary?
 subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
 	TLMCond_2[t] >= TLMEvapHP_2[t] + 2;
 
-#subject to temperature_gap5{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
-#	TLMCond >= TLMEvapHP + eps;
+# subject to temperature_gap5{t in Time}: # relation between TLMCond and TLMEvapHP;
+# 	TLMCond >= TLMEvapHP + eps;
 
 subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
-	Qevap_2[t] = mair * Cpair / 3600 * (Trelease[t] - Trelease_2[t]);
+	Qevap_2[t] = mair/3600 * Areabuilding * Cpair * (Trelease[t] - Trelease_2[t]);
 
 subject to QCondensator_2{t in Time}: #Condenser heat from air side
-	Qcond_2[t] = mair * Cpair  / 3600 * (Tair_in[t] - Text_new[t]);
+	Qcond_2[t] = mair/3600 * Areabuilding * Cpair * (Tair_in[t] - Text_new[t]);
 
 subject to Electricity_2{t in Time}: #the electricity consumed in the new HP can be computed using the heat delivered and the heat extracted
 	E_2[t] = Qcond_2[t] - Qevap_2[t];
@@ -212,8 +219,8 @@ subject to COPerformance_2{t in Time}: #the COP can be computed using the carnot
 subject to COP_2_limit{t in Time}:
 	COP_2[t] <= 5;
 
-subject to COPerformance_limit{t in Time}:
-	COP_2[t] <= 5;
+# subject to COPerformance_limit{t in Time}:
+# 	COP <= 5;
 
 subject to dTLMCondensor_2{t in Time}: #the logarithmic mean temperature in the new condenser. Note: should be in K
 	TLMCond_2[t] * log( (Tair_in[t] + 273) / (Text_new[t] + 273)) = (Tair_in[t] - Text_new[t]);
@@ -242,7 +249,7 @@ subject to Costs_HP: # new HP cost
 	Cost_HP = max{t in Time} (Cref_hp * (MS2017 / MS2000) * ((E_2[t] + eps)^beta_hp));
 
 subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-	mair/3600*Cpair*(Tint - Tair_in[t])*Areabuilding + Qcond_2[t] = Qevap_2[t];
+	mair/3600*Cpair*(Tint - Tair_in[t])*Areabuilding + Qcond_2[t] = Qevap_2[t] + E_2[t];
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
 	OPEX = sum{t in Time} ((E_2[t]+E[t]) * top[t] * Cel);
