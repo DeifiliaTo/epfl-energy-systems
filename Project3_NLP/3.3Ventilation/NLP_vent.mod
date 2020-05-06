@@ -4,6 +4,7 @@
 # Sets & Parameters
 reset;
 set Time default {};        				# your time set from the MILP 
+set Ignore default {};
 set Buildings default {};					# set of buildings
 set MediumTempBuildings default {};			# set of buildings heated by medium temperature loop
 set LowTempBuildings default {};			# set of buildings heated by low temperature loop
@@ -34,7 +35,7 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
-param eps				:= 1e-5; #Epsilon to avoid singularities
+param eps				:= 1e-1; #Epsilon to avoid singularities
 
 ################################
 # Variables
@@ -107,10 +108,10 @@ subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Text_new[t] - Text[t]); # kW
 
 subject to DTHX_1 {t in Time}:
-	Trelease[t] <= Tint;
+	Trelease[t] + eps <= Tint;
 
 subject to DTHX_2 {t in Time}:
-	Text_new[t] >= Text[t];
+	Text_new[t] >= Text[t] + eps ;
 
 subject to Theta_1 {t in Time}:
 	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
@@ -123,8 +124,8 @@ subject to Theta_2 {t in Time}:
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 
-subject to Area_Vent1: #Area of ventilation HEX
-	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
+subject to Area_Vent1max{t in Time}: #Area of ventilation HEX
+	Area_Vent >= eps + (Heat_Vent[t] / (DTLNVent[t]*Uvent));
 
 subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
 	DTminVent <= Trelease[t] - Text[t];
@@ -168,7 +169,8 @@ subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
 # This doesn't converge -> reaches iter limit
-	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
+	OPEX = sum{t in Time} if Qheating[t] > 0 then (E[t] * top[t] * Cel) 
+							else 0;
 	
 subject to Icost:  #the investment cost can be computed using the area of the ventilation heat exchanegr
 	IC = ((INew / IRef) * aHE * (Area_Vent+eps)^bHE) * FBMHE; #[CHF]
