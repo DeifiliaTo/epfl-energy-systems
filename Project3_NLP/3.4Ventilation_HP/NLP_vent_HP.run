@@ -18,7 +18,12 @@ data ../../Project2_MILP/building_dat/moesPH.dat
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 option solver minos;
+<<<<<<< Updated upstream
 # option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+=======
+#  option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+ option presolve 2;
+>>>>>>> Stashed changes
 #option omit_zero_rows 1;
 #option omit_zero_cols 1;
 option presolve_eps 8.53e-15;
@@ -36,35 +41,34 @@ Display commands
 display TC;
 display OPEX;
 display CAPEX;
-display Profit;
-display Paybt;
 
-display Area_Vent;
 display Qheating;
-display Heat_Vent;
-display Trelease;
 
+print '#    HEAT EXCHANGER';
+display Area_Vent;
+display Heat_Vent;
 display theta_1;
 display theta_2;
 
-display E;
-display E_2;
-
+print '#    AIR STREAM TEMPERATURES';
+print '##   incoming air stream';
 display Text;
 display Text_new;
 display Tair_in;
+print '##   outgoing air stream';
+display Tint;
 display Trelease;
 display Trelease_2;
 
+print '#    AIR VENTILATION HEAT PUMP';
 display Qevap_2;
 display Qcond_2;
 display COP_2;
 display TLMCond_2;
 display TLMEvapHP_2;
 
+print '#    MAIN HEAT PUMP';
 display TLMCond;
 display TLMEvapHP;
 
-display Cost_HP;
-
-
+# display Cost_HP;
