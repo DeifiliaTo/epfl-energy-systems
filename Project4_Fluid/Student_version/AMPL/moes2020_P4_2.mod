@@ -81,10 +81,10 @@ subject to DTlnEvap_constraint: #calculated the DTLN of the evap heat exchanger,
 	DTlnEvap = ( (T_source - T_hp1) - (T_source - T_evap) ) / log ((T_source - T_hp1) / (T_source - T_evap));
 
 subject to Evaporator_area: #Area of evap HEX, calclated for extreme period 
-	Q_evap[t = 12] = U_water_ref * Evap_area * DTlnEvap; #Set a certain time period!!
+	Q_evap[12] = U_water_ref * Evap_area * DTlnEvap; #Set a certain time period!!
 
 subject to Comp2cost: #calculates the cost for comp2 for extreme period 
-    comp_cost = (index/ref_index) * (k1 + k2 * (W_comp2[t = 12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
+    comp_cost = (index/ref_index) * (k1 + k2 * (W_comp2[12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
 
 #subject to HEX1_cost: #calculates the cost forHEX1 for extreme period 
 subject to Evaporator_cost:

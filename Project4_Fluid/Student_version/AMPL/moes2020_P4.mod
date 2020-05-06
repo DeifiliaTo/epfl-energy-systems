@@ -83,17 +83,17 @@ subject to TlnCond_constraint: #calculates the Log mean temperatrure of the epfl
 	TlnCond = (T_medium_in - T_medium_out) / log ((T_medium_in + 273) / (T_medium_out + 273));
 	
 subject to DTlnCond_constraint: #calculated the DTLN of the condenser heat exchanger EPFL medium temperature loop - heat pump for the expreme period, you can neglect the sensible heat transfer (T variation)
-    DTlnCond = ((T_cond[t=12] - T_medium_in) - (T_cond[t=12] - T_medium_out)) / log( (T_cond[t=12] - T_medium_in) / (T_cond[t=12] - T_medium_out) );
+    DTlnCond = ((T_cond[12] - T_medium_in) - (T_cond[12] - T_medium_out)) / log( (T_cond[12] - T_medium_in) / (T_cond[12] - T_medium_out) );
 
 subject to Heat_condenser: #Heat transferred to EPFL network on extreme period, this equation is needed to define T_medium_in
-	Q_cond[t = 12] = Mcp * (T_medium_in - T_medium_out);
+	Q_cond[12] = Mcp * (T_medium_in - T_medium_out);
 
 subject to Condenser_area: #Area of condenser HEX, calculated for extreme period 
-	Q_cond[t=12] = U_air_ref * Cond_area * DTlnCond;
+	Q_cond[12] = U_air_ref * Cond_area * DTlnCond;
 
 subject to Comp1cost: 
 #calculates the cost for comp1 for extreme period 
- 	comp_cost = (index/ref_index) * (k1 + k2 * (W_comp1[t = 12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
+ 	comp_cost = (index/ref_index) * (k1 + k2 * (W_comp1[12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
  	
 #subject to HEX2_cost: #calculates the cost for HEX2 for extreme period 
 subject to Condenser_cost:
