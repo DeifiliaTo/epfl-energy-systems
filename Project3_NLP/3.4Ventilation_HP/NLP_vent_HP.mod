@@ -86,8 +86,8 @@ var Cost_HP       		 	:= 100	>=0; #HP cost
 var E_2{Time} 				:=	20	>= 0; # kW] Electricity used in the Air-Air HP
 var TLMCond_2{t in Time} 	:=	20	>= 0.001; #Text[t]; #[K] logarithmic mean temperature in the condensor of the new HP 
 var TLMEvapHP_2{Time} 		:=	10	>= 0.001; # [K] logarithmic mean temperature in the evaporator of the new HP 
-var Qevap_2{Time} 			:=	5	>= 0; #[kW] heat extracted in the evaporator of the new HP 
-var Qcond_2{Time} 			:=	5	>= 0; #[kW] heat delivered in the condensor of the new HP 
+var Qevap_2{Time} 			:=	10	>= 0; #[kW] heat extracted in the evaporator of the new HP 
+var Qcond_2{Time} 			:=	10	>= 0; #[kW] heat delivered in the condensor of the new HP 
 var COP_2{Time} 			:=	4	>= 0.001; #coefficient of performance of the new HP 
 
 
@@ -172,10 +172,10 @@ subject to COPerformance{t in Time}: #the COP can be computed using the carnot e
 	COP = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
 
 subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
-	TLMCond * log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) ) = (EPFLMediumT - EPFLMediumOut);
+	TLMCond  = (EPFLMediumT - EPFLMediumOut) / log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
 
 subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
-	TLMEvapHP * log( (THPhighin + 273) / (THPhighout + 273) ) = (THPhighin - THPhighout);
+	TLMEvapHP  = (THPhighin - THPhighout) / log( (THPhighin + 273) / (THPhighout + 273) );
 
 
 ## Air Air HP
@@ -199,7 +199,7 @@ subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
 	Qevap_2[t] = mair * Cpair / 3600 * Areabuilding * (Trelease[t] - Trelease_2[t]);
 
 subject to QCondensator_2{t in Time}: #Condenser heat from air side
-	Qcond_2[t] = mair * Cpair  / 3600 * Areabuilding * (Tair_in[t] - Text_new[t]);
+	Qcond_2[t] = mair * Cpair / 3600 * Areabuilding * (Tair_in[t] - Text_new[t]);
 
 subject to Electricity_2{t in Time}: #the electricity consumed in the new HP can be computed using the heat delivered and the heat extracted
 	E_2[t] = Qcond_2[t] - Qevap_2[t];
@@ -238,7 +238,7 @@ subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evapora
 ## COST CONSIDERATIONS
 
 subject to Costs_HP{t in Time}: # new HP cost
-	Cost_HP >= if E_2[t] > 0 then (eps + (Cref_hp * (MS2017 / MS2000) * ((E_2[t] + eps)^beta_hp))) ;
+	Cost_HP >=  (eps + (Cref_hp * (MS2017 / MS2000) * ((E_2[t] + eps)^beta_hp))) ;
 
 #subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
 #	mair/3600*Cpair*Areabuilding*(Tint - Tair_in[t] + Text[t] - Trelease_2[t]) + Qcond_2[t] = Qevap_2[t];
@@ -258,4 +258,4 @@ subject to TCost: #the total cost can be computed using the operating and invest
 	
 
 ################################
-minimize obj : TC;
+minimize obj : CAPEX;
