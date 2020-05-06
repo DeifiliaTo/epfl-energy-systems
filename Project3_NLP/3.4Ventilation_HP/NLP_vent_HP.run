@@ -40,13 +40,17 @@ display CAPEX;
 
 display Qheating;
 
+print '########################################';
 print '#    HEAT EXCHANGER';
+print '########################################';
 display Area_Vent;
 display Heat_Vent;
 display theta_1;
 display theta_2;
 
+print '########################################';
 print '#    AIR STREAM TEMPERATURES';
+print '########################################';
 print '##   incoming air stream';
 display Text;
 display Text_new;
@@ -56,14 +60,29 @@ display Tint;
 display Trelease;
 display Trelease_2;
 
+print '########################################';
 print '#    AIR VENTILATION HEAT PUMP';
+print '########################################';
+print '##   powers';
 display Qevap_2;
 display Qcond_2;
+display E_2;
+
+print '##   temperatures / properties';
 display COP_2;
 display TLMCond_2;
 display TLMEvapHP_2;
 
+print '########################################';
 print '#    MAIN HEAT PUMP';
+print '########################################';
+print '##   powers';
+display Qevap;
+display Qcond;
+display E;
+
+print '##   temperatures / properties';
+display COP;
 display TLMCond;
 display TLMEvapHP;
 
