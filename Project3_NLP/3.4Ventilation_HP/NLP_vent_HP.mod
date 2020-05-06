@@ -241,8 +241,8 @@ subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evapora
 subject to Costs_HP: # new HP cost
 	Cost_HP = max{t in Time} (Cref_hp * (MS2017 / MS2000) * ((E_2[t] + eps)^beta_hp));
 
-subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-	mair/3600*Cpair*(Tint - Tair_in[t])*Areabuilding + Qcond_2[t] = Qevap_2[t];
+#subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
+#	mair/3600*Cpair*Areabuilding*(Tint - Tair_in[t] + Text[t] - Trelease_2[t]) + Qcond_2[t] = Qevap_2[t];
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
 	OPEX = sum{t in Time} ((E_2[t]+E[t]) * top[t] * Cel);
