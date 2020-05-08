@@ -35,11 +35,7 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
-<<<<<<< HEAD
-param eps				:= 8e-3; #Epsilon to avoid singularities
-=======
 param eps				:= 1e-3; #Epsilon to avoid singularities
->>>>>>> 903fe253a0da60cb36b801666022a923d417fc8d
 
 ################################
 # Variables
