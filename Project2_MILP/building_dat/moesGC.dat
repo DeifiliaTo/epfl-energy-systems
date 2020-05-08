@@ -14,4 +14,4 @@ let specElec['GC',2] := 0.020364101406755434;
 let specElec['GC',3] := 0.020364101406755434;
 let specElec['GC',4] := 0.020364101406755434;
 let specElec['GC',5] := 0.004404573835853456;
-let specElec['GC',6] := 0.020364101406755434;
+let specElec['GC',6] := 0;

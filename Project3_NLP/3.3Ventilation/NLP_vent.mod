@@ -35,7 +35,11 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
+<<<<<<< HEAD
+param eps				:= 8e-3; #Epsilon to avoid singularities
+=======
 param eps				:= 1e-3; #Epsilon to avoid singularities
+>>>>>>> 903fe253a0da60cb36b801666022a923d417fc8d
 
 ################################
 # Variables
@@ -63,7 +67,7 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} := 1000 >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
-var Area_Vent 		:= 40000 >= 0.001; #[m2]
+var Area_Vent 		:= 1000 >= 0.001; #[m2]
 var DTminVent 		>= 1; #[degC]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
@@ -114,11 +118,11 @@ subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t] + eps ;
 
 subject to Theta_1 {t in Time}:
-	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
+#	theta_1[t]*log((Trelease[t] + 273) / (Text[t] + 273)) = (Trelease[t]-Text[t]) ;
 	theta_1[t] = (Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
-	#theta_2[t] = (Tint - Text_new[t]) / log((Tint + 273) / (Text_new[t] + 273));
+	#theta_2[t] *  log((Tint + 273) / (Text_new[t] + 273))= (Tint - Text_new[t]) ;
 	theta_2[t] = (Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
@@ -151,10 +155,10 @@ subject to Electricity1{t in Time}: #the electricity consumed in the HP can be c
 	E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
-	E[t] = Qcond[t] / COP;
+	E[t]*COP = Qcond[t];
 
 subject to COPerformance: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
-	COP = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
+	COP*(TLMCond - TLMEvapHP) = CarnotEff * (TLMCond);
 
 subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
 	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
@@ -170,9 +174,7 @@ subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
 # Only calc for time points when Qheating > 0?
 # This doesn't converge -> reaches iter limit
-	OPEX = sum{t in Time} if Qheating[t] > 0 then (E[t] * top[t] * Cel) 
-							else 0;
-							# TODO: no if, change to sum
+	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
 	
 subject to Icost:  #the investment cost can be computed using the area of the ventilation heat exchanegr
 	IC = ((INew / IRef) * aHE * (Area_Vent+eps)^bHE) * FBMHE; #[CHF]
