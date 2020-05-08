@@ -39,7 +39,7 @@ param eps				:= 1e-2; #Epsilon to avoid singularities
 # Variables
 
 var Text_new{t in Time} >= Text[t]; # air Temperature after air-air HEX;
-var Trelease{Time}  <= Tint; #[degC]
+var Trelease{Time}  := 15; #[degC]
 var Qheating{Time} 	>= 0; #your heat demand from the MILP part, is now a variable.
 
 var E{Time} 		>= 0; # [kW] electricity consumed by the reference heat pump (using pre-heated lake water)
@@ -79,7 +79,7 @@ param BM_hp					:= 2;
 param MS2000				:= 400;
 param MS2017				:= 562;
 
-var Trelease_2{Time}     	>=0; #release temperature (check drawing);    
+var Trelease_2{Time}   :=5	>=0; #release temperature (check drawing);    
 var Tair_in{Time}        	<= 40; #lets assume EPFL cannot take ventilation above 40 degrees (safety)
 var Cost_HP       		 	:= 100	>=0; #HP cost 
 
@@ -241,7 +241,7 @@ subject to Costs_HP{t in Time}: # new HP cost
 	Cost_HP >=  (eps + (Cref_hp * (MS2017 / MS2000) * ((E_2[t] + eps)^beta_hp))) ;
 
 #subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-#	mair/3600*Cpair*Areabuilding*(Tint - Tair_in[t] + Text[t] - Trelease_2[t]) + Qcond_2[t] = Qevap_2[t];
+#	Qevap_2[t] = Qcond_2[t] + mair*Cpair/3600*Areabuilding*(Text[t] + Tint - Tair_in[t] - Trelease_2[t]);
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
 	OPEX = sum{t in Time} if Qheating[t] > 0 then ((E_2[t]+E[t]) * top[t] * Cel)
@@ -258,4 +258,4 @@ subject to TCost: #the total cost can be computed using the operating and invest
 	
 
 ################################
-minimize obj : CAPEX;
+minimize obj : OPEX;
