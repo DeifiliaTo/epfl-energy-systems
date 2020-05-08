@@ -42,7 +42,7 @@ param eps				:= 1e-3; #Epsilon to avoid singularities
 
 var Text_new{Time} 	<= 21; #[degC]
 var Trelease{Time}	>= 0; #[degC]
-var Qheating{Time} 	>= 0; #your heat demand from the MILP part, is now a variable.
+var Qheating{Time} 	:= 0 >= 0; #your heat demand from the MILP part, is now a variable.
 
 var E{Time} 		>= 0; # [kW] electricity consumed by the heat pump (using pre-heated lake water)
 var TLMCond 	 	>= 0.001; #[K] logarithmic mean temperature in the condensor of the heating HP (using pre-heated lake water)
@@ -91,11 +91,8 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 
 ## VENTILATION
 
-subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
-    Qheating[t] = if (Text[t] < 16) then 
-		sum{b in MediumTempBuildings} max (0, FloorArea[b]*(U_env[b]*(Tint-Text[t])+mair/3600*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t]))
-		else 
-		0;
+subject to VariableHeatdemand {t in Time: t != 5} : #Heat demand calculated as the sum of all buildings -> medium temperature
+    Qheating[t] = sum{b in MediumTempBuildings} max (0, FloorArea[b]*(U_env[b]*(Tint-Text[t])+mair/3600*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t]));
 
 # total area of building
 subject to buildingarea:
