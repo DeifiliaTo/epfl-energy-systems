@@ -114,16 +114,13 @@ subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t] + eps ;
 
 subject to Theta_1 {t in Time}:
-#	theta_1[t]*log((Trelease[t] + 273) / (Text[t] + 273)) = (Trelease[t]-Text[t]) ;
 	theta_1[t] = (Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
-	#theta_2[t] *  log((Tint + 273) / (Text_new[t] + 273))= (Tint - Text_new[t]) ;
 	theta_2[t] = (Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
-	# TODO: replace with standard LMTD
+	DTLNVent[t] * log(theta_1[t] / theta_2[t]) = (theta_1[t] - theta_2[t]);
 
 subject to Area_Vent1max{t in Time}: #Area of ventilation HEX
 	Area_Vent >= eps + (Heat_Vent[t] / (DTLNVent[t]*Uvent));
