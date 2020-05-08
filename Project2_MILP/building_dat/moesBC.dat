@@ -14,4 +14,4 @@ let specElec['BC',2] := 0.025108695652173912;
 let specElec['BC',3] := 0.025108695652173912;
 let specElec['BC',4] := 0.025108695652173912;
 let specElec['BC',5] := 0.005429061784897026;
-let specElec['BC',6] := 0.025108695652173912;
+let specElec['BC',6] := 0;

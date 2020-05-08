@@ -14,4 +14,4 @@ let specElec['MX',2] := 0.029967527447038813;
 let specElec['MX',3] := 0.029967527447038813;
 let specElec['MX',4] := 0.029967527447038813;
 let specElec['MX',5] := 0.006479047471779805;
-let specElec['MX',6] := 0.029967527447038813;
+let specElec['MX',6] := 0;

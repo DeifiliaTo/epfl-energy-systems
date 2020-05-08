@@ -14,4 +14,4 @@ let specElec['EL',2] := 0.017896687305102365;
 let specElec['EL',3] := 0.017896687305102365;
 let specElec['EL',4] := 0.017896687305102365;
 let specElec['EL',5] := 0.0038685768518100056;
-let specElec['EL',6] := 0.017896687305102365;
+let specElec['EL',6] := 0;

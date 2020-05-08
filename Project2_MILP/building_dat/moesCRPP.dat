@@ -14,4 +14,4 @@ let specElec['CRPP',2] := 0.04065183270242822;
 let specElec['CRPP',3] := 0.04065183270242822;
 let specElec['CRPP',4] := 0.04065183270242822;
 let specElec['CRPP',5] := 0.008789585449173668;
-let specElec['CRPP',6] := 0.04065183270242822;
+let specElec['CRPP',6] := 0;
