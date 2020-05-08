@@ -12,6 +12,7 @@ AMPL options
 option solver baron; #or snopt or any non-linear solver
 #option omit_zero_rows 1;
 #option omit_zero_cols 1;
+option log_file 'NLP_ref.log';
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Solve the problem
