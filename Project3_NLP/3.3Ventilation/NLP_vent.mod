@@ -35,7 +35,7 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
-param eps				:= 1e-1; #Epsilon to avoid singularities
+param eps				:= 1e-3; #Epsilon to avoid singularities
 
 ################################
 # Variables
@@ -99,10 +99,10 @@ subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum o
 
 # total area of building
 subject to buildingarea:
- Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
+	Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
+	Heat_Vent[t] = mair/3600*1.15*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Text_new[t] - Text[t]); # kW
@@ -123,6 +123,7 @@ subject to Theta_2 {t in Time}:
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
+	# TODO: replace with standard LMTD
 
 subject to Area_Vent1max{t in Time}: #Area of ventilation HEX
 	Area_Vent >= eps + (Heat_Vent[t] / (DTLNVent[t]*Uvent));
@@ -171,6 +172,7 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
 # This doesn't converge -> reaches iter limit
 	OPEX = sum{t in Time} if Qheating[t] > 0 then (E[t] * top[t] * Cel) 
 							else 0;
+							# TODO: no if, change to sum
 	
 subject to Icost:  #the investment cost can be computed using the area of the ventilation heat exchanegr
 	IC = ((INew / IRef) * aHE * (Area_Vent+eps)^bHE) * FBMHE; #[CHF]
@@ -197,4 +199,4 @@ subject to TCost: #the total cost can be computed using the operating and invest
 #	Paybt <= n;
 
 ################################
-minimize obj : TC;
+minimize obj : OPEX;

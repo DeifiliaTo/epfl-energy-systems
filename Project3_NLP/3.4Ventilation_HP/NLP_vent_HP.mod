@@ -113,13 +113,14 @@ subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum o
 		sum{b in MediumTempBuildings} (max (0, FloorArea[b]*(U_env[b]*(Tint-Text[t]) + mair/3600*Cpair*(Tint-Tair_in[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t])))
 		else 
 		0;
+		# TODO: remove if statement
 
 # total area of building
 subject to buildingarea:
  Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
+	Heat_Vent[t] = mair/3600*1.15*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Text_new[t] - Text[t]); # kW
@@ -138,10 +139,12 @@ subject to Theta_2 {t in Time}:
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
 	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
+	# TODO: change to standard LMTD (can add eps if necessary)
 
 subject to Area_Vent1{t in Time}: #Area of ventilation HEX
 	Area_Vent >= if Qheating[t] > 0 then eps +  (Heat_Vent[t] / (DTLNVent[t]*Uvent))
 				else 0;
+				# TODO: remove if
 
 subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
 	DTminVent <= Trelease[t] - Text[t];
