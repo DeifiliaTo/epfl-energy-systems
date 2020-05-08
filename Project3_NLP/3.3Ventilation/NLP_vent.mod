@@ -123,7 +123,7 @@ subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this val
 	DTLNVent[t] * log(theta_1[t] / theta_2[t]) = (theta_1[t] - theta_2[t]);
 
 subject to Area_Vent1max{t in Time}: #Area of ventilation HEX
-	Area_Vent >= eps + (Heat_Vent[t] / (DTLNVent[t]*Uvent));
+	(Area_Vent - eps) * DTLNVent[t] * Uvent >= Heat_Vent[t];
 
 subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
 	DTminVent <= Trelease[t] - Text[t];
@@ -148,16 +148,16 @@ subject to Electricity1{t in Time}: #the electricity consumed in the HP can be c
 	E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
-	E[t]*COP = Qcond[t];
+	E[t] * COP = Qcond[t];
 
 subject to COPerformance: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
-	COP*(TLMCond - TLMEvapHP) = CarnotEff * (TLMCond);
+	COP * (TLMCond - TLMEvapHP) = CarnotEff * TLMCond;
 
 subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
-	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
+	TLMCond * log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) ) = (EPFLMediumT - EPFLMediumOut);
 
 subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
-	TLMEvapHP = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
+	TLMEvapHP * log( (THPhighin + 273) / (THPhighout + 273) ) = (THPhighin - THPhighout);
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
