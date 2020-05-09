@@ -33,7 +33,7 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
-param eps				:= 1e-2; #Epsilon to avoid singularities
+param eps				:= 1e-3; #Epsilon to avoid singularities
 
 ################################
 # Variables
@@ -59,7 +59,7 @@ var Paybt			>= 0.001; #[year] payback time
 var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of the heating HP (not using pre-heated lake water)
 
 var TEvap 			>= 0.001; #[deg C] Unused.
-var Heat_Vent{Time} := 1000		>= 0; #[kW]
+var Heat_Vent{Time} := 1		>= 0; #[kW]
 var DTLNVent{Time} 	>= 1; #[K]
 var Area_Vent 		:= 40000	>= 0.001; #[m2]
 var DTminVent 		:= 0.001 >= 0.001; #[C]
@@ -132,20 +132,17 @@ subject to DTHX_2 {t in Time}:
 	Text_new[t] >= Text[t] + eps;
 
 subject to Theta_1 {t in Time}:
-	theta_1[t] =  abs(Trelease[t] - Text[t]);
+	theta_1[t] =  (Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
-	theta_2[t] = abs(Tint - Text_new[t]);
+	theta_2[t] = (Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
-	# TODO: change to standard LMTD (can add eps if necessary)
+	DTLNVent[t] = (theta_1[t] - theta_2[t])/log(theta_1[t]/theta_2[t]);  #;((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 
-subject to Area_Vent1{t in Time}: #Area of ventilation HEX
-	Area_Vent >= if Qheating[t] > 0 then eps +  (Heat_Vent[t] / (DTLNVent[t]*Uvent))
-				else 0;
-				# TODO: remove if
-
+subject to Area_Vent1{t in Time: t != 5}: #Area of ventilation HEX
+	Area_Vent >= Heat_Vent[t] / (DTLNVent[t]*Uvent);
+		
 subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
 	DTminVent <= Trelease[t] - Text[t];
 
@@ -195,9 +192,6 @@ subject to temperature_gap3{t in Time}: # relation between Tair_in and Text_new;
 subject to temperature_gap4{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
 	TLMCond_2[t] >= TLMEvapHP_2[t] + 2;
 
-#subject to temperature_gap5{t in Time}: # relation between TLMCond_2 and TLMEvapHP_2;
-#	TLMCond >= TLMEvapHP + eps;
-
 subject to QEvaporator_2{t in Time}: #Evaporator heat from air side
 	Qevap_2[t] = mair * Cpair / 3600 * Areabuilding * (Trelease[t] - Trelease_2[t]);
 
@@ -243,12 +237,8 @@ subject to dTLMEvaporatorHP_rule2{t in Time}: # The other inequality for Evapora
 subject to Costs_HP{t in Time}: # new HP cost
 	Cost_HP >=  (eps + (Cref_hp * (MS2017 / MS2000) * ((E_2[t] + eps)^beta_hp))) ;
 
-#subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be met;
-#	Qevap_2[t] = Qcond_2[t] + mair*Cpair/3600*Areabuilding*(Text[t] + Tint - Tair_in[t] - Trelease_2[t]);
-
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the two heat pumps
-	OPEX = sum{t in Time} if Qheating[t] > 0 then ((E_2[t]+E[t]) * top[t] * Cel)
-							else 0;
+	OPEX = sum{t in Time} (E_2[t]+E[t]) * top[t] * Cel;
 	
 subject to TICost:
 	TIC = Cost_HP * BM_hp + ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
@@ -261,4 +251,4 @@ subject to TCost: #the total cost can be computed using the operating and invest
 	
 
 ################################
-minimize obj : OPEX;
+minimize obj : TC;
