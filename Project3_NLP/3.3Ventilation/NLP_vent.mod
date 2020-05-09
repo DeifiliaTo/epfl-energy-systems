@@ -63,7 +63,7 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} := 1000 >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
-var Area_Vent 		:= 1000 >= 0.001; #[m2]
+var Area_Vent 		:=0 >= 0.001; #[m2]
 var DTminVent 		>= 1; #[degC]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
@@ -120,7 +120,7 @@ subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this val
 	DTLNVent[t] * log(theta_1[t] / theta_2[t]) = (theta_1[t] - theta_2[t]);
 
 subject to Area_Vent1max{t in Time}: #Area of ventilation HEX
-	(Area_Vent - eps) * DTLNVent[t] * Uvent >= Heat_Vent[t];
+	(Area_Vent + eps) * DTLNVent[t] * Uvent >= Heat_Vent[t];
 
 subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
 	DTminVent <= Trelease[t] - Text[t];
@@ -158,7 +158,7 @@ subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed u
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
-subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
+subject to QEPFLausanne{t in Time: t != 5}: #the heat demand of EPFL should be supplied by the the HP.
     Qcond[t] = Qheating[t]; #equation already used! problem?
 
 subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP.
@@ -167,7 +167,7 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
 	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
 	
 subject to Icost:  #the investment cost can be computed using the area of the ventilation heat exchanegr
-	IC = ((INew / IRef) * aHE * (Area_Vent+eps)^bHE) * FBMHE; #[CHF]
+	IC = ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
 
 subject to CAPEXcost:
 	CAPEX = IC * (i * (1 + i)^n) / ((1 + i)^n - 1); #[CHF/year]

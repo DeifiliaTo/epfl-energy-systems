@@ -1,14 +1,14 @@
 SNOPT 7.5-1.2 : major_iterations=10000
 SNOPT 7.5-1.2 : Optimal solution found.
-548 iterations, objective 797165.627
-Nonlin evals: constrs = 389, Jac = 388.
-TC = 797166
+182 iterations, objective 797164.2832
+Nonlin evals: constrs = 3229, Jac = 3228.
+TC = 797164
 
 OPEX = 796379
 
-CAPEX = 786.858
+CAPEX = 785.514
 
-Area_Vent = 1.05357
+Area_Vent = 1.05157
 
 DTminVent = 1
 
@@ -44,7 +44,7 @@ MassEPFL [*] :=
 2  361.217
 3   37.3429
 4   54.1846
-5    0
+5    4.35555e-15
 6  762.493
 ;
 
