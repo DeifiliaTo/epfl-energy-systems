@@ -1,0 +1,8 @@
+include runoptions/all_log.run;
+
+# for high pressure stage:
+display Cond_cost;
+display Cond_area;
+display DTlnCond;
+display TlnCond;
+display T_medium_in;

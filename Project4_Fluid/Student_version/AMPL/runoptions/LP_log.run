@@ -1,0 +1,6 @@
+include runoptions/all_log.run
+
+# for low pressure stage: 
+display Evap_cost;
+display Evap_area;
+display DTlnEvap;
