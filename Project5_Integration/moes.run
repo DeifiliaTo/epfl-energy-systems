@@ -1,0 +1,140 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the main model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+model moes.mod;
+data ../Project2_MILP/moes.dat;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load building 1 data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project2_MILP/building_dat/moesGC.dat
+data ../Project2_MILP/building_dat/moesCE.dat
+data ../Project2_MILP/building_dat/moesMA.dat
+data ../Project2_MILP/building_dat/moesGR.dat
+data ../Project2_MILP/building_dat/moesCM.dat
+data ../Project2_MILP/building_dat/moesBI.dat
+data ../Project2_MILP/building_dat/moesCH.dat
+data ../Project2_MILP/building_dat/moesPH.dat
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load building 2 data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+
+data ../Project2_MILP/building_dat/moesBC.dat
+data ../Project2_MILP/building_dat/moesCO.dat
+data ../Project2_MILP/building_dat/moesBP.dat
+data ../Project2_MILP/building_dat/moesBS.dat
+data ../Project2_MILP/building_dat/moesTCV.dat
+data ../Project2_MILP/building_dat/moesIN.dat
+data ../Project2_MILP/building_dat/moesODY.dat
+data ../Project2_MILP/building_dat/moesME.dat
+data ../Project2_MILP/building_dat/moesAA.dat
+data ../Project2_MILP/building_dat/moesEL.dat
+data ../Project2_MILP/building_dat/moesPO.dat
+data ../Project2_MILP/building_dat/moesCRPP.dat
+data ../Project2_MILP/building_dat/moesMX.dat
+data ../Project2_MILP/building_dat/moesBM.dat
+data ../Project2_MILP/building_dat/moesDIA.dat
+data ../Project2_MILP/building_dat/moesAI.dat
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the boiler model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project2_MILP/moesboiler.dat;
+model ../Project2_MILP/moesboiler.mod;
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the PV model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project2_MILP/moesPV.dat;
+model ../Project2_MILP/moesPV.mod;
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the SOFC model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project2_MILP/moesSOFC.dat;
+model ../Project2_MILP/moesSOFC.mod;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the HP2stage model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project2_MILP/moesHP2stage.dat;
+model ../Project2_MILP/moesHP2stage.mod;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the HP1stage models and their data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project2_MILP/moesHP1stageLT.dat;
+model ../Project2_MILP/moesHP1stageLT.mod;
+
+
+data ../Project2_MILP/moesHP1stageMT.dat;
+model ../Project2_MILP/moesHP1stageMT.mod;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the Cogen model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project2_MILP/moesCogen.dat;
+model ../Project2_MILP/moesCogen.mod;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the geothermal model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project2_MILP/moesGeothermal.dat;
+model ../Project2_MILP/moesGeothermal.mod;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set the grid parameters: resource flow and fmax
+---------------------------------------------------------------------------------------------------------------------------------------*/
+let  Flowout['Natgas','NatGasGrid'] := refSize;
+let  Fmax['NatGasGrid'] := refSize;
+let  Flowout['Electricity','ElecGridBuy'] := refSize;
+let  Fmax['ElecGridBuy'] := refSize;
+let  Flowin['Electricity','ElecGridSell'] := refSize;
+let  Fmax['ElecGridSell'] := refSize;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+AMPL options
+---------------------------------------------------------------------------------------------------------------------------------------*/
+option solver cplex;											# choose the solver
+option omit_zero_rows 1;										# to not display 0 in rows
+option omit_zero_cols 1;										# to not display 0 in columns
+option log_file 'moes.log';
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Solve the problem
+---------------------------------------------------------------------------------------------------------------------------------------*/
+solve;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Display commands
+---------------------------------------------------------------------------------------------------------------------------------------*/
+display Edemand;
+display Qheating;
+display Qheatingdemand;
+display Qheatingsupply;
+
+display mult;
+display mult_t;
+
+display Flowin;
+display Flowout;
+
+display FlowInUnit;
+display FlowOutUnit;
+
+display Buildings;
+
+#display usedroofArea;
+
+display InvCost;
+
+display OpCost;
+
+display use;
+
+display Tlmc_HP1stageMT;
+
+#display COP;
