@@ -14,4 +14,4 @@ let specElec['TCV',2] := 0.09284659557013945;
 let specElec['TCV',3] := 0.09284659557013945;
 let specElec['TCV',4] := 0.09284659557013945;
 let specElec['TCV',5] := 0.02008203445447088;
-let specElec['TCV',6] := 0.09284659557013945;
+let specElec['TCV',6] := 0;

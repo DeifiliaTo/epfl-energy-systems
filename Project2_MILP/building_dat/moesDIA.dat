@@ -14,4 +14,4 @@ let specElec['DIA',2] := 0.0;
 let specElec['DIA',3] := 0.0;
 let specElec['DIA',4] := 0.0;
 let specElec['DIA',5] := 0.0;
-let specElec['DIA',6] := 0.0;
+let specElec['DIA',6] := 0;

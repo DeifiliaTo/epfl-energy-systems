@@ -14,4 +14,4 @@ let specElec['ODY',2] := 0.005449657869012708;
 let specElec['ODY',3] := 0.005449657869012708;
 let specElec['ODY',4] := 0.005449657869012708;
 let specElec['ODY',5] := 0.0011730205278592375;
-let specElec['ODY',6] := 0.005449657869012708;
+let specElec['ODY',6] := 0;

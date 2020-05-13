@@ -4,6 +4,7 @@
 # Sets & Parameters
 reset;
 set Time default {};        				# your time set from the MILP 
+set Ignore default {};
 set Buildings default {};					# set of buildings
 set MediumTempBuildings default {};			# set of buildings heated by medium temperature loop
 set LowTempBuildings default {};			# set of buildings heated by low temperature loop
@@ -34,14 +35,14 @@ param INew 				:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 				:= 394.1; #chemical engineering plant cost index (2000)
 param aHE 				:= 1200; #HE cost parameter
 param bHE 				:= 0.6; #HE cost parameter
-param eps				:= 1e-5; #Epsilon to avoid singularities
+param eps				:= 1e-3; #Epsilon to avoid singularities
 
 ################################
 # Variables
 
 var Text_new{Time} 	<= 21; #[degC]
 var Trelease{Time}	>= 0; #[degC]
-var Qheating{Time} 	>= 0; #your heat demand from the MILP part, is now a variable.
+var Qheating{Time} 	:= 0 >= 0; #your heat demand from the MILP part, is now a variable.
 
 var E{Time} 		>= 0; # [kW] electricity consumed by the heat pump (using pre-heated lake water)
 var TLMCond 	 	>= 0.001; #[K] logarithmic mean temperature in the condensor of the heating HP (using pre-heated lake water)
@@ -62,7 +63,7 @@ var TLMEvapHP 		>= 0.001; #[K] logarithmic mean temperature in the evaporator of
 var TEvap 			>= 0.001; #[degC]
 var Heat_Vent{Time} := 1000 >= 0; #[kW]
 var DTLNVent{Time} 	>= 0.001; #[degC]
-var Area_Vent 		:= 40000 >= 0.001; #[m2]
+var Area_Vent 		:=0 >= 0.001; #[m2]
 var DTminVent 		>= 1; #[degC]
 var theta_1{Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Time};
@@ -90,41 +91,36 @@ param specQ_people{Buildings} default 0;# specific average internal gains from p
 
 ## VENTILATION
 
-subject to VariableHeatdemand {t in Time} : #Heat demand calculated as the sum of all buildings -> medium temperature
-    Qheating[t] = if (Text[t] < 16) then 
-		sum{b in MediumTempBuildings} max (0, FloorArea[b]*(U_env[b]*(Tint-Text[t])+mair/3600*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t]))
-		else 
-		0;
+subject to VariableHeatdemand {t in Time: t != 5} : #Heat demand calculated as the sum of all buildings -> medium temperature
+    Qheating[t] = sum{b in MediumTempBuildings} max (0, FloorArea[b]*(U_env[b]*(Tint-Text[t])+mair/3600*Cpair*(Tint-Text_new[t])-k_sun[b]*irradiation[t]-specQ_people[b]-share_q_e*specElec[b, t]));
 
 # total area of building
 subject to buildingarea:
- Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
+	Areabuilding = sum{b in MediumTempBuildings} (FloorArea[b]);
 
 subject to Heat_Vent1 {t in Time}: #HEX heat load from one side;
-	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
+	Heat_Vent[t] = mair/3600*1.15*Areabuilding*Cpair*(Tint - Trelease[t]); # kW
 
 subject to Heat_Vent2 {t in Time}: #HEX heat load from the other side;
 	Heat_Vent[t] = mair/3600*Areabuilding*Cpair*(Text_new[t] - Text[t]); # kW
 
 subject to DTHX_1 {t in Time}:
-	Trelease[t] <= Tint;
+	Trelease[t] + eps <= Tint;
 
 subject to DTHX_2 {t in Time}:
-	Text_new[t] >= Text[t];
+	Text_new[t] >= Text[t] + eps ;
 
 subject to Theta_1 {t in Time}:
-	#theta_1[t] = (Trelease[t]-Text[t]) / log((Trelease[t] + 273) / (Text[t] + 273));
 	theta_1[t] = (Trelease[t] - Text[t]);
 
 subject to Theta_2 {t in Time}:
-	#theta_2[t] = (Tint - Text_new[t]) / log((Tint + 273) / (Text_new[t] + 273));
 	theta_2[t] = (Tint - Text_new[t]);
 
 subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this value: why is it special?
-	DTLNVent[t] = ((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
+	DTLNVent[t] * log(theta_1[t] / theta_2[t]) = (theta_1[t] - theta_2[t]);
 
-subject to Area_Vent1: #Area of ventilation HEX
-	Area_Vent = max{t in Time} (Heat_Vent[t] / (DTLNVent[t]*Uvent));
+subject to Area_Vent1max{t in Time}: #Area of ventilation HEX
+	(Area_Vent + eps) * DTLNVent[t] * Uvent >= Heat_Vent[t];
 
 subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
 	DTminVent <= Trelease[t] - Text[t];
@@ -144,19 +140,20 @@ subject to Electricity1{t in Time}: #the electricity consumed in the HP can be c
 	E[t] = Qcond[t] - Qevap[t];
 
 subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
-	E[t] = Qcond[t] / COP;
+	E[t] * COP = Qcond[t];
 
 subject to COPerformance: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
-	COP = CarnotEff * ( TLMCond / (TLMCond - TLMEvapHP));
+	COP * (TLMCond - TLMEvapHP) = CarnotEff * TLMCond;
 
 subject to dTLMCondensor: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
-	TLMCond = (EPFLMediumT - EPFLMediumOut) /  log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) );
+	TLMCond * log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) ) = (EPFLMediumT - EPFLMediumOut);
 
 subject to dTLMEvaporatorHP: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
-	TLMEvapHP = (THPhighin - THPhighout) /  log( (THPhighin + 273) / (THPhighout + 273) );
+	TLMEvapHP * log( (THPhighin + 273) / (THPhighout + 273) ) = (THPhighin - THPhighout);
 
-# energy balance
-subject to QEPFLausanne{t in Time}: #the heat demand of EPFL should be supplied by the the HP.
+## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
+
+subject to QEPFLausanne{t in Time: t != 5}: #the heat demand of EPFL should be supplied by the the HP.
     Qcond[t] = Qheating[t]; #equation already used! problem?
 
 # FINANCIAL CALCULATIONS
@@ -167,7 +164,7 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
 	OPEX = sum{t in Time} (E[t] * top[t] * Cel);
 	
 subject to Icost:  #the investment cost can be computed using the area of the ventilation heat exchanegr
-	IC = ((INew / IRef) * aHE * (Area_Vent+eps)^bHE) * FBMHE; #[CHF]
+	IC = ((INew / IRef) * aHE * (Area_Vent)^bHE) * FBMHE; #[CHF]
 
 subject to CAPEXcost:
 	CAPEX = IC * (i * (1 + i)^n) / ((1 + i)^n - 1); #[CHF/year]
