@@ -92,6 +92,10 @@ param Flowout{l in Layers,u in UtilitiesOfLayer[l]} default 0;
 param Fmin{Utilities} default 0.001;
 param Fmax{Utilities} default 1000;
 
+#emission factors [kg-CO2/kWh]
+param c_ng   := 0.27;	#Emission factor of natural gas
+param c_elec := 0.113;	#Emission factor of electricity
+
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Utility variables
 ---------------------------------------------------------------------------------------------------------------------------------------*/
@@ -194,6 +198,11 @@ subject to oc_cstr:
 var InvCost;
 subject to ic_cstr:
 	InvCost = sum{tc in Technologies} (cinv1[tc] * use[tc] + cinv2[tc] * mult[tc]);
+
+# CO2 emissions calculations [kg-CO2eq]
+var CO2;
+subject to CO2_emission:
+	CO2 = sum{t in Time}((c_ng * FlowOutUnit['Natgas','NatGasGrid',t] + c_elec * FlowOutUnit['Electricity','ElecGridBuy',t])/top[t])	;
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
