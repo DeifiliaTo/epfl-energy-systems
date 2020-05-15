@@ -202,7 +202,7 @@ subject to ic_cstr:
 # CO2 emissions calculations [kg-CO2eq]
 var CO2;
 subject to CO2_emission:
-	CO2 = sum{t in Time}((c_ng * FlowOutUnit['Natgas','NatGasGrid',t] + c_elec * FlowOutUnit['Electricity','ElecGridBuy',t])/top[t])	;
+	CO2 = sum{t in Time}((c_ng * FlowOutUnit['Natgas','NatGasGrid',t] + c_elec * FlowOutUnit['Electricity','ElecGridBuy',t])*top[t])	;
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
