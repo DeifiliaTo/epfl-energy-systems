@@ -94,7 +94,8 @@ param Fmax{Utilities} default 1000;
 
 #emission factors [kg-CO2/kWh]
 param c_ng   := 0.27;	#Emission factor of natural gas
-param c_elec := 0.113;	#Emission factor of electricity
+param c_elec := 0.113;	#Emission factor of electricity from grid
+param c_elecPV := 0.065;  #Emission factor of electricity from PV
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Utility variables
@@ -202,7 +203,7 @@ subject to ic_cstr:
 # CO2 emissions calculations [kg-CO2eq]
 var CO2;
 subject to CO2_emission:
-	CO2 = sum{t in Time}((c_ng * FlowOutUnit['Natgas','NatGasGrid',t] + c_elec * FlowOutUnit['Electricity','ElecGridBuy',t])*top[t])	;
+	CO2 = sum{t in Time}((c_ng * FlowOutUnit['Natgas','NatGasGrid',t] + c_elec * FlowOutUnit['Electricity','ElecGridBuy',t] + c_elecPV * FlowOutUnit['Electricity','PV',t] )*top[t])	;
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
