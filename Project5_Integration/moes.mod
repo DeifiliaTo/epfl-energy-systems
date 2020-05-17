@@ -307,6 +307,94 @@ subject to CO2_emission:
 	CO2 = sum{t in Time}((c_ng * FlowOutUnit['Natgas','NatGasGrid',t] + c_elec * FlowOutUnit['Electricity','ElecGridBuy',t])*top[t])	;
 
 ################################
+# DC Model
+################################
+################################
+# Constraints
+####### Direct Heat Exchanger;
+
+## TEMPERATURE CONTROL CONSTRAINS exist to be sure the temperatures in the HEX do not cross, meaning to make sure there is a certain DTmin. (3 are recommended, but you can have more or less)
+# Thin-Tcout > DeltaTmin and Thout-Tcin > DeltaTmin
+#DeltaTmin=2 very good HE (too expensive for us)
+
+subject to Tcontrol1{t in Time}: 
+#HE
+    TDCin - TRadin[t] >= 2;
+
+subject to Tcontrol2{t in Time}:
+#HE
+    TDCout[t] - EPFLMediumOut >= 2;
+
+subject to Tcontrol3{t in Time}:
+#Freecooling
+    TDCout[t] - THPin[t] >= 2;
+
+subject to COP_cons{t in Time}:
+    COP['DC', t] <= 10;
+
+
+## MASS BALANCE
+
+subject to McpEPFL{t in Time: t != 5}: #MCp of EPFL heating fluid calculation.
+	MassEPFL['DC', t] * (EPFLMediumT - EPFLMediumOut) = sum{b in MediumTempBuildings} Qheating[b, t];
+	
+## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
+subject to dTLMDataCenter {t in Time}: #the logarithmic mean temperature difference in the heat recovery HE can be computed
+    dTLMDC[t] * log( (TDCin - TRadin[t]) / (TDCout[t] - EPFLMediumOut) ) = ((TDCin - TRadin[t]) - (TDCout[t] - EPFLMediumOut));#In case of a counter-current HEX!! Check equation, not sure...
+
+subject to HeatBalance1{t in Time}: #Heat balance in DC HEX from DC side
+    heat_recovery['DC', t] = MassDC * (TDCin - TDCout[t]);
+
+subject to HeatBalance2{t in Time}: # Heat balance from the other side of DC HEX
+    heat_recovery['DC', t] = MassEPFL['DC', t] * (TRadin[t] - EPFLMediumOut);
+
+subject to AreaHEDC{t in Time}: #the area of the heat recovery HE can be computed using the heat extracted from DC, the heat transfer coefficient and the logarithmic mean temperature difference 
+    heat_recovery['DC', t] = AHEDC * UDC * dTLMDC[t];
+
+subject to Freecooling1{t in Time}: #Free cooling from the side of the data center
+    Qfree[t] = MassDC * (TDCout[t] - Tret);
+
+subject to Freecooling2{t in Time}: #Free cooling from the side of the lake water
+    Qfree[t] = Flow['DC', t] * Cpwater * (THPin[t] - THPhighin);
+
+subject to QEvaporator{t in Time}: #water side of evaporator that takes flow from Free cooling HEX
+    Qevap['DC', t] = Flow['DC', t] * Cpwater * (THPin[t] - THPhighout);
+
+subject to QCondensator{t in Time}: #EPFL side of condenser delivering heat to EFPL
+	Qcond['DC', t] = MassEPFL['DC', t] * (EPFLMediumT - TRadin[t]);
+
+subject to HeatBalanceDC{t in Time}: #makes sure all HeatDC is removed;
+	heat_recovery['DC', t] + Qfree[t] = HeatDC;
+
+subject to Electricity1{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted
+    E['DC', t] = Qcond['DC', t] - Qevap['DC', t];
+
+subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP
+    E['DC', t] * COP['DC', t] = Qcond['DC', t];
+
+subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator
+    COP['DC', t] * (TLMCond['DC', t] - TLMEvapHP['DC', t]) = CarnotEff * TLMCond['DC', t];
+
+subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K
+    TLMCond['DC', t] * log( (EPFLMediumT + 273) / (TRadin[t] + 273) ) = (EPFLMediumT - TRadin[t]);
+
+subject to dTLMEvaporator{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K
+    TLMEvapHP['DC', t] * log( (THPin[t] + 273) / (THPhighout + 273) ) = (THPin[t] - THPhighout);
+
+subject to QEPFLausanne{t in Time: t != 5}: #the heat demand of EPFL should be the sum of the heat delivered by the 2 systems;
+    sum{b in MediumTempBuildings} Qheating[b, t] = Qcond['DC', t] + heat_recovery['DC', t];
+
+## COSTS and OBJECTIVE
+subject to OPEXcost: #the operating cost can be computed using the electricity consumed in the HP
+    OPEX['DC'] = sum{t in Time} (E['DC', t] * top[t] * Cel);
+
+subject to CAPEXcost: #the investment cost can be computed using the area of the heat recovery heat exchanger and annuity factor
+    #Cp = (INew / IRef) * aHE * (AHEDC)^bHE;
+    #IC = Cp * FBMHE;
+    #CAPEX = IC * F_annualise
+    CAPEX['DC'] =  ((INew / IRef) * aHE * (AHEDC)^bHE) * FBMHE * (i * (1 + i)^n) / ((1 + i)^n - 1);
+
+################################
 # Vent Model
 ################################
 subject to VariableHeatdemand {t in Time: t != 5} : #Heat demand calculated as the sum of all buildings -> medium temperature
@@ -348,30 +436,30 @@ subject to DTminVent2{t in Time}: #DTmin needed on the other end of HEX
 
 ## MAIN HEATING HEAT PUMP
 
-subject to QEvaporator{t in Time}: #water side of evaporator that takes flow from lake (Reference case)
+subject to QEvaporator_2{t in Time}: #water side of evaporator that takes flow from lake (Reference case)
 	Qevap['Vent', t] = Flow['Vent', t] * Cpwater * (THPhighin - THPhighout);
 
-subject to QCondensator{t in Time}: #EPFL side of condenser delivering heat to EFPL (Reference case)
+subject to QCondensator_2{t in Time}: #EPFL side of condenser delivering heat to EFPL (Reference case)
 	Qcond['Vent', t] = MassEPFL['Vent', t] * (EPFLMediumT - EPFLMediumOut);
 
-subject to Electricity1{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted (Reference case)
+subject to Electricity1_2{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the heat extracted (Reference case)
 	E['Vent', t] = Qcond['Vent', t] - Qevap['Vent', t];
 
-subject to Electricity{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
+subject to Electricity_2{t in Time}: #the electricity consumed in the HP can be computed using the heat delivered and the COP (Reference case)
 	E['Vent', t] * COP['Vent', t] = Qcond['Vent', t];
 
-subject to COPerformance{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
+subject to COPerformance_2{t in Time}: #the COP can be computed using the carnot efficiency and the logarithmic mean temperatures in the condensor and in the evaporator (Reference case)
 	COP['Vent', t] * (TLMCond['Vent', t] - TLMEvapHP['Vent', t]) = CarnotEff * TLMCond['Vent',t ];
 
-subject to dTLMCondensor{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
+subject to dTLMCondensor_2{t in Time}: #the logarithmic mean temperature on the condenser, using inlet and outlet temperatures. Note: should be in K (Reference case)
 	TLMCond['Vent', t] * log( (EPFLMediumT + 273) / (EPFLMediumOut + 273) ) = (EPFLMediumT - EPFLMediumOut);
 
-subject to dTLMEvaporatorHP{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
+subject to dTLMEvaporatorHP_2{t in Time}: #the logarithmic mean temperature can be computed using the inlet and outlet temperatures, Note: should be in K (Reference case)
 	TLMEvapHP['Vent', t] * log( (THPhighin + 273) / (THPhighout + 273) ) = (THPhighin - THPhighout);
 
 ## MEETING HEATING DEMAND, ELECTRICAL CONSUMPTION
 
-subject to QEPFLausanne{t in Time: t != 5}: #the heat demand of EPFL should be supplied by the the HP.
+subject to QEPFLausanne_2{t in Time: t != 5}: #the heat demand of EPFL should be supplied by the the HP.
 Qcond['Vent', t] = heat_recovery['Vent', t]; #equation already used! problem?
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
