@@ -104,7 +104,7 @@ let  Fmax['ElecGridSell'] := refSize;
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 #option solver snopt;											# choose the solver
-option solver '/home/deifilia/AMPL/ampl_linux-intel64/minos';
+option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
 option presolve 10;
 option snopt_options 'major_iterations=10000';
 
