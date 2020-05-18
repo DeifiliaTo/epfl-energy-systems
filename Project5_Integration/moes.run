@@ -21,38 +21,6 @@ Solve the problem
 solve;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Display commands
+Output to print & log
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-display Edemand;
-display Qheating;
-display Qheatingdemand;
-display Qheatingsupply;
-
-display mult;
-display mult_t;
-
-display Flowin;
-display Flowout;
-
-display FlowInUnit;
-display FlowOutUnit;
-
-display Buildings;
-
-#display usedroofArea;
-
-display InvCost;
-
-display OpCost;
-
-display use;
-
-display Tlmc_HP1stageMT;
-
-display CO2;
-
-display heat_recovery;
-
-display use_recovery;
-
-display Improvements;
+include output.run
