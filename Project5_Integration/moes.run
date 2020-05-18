@@ -5,6 +5,11 @@ model moes.mod;
 data ../Project2_MILP/moes.dat;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
+Inclusion of other models
+---------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
 Load building 1 data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 data ../Project2_MILP/building_dat/moesGC.dat
@@ -98,7 +103,11 @@ let  Fmax['ElecGridSell'] := refSize;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver cplex;											# choose the solver
+#option solver snopt;											# choose the solver
+option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+option presolve 10;
+option snopt_options 'major_iterations=10000';
+
 option omit_zero_rows 1;										# to not display 0 in rows
 option omit_zero_cols 1;										# to not display 0 in columns
 option log_file 'moes.log';
@@ -137,4 +146,10 @@ display use;
 
 display Tlmc_HP1stageMT;
 
-#display COP;
+display CO2;
+
+display heat_recovery;
+
+display use_recovery;
+
+display Improvements;

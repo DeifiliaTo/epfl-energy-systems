@@ -4,10 +4,9 @@
 # Sets & Parameters
 reset;
 set Time default {};        				# your time set from the MILP 
-set Ignore default {};
 set Buildings default {};					# set of buildings
 set MediumTempBuildings default {};			# set of buildings heated by medium temperature loop
-set LowTempBuildings default {};			# set of buildings heated by low temperature loop
+#set LowTempBuildings default {};		# set of buildings heated by low temperature loop
 
 param Text{t in Time};  #external temperature - Part 1
 param top{Time}; 		#your operating time from the MILP part
