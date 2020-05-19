@@ -1,8 +1,8 @@
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
 SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-2790 iterations, objective 13334094.74
-Nonlin evals: constrs = 108, Jac = 107.
+2555 iterations, objective 13334094.74
+Nonlin evals: constrs = 100, Jac = 99.
 Edemand [*] :=
 1  12237.1
 2  12237.1
@@ -76,17 +76,16 @@ mult_t [*,*]
 :                   1              2             3            4        :=
 Cogen           8.21474        7.98709        0.840174    1.75696
 ElecGridBuy     9.65999e-06    8.95765e-06    8.66518     8.13937
-ElecGridSell    0.496677      -4.99058e-15    0           0
+ElecGridSell    0.496677       1.90864e-15    0           0
 Geothermal      0.0457542      0.0457542      0.0457542   0.0457542
-HP1stageMT      1.50985e-29    0              0           0
 HP2stage        8.55072        8.55072        0           0
 NatGasGrid     45.1732        43.9213         4.62015     9.66159
 PV              2.7728         2.35895       16.7195      3.64188
 
 :                   5               6          :=
 Cogen           0              19.7005
-ElecGridBuy     2.02535        -1.72354e-16
-ElecGridSell    1.12479e-17    35.428
+ElecGridBuy     2.02535         4.87025e-15
+ElecGridSell   -3.53828e-18    35.428
 Geothermal      0.0457542       0.0457542
 HP2stage        0               8.55072
 NatGasGrid     -3.82312e-19   108.334
@@ -112,12 +111,12 @@ Natgas      NatGasGrid    1000
 
 FlowInUnit :=
 Electricity ElecGridSell 1      496.677
-Electricity ElecGridSell 2       -4.99058e-12
+Electricity ElecGridSell 2        1.90864e-12
 Electricity ElecGridSell 6    35428
 Electricity HP2stage     1     4192.61
 Electricity HP2stage     2     4192.61
-Electricity HP2stage     3        1.66987e-22
-Electricity HP2stage     4        1.32921e-23
+Electricity HP2stage     3       -4.59214e-23
+Electricity HP2stage     4        4.98454e-24
 Electricity HP2stage     6     4192.61
 Natgas      Cogen        1    45173.2
 Natgas      Cogen        2    43921.3
@@ -136,7 +135,7 @@ PV               277.28           235.894        1671.95    364.188    401.435
 
 :                     6           :=
 Cogen          39401
-ElecGridBuy       -1.72354e-13
+ElecGridBuy        4.87025e-12
 Geothermal       219.62
 
  [Natgas,*,*]
@@ -175,12 +174,12 @@ Tlmc_HP1stageMT [*] :=
 CO2 = 18874800
 
 heat_recovery :=
-DC      1      7.6238
-DC      2      3.63626
-DC      3      7.60068
-DC      4      7.60867
+DC      1    113.343
+DC      2    113.332
+DC      3    108.837
+DC      4    110.374
 DC      5    373.767
-DC      6      7.62515
+DC      6    113.611
 Vent    1      0.131543
 Vent    2      0.131543
 Vent    3      0.131543
@@ -191,7 +190,7 @@ Vent_HP 1   2270.55
 Vent_HP 2   2216.79
 Vent_HP 3   1030.61
 Vent_HP 4    851.029
-Vent_HP 5    454.53
+Vent_HP 5    428.859
 Vent_HP 6   2762.21
 ;
 
@@ -201,3 +200,4 @@ use_recovery [*] :=
 
 set Improvements := DC Vent Vent_HP;
 
+ampl: 
