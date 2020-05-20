@@ -1,3 +1,4 @@
+SNOPT 7.5-1.2 : major_iterations=10000
 SNOPT 7.5-1.2 : Optimal solution found.
 76 iterations, objective 0.002197931579
 Nonlin evals: constrs = 195, Jac = 194.
@@ -51,10 +52,6 @@ Q_cond [*] :=
  2  6000
  3  5648.18
  4  3897.26
- 5     0
- 6     0
- 7     0
- 8     0
  9   904.531
 10  2542.11
 11  5309.21
