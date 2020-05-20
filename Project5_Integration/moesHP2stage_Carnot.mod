@@ -4,7 +4,6 @@ Set the efficiency of 2stagesHP
 #param eff_carnot := 0.64;
 param E_HP{Time};
 param E_LP{Time};
-param Qheatingsupply{Time};
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the hot and cold temperature
