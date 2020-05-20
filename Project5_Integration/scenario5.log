@@ -1,4 +1,8 @@
-CPLEX 12.9.0.0: Constraint _scon[1] is not convex quadratic since it is an equality constraint.
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
+97 iterations, objective 0
+Nonlin evals: constrs = 2, Jac = 1.
 Edemand [*] :=
 1  12237.1
 2  12237.1
@@ -59,9 +63,29 @@ HP1stageMT   1000
 ;
 
 mult [*] :=
+       Cogen   19.3463
+ ElecGridBuy   11.0981
+ElecGridSell   45.8351
+  HP1stageLT   10
+  NatGasGrid  106.386
+          PV   16.7195
 ;
 
-mult_t :=
+mult_t [*,*]
+:                 1          2            3            4          5       :=
+Cogen           7.86051    7.63287    7.13271e-17    1.92032   0
+ElecGridBuy     0          0         11.0981         8.03228   2.24497
+ElecGridSell    1.69153    1.2525     0              0         0
+HP1stageLT     10         10          2.80999        0         0
+HP2stage        0          0          1.08445e-28    0         0
+NatGasGrid     43.2253    41.9734     0             10.5599    0
+PV              2.7728     2.35895   16.7195         3.64188   4.01435
+
+:                 6        :=
+Cogen           19.3463
+ElecGridSell    36.4499
+HP1stageLT      10
+NatGasGrid     106.386
 ;
 
 Flowin :=
@@ -82,40 +106,22 @@ Natgas      NatGasGrid    1000
 ;
 
 FlowInUnit :=
+Electricity ElecGridSell 1     1691.53
+Electricity ElecGridSell 2     1252.5
+Electricity ElecGridSell 6    36449.9
+Electricity HP1stageLT   1     2069.68
+Electricity HP1stageLT   2     2012.03
+Electricity HP1stageLT   3      532.981
+Electricity HP1stageLT   6     2242.62
+Natgas      Cogen        1    43225.3
+Natgas      Cogen        2    41973.4
+Natgas      Cogen        4    10559.9
+Natgas      Cogen        6   106386
 ;
 
 FlowOutUnit :=
-;
-
-set Buildings :=
-GC     GR     CH     CO     TCV    ME     PO     BM
-CE     CM     PH     BP     IN     AA     CRPP   DIA
-MA     BI     BC     BS     ODY    EL     MX     AI;
-
-InvCost = 0
-
-OpCost = 0
-
-use [*] :=
-;
-
-Tlmc_HP1stageMT [*] :=
-1  279.497
-2  280.497
-3  282.497
-4  284.497
-5  285.497
-6  276.497
-;
-
-CO2 = 0
-
-heat_recovery :=
-;
-
-use_recovery [*] :=
-;
-
-mult_t :=
-;
-
+Electricity Cogen       1    15721
+Electricity Cogen       2    15265.7
+Electricity Cogen       4     3840.63
+Electricity Cogen       6    38692.5
+Elect
