@@ -33,4 +33,4 @@ display heat_recovery;
 
 display use_recovery;
 
-display Improvements;
+display mult_t;

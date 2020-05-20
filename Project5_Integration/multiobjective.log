@@ -1,75 +1,75 @@
 SNOPT 7.5-1.2 : major_iterations=10000
 ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Cannot satisfy nonlinear constraints.
-5822 iterations, objective 656.0627059
-Nonlin evals: constrs = 1942, Jac = 1941.
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Major iteration limit reached.
-11343 iterations, objective 1984932.499
-Nonlin evals: constrs = 20098, Jac = 20097.
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-403 iterations, objective 2501933.705
-Nonlin evals: constrs = 46, Jac = 45.
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Ill-conditioned null-space basis.
-297 iterations, objective 2794306.053
+SNOPT 7.5-1.2 : Error in basis package.
+293 iterations
 Nonlin evals: constrs = 2, Jac = 1.
 SNOPT 7.5-1.2 : major_iterations=10000
 ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-340 iterations, objective 2863184.495
-Nonlin evals: constrs = 36, Jac = 35.
+SNOPT 7.5-1.2 : The current point cannot be improved.
+2957 iterations, objective 2859980.097
+Nonlin evals: constrs = 230, Jac = 229.
 SNOPT 7.5-1.2 : major_iterations=10000
 ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-357 iterations, objective 3099731.965
-Nonlin evals: constrs = 39, Jac = 38.
+SNOPT 7.5-1.2 : The current point cannot be improved.
+1471 iterations, objective 2515940.742
+Nonlin evals: constrs = 6519, Jac = 6518.
 SNOPT 7.5-1.2 : major_iterations=10000
 ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-319 iterations, objective 3336182.238
+SNOPT 7.5-1.2 : Optimal solution found.
+379 iterations, objective 2815316.567
+Nonlin evals: constrs = 94, Jac = 93.
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : Optimal solution found.
+341 iterations, objective 3114692.42
+Nonlin evals: constrs = 68, Jac = 67.
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : Optimal solution found.
+341 iterations, objective 3414068.274
+Nonlin evals: constrs = 62, Jac = 61.
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : The current point cannot be improved.
+347 iterations, objective 3713444.143
+Nonlin evals: constrs = 85, Jac = 84.
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : Optimal solution found.
+345 iterations, objective 4012819.98
 Nonlin evals: constrs = 43, Jac = 42.
 SNOPT 7.5-1.2 : major_iterations=10000
 ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-364 iterations, objective 3572776.541
-Nonlin evals: constrs = 123, Jac = 122.
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-326 iterations, objective 3809179.981
-Nonlin evals: constrs = 31, Jac = 30.
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-336 iterations, objective 4046264.69
-Nonlin evals: constrs = 23, Jac = 22.
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-6 iterations, objective 4282828.654
+SNOPT 7.5-1.2 : Optimal solution found.
+330 iterations, objective 4312195.833
 Nonlin evals: constrs = 2, Jac = 1.
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : Optimal solution found.
+324 iterations, objective 4611571.686
+Nonlin evals: constrs = 2, Jac = 1.
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : Optimal solution found.
+201 iterations, objective 4725158.522
+Nonlin evals: constrs = 5, Jac = 4.
 CO2_multi [*] :=
-                  0  11205200
-                0.1   5006410
-                0.2   4840910
-0.30000000000000004   4840910
-                0.4   4282180
-                0.5   4282270
- 0.6000000000000001   4282180
- 0.7000000000000001   4282310
-                0.8   4282180
-                0.9   4282830
-                  1   4282830
+                  0  2268560
+                0.1  4910950
+                0.2  4910950
+0.30000000000000004  4910950
+                0.4  4910950
+                0.5  4910950
+ 0.6000000000000001  4910950
+ 0.7000000000000001  4910950
+                0.8  4910950
+                0.9  4910950
+                  1  4725160
 ;
 
 TIC_multi [*] :=
-                  0      656.063
-                0.1  1649210
+                  0        0.0114699
+                0.1  2632090
                 0.2  1917190
 0.30000000000000004  1917190
                 0.4  1917190
@@ -82,16 +82,15 @@ TIC_multi [*] :=
 ;
 
 TC_multi [*] :=
-                  0  16812300
-                0.1  16771500
-                0.2  18998200
-0.30000000000000004  18998200
-                0.4  19504100
-                0.5  19502900
- 0.6000000000000001  19504100
- 0.7000000000000001  19502400
-                0.8  19504100
-                0.9  19495800
-                  1  19495800
+                0.1  17298900
+                0.2  17298900
+0.30000000000000004  17298900
+                0.4  17298900
+                0.5  17298900
+ 0.6000000000000001  17298900
+ 0.7000000000000001  17298900
+                0.8  17298900
+                0.9  17298900
+                  1  17022100
 ;
 
