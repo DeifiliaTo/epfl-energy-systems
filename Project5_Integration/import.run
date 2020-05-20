@@ -65,8 +65,14 @@ model ../Project2_MILP/moesSOFC.mod;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the HP2stage model and its data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-data ../Project2_MILP/moesHP2stage.dat;
-model ../Project2_MILP/moesHP2stage.mod;
+#data ../Project2_MILP/moesHP2stage.dat;
+#model ../Project2_MILP/moesHP2stage.mod;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Load the HP2stage_Carnot model and its data
+---------------------------------------------------------------------------------------------------------------------------------------*/
+data ../Project5_Integration/moesHP2stage_Carnot.dat;
+model ../Project5_Integration/moesHP2stage_Carnot.mod;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the HP1stage models and their data
@@ -99,6 +105,10 @@ let  Flowout['Electricity','ElecGridBuy'] := refSize;
 let  Fmax['ElecGridBuy'] := refSize;
 let  Flowin['Electricity','ElecGridSell'] := refSize;
 let  Fmax['ElecGridSell'] := refSize;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Integrate heat recovery results from part 3
+----------------------------------------------------------------------------------------------------------------------------------------*/
 
 let heat_recovery['DC', 1] := 357.011;
 let heat_recovery['DC', 2] := 356.967;
