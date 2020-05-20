@@ -1,8 +1,8 @@
 SNOPT 7.5-1.2 : major_iterations=10000
 ignoring integrality of 75 variables
 SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-10723 iterations, objective 38206.52659
-Nonlin evals: obj = 2327, grad = 2326, constrs = 2327, Jac = 2326.
+281 iterations, objective 13586541.36
+Nonlin evals: constrs = 5, Jac = 4.
 Edemand [*] :=
 1  12237.1
 2  12237.1
@@ -63,31 +63,34 @@ HP1stageMT   1000
 ;
 
 mult [*] :=
-       Cogen   22.9176
- ElecGridBuy   10.23
+       Cogen   19.3463
+ ElecGridBuy   11.0981
 ElecGridSell   45.8351
-  Geothermal   -1.26632e-17
-  NatGasGrid  126.025
-          PV   -2.22785e-18
+  Geothermal   -5.95733e-18
+  HP1stageLT   10
+  NatGasGrid  106.386
+          PV   16.7195
 ;
 
 mult_t [*,*]
 :                   1              2              3              4          :=
-Cogen          11.4318        11.2042         1.00353        1.92032
-ElecGridBuy     9.04388e-06    8.95765e-06   10.23           8.39738
-ElecGridSell   10.6265        10.1712         0              0.000906873
-Geothermal      1.85793e-31    1.28233e-31    0              0
-HP1stageLT      0              0              2.9316e-27     0
-NatGasGrid     62.8639        61.6121         5.51844       10.5599
-PV             -8.61532e-19    2.98261e-19   -6.12177e-18   -7.54367e-19
+Cogen           7.86051        7.63287        7.13271e-17    1.92032
+ElecGridBuy     0              0             11.0981         8.03228
+ElecGridSell    1.69153        1.2525         0              0
+Geothermal     -5.95733e-18   -5.95733e-18   -5.95733e-18   -5.95733e-18
+HP1stageLT     10             10              2.80999        0
+HP2stage        0              0              1.08445e-28    0
+NatGasGrid     43.2253        41.9734         0             10.5599
+PV              2.7728         2.35895       16.7195         3.64188
 
-:                   5              6          :=
-Cogen          0              22.9176
-ElecGridBuy    2.6464          6.01525e-06
-ElecGridSell   0              45.8351
-HP2stage       1.00134e-22     0
-NatGasGrid     2.47233e-22   126.025
-PV             1.35649e-16     0
+:                   5               6          :=
+Cogen          -4.5534e-17     19.3463
+ElecGridBuy     2.24497         0
+ElecGridSell    0              36.4499
+Geothermal     -5.95733e-18    -5.95733e-18
+HP1stageLT      0              10
+NatGasGrid      0             106.386
+PV              4.01435         0
 ;
 
 Flowin :=
@@ -107,41 +110,44 @@ Electricity SOFC            58
 Natgas      NatGasGrid    1000
 ;
 
-FlowInUnit [Biogas,*,*]
- [Electricity,*,*]
-:                     1                 2               3             4      :=
-ElecGridSell   10626.5           10171.2           0             0.906873
-HP1stageLT         0                -1.60732e-26   2.20107e-24   0
-HP1stageMT         7.13514e-13      -1.15908e-11   5.53894e-12   2.16324e-12
-HP2stage          -4.6334e-12        1.15908e-11   1.15454e-12   2.57861e-23
-
-:                   5                6           :=
-ElecGridSell    0             45835.1
-HP1stageLT      1.84327e-12       0
-HP1stageMT     -1.6766e-27        3.6372e-20
-HP2stage       -1.87216e-12      -2.04131e-16
-
- [Natgas,*,*]
-:                 1         2         3         4           5          6     :=
-Cogen          62863.9   61612.1   5518.44   10559.9   4.66289e-19   126025
+FlowInUnit :=
+Electricity ElecGridSell 1     1691.53
+Electricity ElecGridSell 2     1252.5
+Electricity ElecGridSell 5       -7.96971e-14
+Electricity ElecGridSell 6    36449.9
+Electricity HP1stageLT   1     2069.68
+Electricity HP1stageLT   2     2012.03
+Electricity HP1stageLT   3      532.981
+Electricity HP1stageLT   4       -2.21336e-14
+Electricity HP1stageLT   6     2242.62
+Electricity HP2stage     3        5.21834e-26
+Electricity HP2stage     4       -2.59611e-26
+Electricity HP2stage     5        1.0559e-24
+Natgas      Cogen        1    43225.3
+Natgas      Cogen        2    41973.4
+Natgas      Cogen        3       -2.9716e-13
+Natgas      Cogen        4    10559.9
+Natgas      Cogen        5        5.05656e-29
+Natgas      Cogen        6   106386
 ;
 
 FlowOutUnit [Biogas,*,*]
  [Electricity,*,*]
 :                     1                 2                 3           :=
-Cogen          22863.6           22408.3            2007.06
-ElecGridBuy        0.00904388        0.00895765    10230
-Geothermal         1.63038e-27       1.27085e-27       0
-PV                 0                 4.42768e-17      -6.45127e-16
+Cogen          15721             15265.7              -7.68646e-14
+ElecGridBuy        0                 0             11098.1
+Geothermal        -2.85952e-14      -2.85952e-14      -2.85952e-14
+PV               277.28            235.895          1671.95
 
-:                    4                5                6           :=
-Cogen          3840.63             2.20447e-19   45835.1
-ElecGridBuy    8397.38          2646.4               0.00601525
-PV               -1.06334e-16      1.36696e-14       0
+:                    4                5                 6           :=
+Cogen          3840.63            -9.10679e-14   38692.5
+ElecGridBuy    8032.28          2244.97              1.14546e-18
+Geothermal       -2.85952e-14     -2.85952e-14      -2.85952e-14
+PV              364.188          401.435             0
 
  [Natgas,*,*]
-:                 1         2         3         4        6       :=
-NatGasGrid     62863.9   61612.1   5518.44   10559.9   126025
+:                 1         2         4           5          6       :=
+NatGasGrid     43225.3   41973.4   10559.9   3.32832e-29   106386
 ;
 
 set Buildings :=
@@ -149,18 +155,18 @@ GC     GR     CH     CO     TCV    ME     PO     BM
 CE     CM     PH     BP     IN     AA     CRPP   DIA
 MA     BI     BC     BS     ODY    EL     MX     AI;
 
-InvCost = 38206.5
+InvCost = 1346640
 
-OpCost = 14582500
+OpCost = 12239900
 
 use [*] :=
-       Cogen   0.101856
- ElecGridBuy   0.01023
+       Cogen   0.0859834
+ ElecGridBuy   0.0110981
 ElecGridSell   0.0458351
-  HP1stageLT   2.74564e-27
-  HP1stageMT   1.04631e-23
-    HP2stage  -3.58251e-21
-  NatGasGrid   0.126025
+  Geothermal  -5.95733e-18
+  HP1stageLT   1
+  NatGasGrid   0.106386
+          PV   0.0167195
 ;
 
 Tlmc_HP1stageMT [*] :=
@@ -172,7 +178,7 @@ Tlmc_HP1stageMT [*] :=
 6  276.497
 ;
 
-CO2 = 25017900
+CO2 = 18027500
 
 heat_recovery :=
 DC      1      7.6238
@@ -196,25 +202,26 @@ Vent_HP 6   1957.77
 ;
 
 use_recovery [*] :=
-   Vent  5.13074e-16
 ;
 
 mult_t [*,*]
 :                   1              2              3              4          :=
-Cogen          11.4318        11.2042         1.00353        1.92032
-ElecGridBuy     9.04388e-06    8.95765e-06   10.23           8.39738
-ElecGridSell   10.6265        10.1712         0              0.000906873
-Geothermal      1.85793e-31    1.28233e-31    0              0
-HP1stageLT      0              0              2.9316e-27     0
-NatGasGrid     62.8639        61.6121         5.51844       10.5599
-PV             -8.61532e-19    2.98261e-19   -6.12177e-18   -7.54367e-19
+Cogen           7.86051        7.63287        7.13271e-17    1.92032
+ElecGridBuy     0              0             11.0981         8.03228
+ElecGridSell    1.69153        1.2525         0              0
+Geothermal     -5.95733e-18   -5.95733e-18   -5.95733e-18   -5.95733e-18
+HP1stageLT     10             10              2.80999        0
+HP2stage        0              0              1.08445e-28    0
+NatGasGrid     43.2253        41.9734         0             10.5599
+PV              2.7728         2.35895       16.7195         3.64188
 
-:                   5              6          :=
-Cogen          0              22.9176
-ElecGridBuy    2.6464          6.01525e-06
-ElecGridSell   0              45.8351
-HP2stage       1.00134e-22     0
-NatGasGrid     2.47233e-22   126.025
-PV             1.35649e-16     0
+:                   5               6          :=
+Cogen          -4.5534e-17     19.3463
+ElecGridBuy     2.24497         0
+ElecGridSell    0              36.4499
+Geothermal     -5.95733e-18    -5.95733e-18
+HP1stageLT      0              10
+NatGasGrid      0             106.386
+PV              4.01435         0
 ;
 

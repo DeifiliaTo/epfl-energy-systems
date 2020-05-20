@@ -1,8 +1,8 @@
 SNOPT 7.5-1.2 : major_iterations=10000
 ignoring integrality of 75 variables
 SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-135 iterations, objective 14582497.24
-Nonlin evals: obj = 2, grad = 1, constrs = 2, Jac = 1.
+97 iterations, objective 0
+Nonlin evals: constrs = 2, Jac = 1.
 Edemand [*] :=
 1  12237.1
 2  12237.1
@@ -63,30 +63,29 @@ HP1stageMT   1000
 ;
 
 mult [*] :=
-       Cogen   22.9176
- ElecGridBuy   10.23
+       Cogen   19.3463
+ ElecGridBuy   11.0981
 ElecGridSell   45.8351
-  NatGasGrid  126.025
+  HP1stageLT   10
+  NatGasGrid  106.386
+          PV   16.7195
 ;
 
-mult_t :=
-Cogen        1    11.4318
-Cogen        2    11.2042
-Cogen        3     1.00353
-Cogen        4     1.92032
-Cogen        6    22.9176
-ElecGridBuy  3    10.23
-ElecGridBuy  4     8.39738
-ElecGridBuy  5     2.6464
-ElecGridSell 1    10.6265
-ElecGridSell 2    10.1712
-ElecGridSell 4     0.000906873
-ElecGridSell 6    45.8351
-NatGasGrid   1    62.8639
-NatGasGrid   2    61.6121
-NatGasGrid   3     5.51844
-NatGasGrid   4    10.5599
-NatGasGrid   6   126.025
+mult_t [*,*]
+:                 1          2            3            4          5       :=
+Cogen           7.86051    7.63287    7.13271e-17    1.92032   0
+ElecGridBuy     0          0         11.0981         8.03228   2.24497
+ElecGridSell    1.69153    1.2525     0              0         0
+HP1stageLT     10         10          2.80999        0         0
+HP2stage        0          0          1.08445e-28    0         0
+NatGasGrid     43.2253    41.9734     0             10.5599    0
+PV              2.7728     2.35895   16.7195         3.64188   4.01435
+
+:                 6        :=
+Cogen           19.3463
+ElecGridSell    36.4499
+HP1stageLT      10
+NatGasGrid     106.386
 ;
 
 Flowin :=
@@ -107,34 +106,36 @@ Natgas      NatGasGrid    1000
 ;
 
 FlowInUnit :=
-Electricity ElecGridSell 1    10626.5
-Electricity ElecGridSell 2    10171.2
-Electricity ElecGridSell 4        0.906873
-Electricity ElecGridSell 6    45835.1
-Natgas      Cogen        1    62863.9
-Natgas      Cogen        2    61612.1
-Natgas      Cogen        3     5518.44
+Electricity ElecGridSell 1     1691.53
+Electricity ElecGridSell 2     1252.5
+Electricity ElecGridSell 6    36449.9
+Electricity HP1stageLT   1     2069.68
+Electricity HP1stageLT   2     2012.03
+Electricity HP1stageLT   3      532.981
+Electricity HP1stageLT   6     2242.62
+Natgas      Cogen        1    43225.3
+Natgas      Cogen        2    41973.4
 Natgas      Cogen        4    10559.9
-Natgas      Cogen        5        0.000673574
-Natgas      Cogen        6   126025
+Natgas      Cogen        6   106386
 ;
 
 FlowOutUnit :=
-Electricity Cogen       1    22863.6
-Electricity Cogen       2    22408.3
-Electricity Cogen       3     2007.06
+Electricity Cogen       1    15721
+Electricity Cogen       2    15265.7
 Electricity Cogen       4     3840.63
-Electricity Cogen       6    45835.1
-Electricity ElecGridBuy 3    10230
-Electricity ElecGridBuy 4     8397.38
-Electricity ElecGridBuy 5     2646.4
-Electricity ElecGridBuy 6        0.00601525
-Natgas      NatGasGrid  1    62863.9
-Natgas      NatGasGrid  2    61612.1
-Natgas      NatGasGrid  3     5518.44
+Electricity Cogen       6    38692.5
+Electricity ElecGridBuy 3    11098.1
+Electricity ElecGridBuy 4     8032.28
+Electricity ElecGridBuy 5     2244.97
+Electricity PV          1      277.28
+Electricity PV          2      235.895
+Electricity PV          3     1671.95
+Electricity PV          4      364.188
+Electricity PV          5      401.435
+Natgas      NatGasGrid  1    43225.3
+Natgas      NatGasGrid  2    41973.4
 Natgas      NatGasGrid  4    10559.9
-Natgas      NatGasGrid  5        0.000673574
-Natgas      NatGasGrid  6   126025
+Natgas      NatGasGrid  6   106386
 ;
 
 set Buildings :=
@@ -142,15 +143,17 @@ GC     GR     CH     CO     TCV    ME     PO     BM
 CE     CM     PH     BP     IN     AA     CRPP   DIA
 MA     BI     BC     BS     ODY    EL     MX     AI;
 
-InvCost = 38206.5
+InvCost = 1346640
 
-OpCost = 14582500
+OpCost = 12239900
 
 use [*] :=
-       Cogen  0.101856
- ElecGridBuy  0.01023
+       Cogen  0.0859834
+ ElecGridBuy  0.0110981
 ElecGridSell  0.0458351
-  NatGasGrid  0.126025
+  HP1stageLT  1
+  NatGasGrid  0.106386
+          PV  0.0167195
 ;
 
 Tlmc_HP1stageMT [*] :=
@@ -162,7 +165,7 @@ Tlmc_HP1stageMT [*] :=
 6  276.497
 ;
 
-CO2 = 25017900
+CO2 = 18027500
 
 heat_recovery :=
 DC      1      7.6238
@@ -186,26 +189,22 @@ Vent_HP 6   1957.77
 ;
 
 use_recovery [*] :=
-   Vent  5.13074e-16
 ;
 
-mult_t :=
-Cogen        1    11.4318
-Cogen        2    11.2042
-Cogen        3     1.00353
-Cogen        4     1.92032
-Cogen        6    22.9176
-ElecGridBuy  3    10.23
-ElecGridBuy  4     8.39738
-ElecGridBuy  5     2.6464
-ElecGridSell 1    10.6265
-ElecGridSell 2    10.1712
-ElecGridSell 4     0.000906873
-ElecGridSell 6    45.8351
-NatGasGrid   1    62.8639
-NatGasGrid   2    61.6121
-NatGasGrid   3     5.51844
-NatGasGrid   4    10.5599
-NatGasGrid   6   126.025
+mult_t [*,*]
+:                 1          2            3            4          5       :=
+Cogen           7.86051    7.63287    7.13271e-17    1.92032   0
+ElecGridBuy     0          0         11.0981         8.03228   2.24497
+ElecGridSell    1.69153    1.2525     0              0         0
+HP1stageLT     10         10          2.80999        0         0
+HP2stage        0          0          1.08445e-28    0         0
+NatGasGrid     43.2253    41.9734     0             10.5599    0
+PV              2.7728     2.35895   16.7195         3.64188   4.01435
+
+:                 6        :=
+Cogen           19.3463
+ElecGridSell    36.4499
+HP1stageLT      10
+NatGasGrid     106.386
 ;
 

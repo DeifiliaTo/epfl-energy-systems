@@ -52,7 +52,7 @@ solve;
 include output.run;
 
 #Scenario 6
-minimize scenario6: CO2emissions;
+minimize scenario6: CO2;
 objective scenario6;
 option log_file 'scenario6.log';
 solve;
