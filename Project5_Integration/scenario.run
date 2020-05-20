@@ -13,17 +13,17 @@ option snopt_options 'major_iterations=10000';
 
 option omit_zero_rows 1;										# to not display 0 in rows
 option omit_zero_cols 1;										# to not display 0 in columns
-option log_file 'scenario.log';
-
 
 #Scenario 1
-minimize InvCost;
-objective InvCost;
+minimize scenario1: InvCost;
+objective scenario1;
 solve;
 option log_file 'scenario1.log';
+include output.run
 
 #Scenario 2
-minimize OpCost;
-objective OpCost;
+minimize scenario2 :OpCost;
+objective scenario2;
 solve;
 option log_file 'scenario2.log';
+include output.run
