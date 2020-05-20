@@ -216,7 +216,3 @@ HP2stage         1.03978
 NatGasGrid     104.344
 ;
 
-
-scenario.run, line 55 (offset 1674):
-	CO2emissions is not defined
-context:  minimize scenario6:  >>> CO2emissions; <<< 
