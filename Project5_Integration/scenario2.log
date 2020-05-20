@@ -121,4 +121,84 @@ Electricity ElecGridBuy 3    9216.35
 Electricity ElecGridBuy 4    9291.91
 Electricity ElecGridBuy 5    2244.97
 Electricity Geothermal  1    4800
-Electricity Geothermal  2 
+Electricity Geothermal  2    4800
+Electricity Geothermal  3    1348.8
+Electricity Geothermal  4    2581
+Electricity Geothermal  6    4800
+Electricity PV          1     277.28
+Electricity PV          2     235.895
+Electricity PV          3    1671.95
+Electricity PV          4     364.188
+Electricity PV          5     401.435
+Natgas      NatGasGrid  1   24974.5
+Natgas      NatGasGrid  2   24673.2
+Natgas      NatGasGrid  6   23795.9
+;
+
+set Buildings :=
+GC     GR     CH     CO     TCV    ME     PO     BM
+CE     CM     PH     BP     IN     AA     CRPP   DIA
+MA     BI     BC     BS     ODY    EL     MX     AI;
+
+InvCost = 20141600
+
+OpCost = 9639320
+
+Tlmc_HP1stageMT [*] :=
+1  279.497
+2  280.497
+3  282.497
+4  284.497
+5  285.497
+6  276.497
+;
+
+CO2 = 10852700
+
+heat_recovery :=
+DC      1    357.011
+DC      2    356.967
+DC      3    335.21
+DC      4    343.394
+DC      6    357.897
+Vent    1      0.549
+Vent    2      0.536
+Vent    3      0.263
+Vent    4      0.222
+Vent    5      0.131
+Vent    6      0.789
+Vent_HP 1   1577.79
+Vent_HP 2   1542.22
+Vent_HP 3    757.489
+Vent_HP 4    638.682
+Vent_HP 5    428.859
+Vent_HP 6   2023.78
+;
+
+use_recovery [*] :=
+;
+
+mult_t [*,*]
+:                 1          2           3          4          5         6   :=
+Cogen           4.54161    4.48683    0          0          0          4.32728
+ElecGridBuy     0          0          9.21635    9.29191    2.24497    0
+Geothermal      1          1          0.280999   0.537709   0          1
+HP1stageLT      9.29328    8.80926    0          0          0         10
+HP1stageMT      0          0          0          0          0         10
+HP2stage        0          0          0          0          0         22.0548
+NatGasGrid     24.9745    24.6732     0          0          0         23.7959
+PV              2.7728     2.35895   16.7195     3.64188    4.01435    0
+;
+
+use_t [*,*]
+:              1   2   3   4   5   6    :=
+Cogen          1   1   0   0   0   1
+ElecGridBuy    0   0   1   1   1   0
+Geothermal     1   1   1   1   0   1
+HP1stageLT     1   1   0   0   0   1
+HP1stageMT     0   0   0   0   0   1
+HP2stage       0   0   0   0   0   1
+NatGasGrid     1   1   0   0   0   1
+PV             1   1   1   1   1   0
+;
+

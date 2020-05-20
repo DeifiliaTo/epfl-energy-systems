@@ -118,4 +118,85 @@ FlowOutUnit :=
 Electricity Cogen       1    16167.7
 Electricity Cogen       2    15712.4
 Electricity Cogen       3     2007.06
-Electricity Cogen       4     3840
+Electricity Cogen       4     3840.63
+Electricity Cogen       6    39139.2
+Electricity ElecGridBuy 3     8558.09
+Electricity ElecGridBuy 4     8032.28
+Electricity ElecGridBuy 5     2244.97
+Electricity PV          1      277.28
+Electricity PV          2      235.895
+Electricity PV          3     1671.95
+Electricity PV          4      364.188
+Electricity PV          5      401.435
+Natgas      NatGasGrid  1    44453.4
+Natgas      NatGasGrid  2    43201.6
+Natgas      NatGasGrid  3     5518.44
+Natgas      NatGasGrid  4    10559.9
+Natgas      NatGasGrid  6   107614
+;
+
+set Buildings :=
+GC     GR     CH     CO     TCV    ME     PO     BM
+CE     CM     PH     BP     IN     AA     CRPP   DIA
+MA     BI     BC     BS     ODY    EL     MX     AI;
+
+InvCost = 1323720
+
+OpCost = 12573000
+
+Tlmc_HP1stageMT [*] :=
+1  279.497
+2  280.497
+3  282.497
+4  284.497
+5  285.497
+6  276.497
+;
+
+CO2 = 19058100
+
+heat_recovery :=
+DC      1    357.011
+DC      2    356.967
+DC      3    335.21
+DC      4    343.394
+DC      6    357.897
+Vent    1      0.549
+Vent    2      0.536
+Vent    3      0.263
+Vent    4      0.222
+Vent    5      0.131
+Vent    6      0.789
+Vent_HP 1   1577.79
+Vent_HP 2   1542.22
+Vent_HP 3    757.489
+Vent_HP 4    638.682
+Vent_HP 5    428.859
+Vent_HP 6   2023.78
+;
+
+use_recovery [*] :=
+;
+
+mult_t [*,*]
+:                  1          2          3          4          5          6  :=
+Cogen           8.08385     7.85621    1.00353    1.92032   0          19.5696
+ElecGridBuy     0           0          8.55809    8.03228   2.24497     0
+ElecGridSell    0.455193    0          0          0         0          35.7399
+HP1stageLT      1           1          0          0         0           1
+HP2stage        8.37462     8.37462    0          0         0           8.37462
+NatGasGrid     44.4534     43.2016     5.51844   10.5599    0         107.614
+PV              2.7728      2.35895   16.7195     3.64188   4.01435     0
+;
+
+use_t [*,*]
+:              1   2   3   4   5   6    :=
+Cogen          1   1   1   1   0   1
+ElecGridBuy    0   0   1   1   1   0
+ElecGridSell   1   0   0   0   0   1
+HP1stageLT     1   1   0   0   0   1
+HP2stage       1   1   0   0   0   1
+NatGasGrid     1   1   1   1   0   1
+PV             1   1   1   1   1   0
+;
+
