@@ -1,0 +1,415 @@
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
+135 iterations, objective 14582497.24
+Nonlin evals: obj = 2, grad = 1, constrs = 2, Jac = 1.
+Edemand [*] :=
+1  12237.1
+2  12237.1
+3  12237.1
+4  12237.1
+5   2646.4
+;
+
+Qheating [*,*]
+:         1           2           3            4           6        :=
+AA     2851.88    2780.58     1207.35      969.169      4509.7
+AI     3190.73    3131.68        0         523.128      6211.33
+BC     1539.72    1512.53        0         273.703      2923.34
+BI      272.84     267.091       0          31.3329      557.679
+BM     2177.61    2134.01        0         408.809      4121.38
+BP      746.685    733.003       0         147.305      1382.93
+BS     1627.08    1601.22      156.512     505.349      2610.27
+CE     3060.17    2985.82     1250.99     1049.72       4813.94
+CH     2907.18    2853.8         0         258.291      6117.18
+CM      975.389    955.272       0         125.033      1956.61
+CO      531.966    521.782       0          25.6128     1154.86
+CRPP    721.778    708.05        0           0          1681.39
+DIA     125.378    123.587      11.9562     41.8779      193.488
+EL     1173.45    1157.52        0         121.965      2379.52
+GC     2051.53    2014.48        0         391.211      3832.08
+GR      411.598    398.643      56.0567     41.0322      868.129
+IN     1562.2     1530.73        0         251.163      3029.32
+MA     1467.12    1427.46        0           0          4110.62
+ME      512.056    491.531       0           0          1818.67
+MX     1671.82    1651.78        0          36.5923     3697.55
+ODY     515.963    506.154     127.119     175.297       799.736
+PH     1761.33    1740.58        0           0          4431.79
+PO       44.29      43.3786      0           0.499354    100.782
+TCV     110.546    102.196       0           0           869.385
+;
+
+Qheatingdemand :=
+LowT    1   19103.2
+LowT    2   18729.7
+LowT    3    1502.94
+LowT    4    3480.47
+LowT    6   37483.7
+MediumT 1   12907.1
+MediumT 2   12643.1
+MediumT 3    1307.05
+MediumT 4    1896.62
+MediumT 6   26688
+;
+
+Qheatingsupply [*] :=
+    Boiler    500
+     Cogen   2800.11
+Geothermal  10000
+HP1stageLT   1000
+HP1stageMT   1000
+  HP2stage   1000
+      SOFC     30
+;
+
+mult [*] :=
+       Cogen   22.9176
+ ElecGridBuy   10.23
+ElecGridSell   45.8351
+  NatGasGrid  126.025
+;
+
+mult_t :=
+Cogen        1    11.4318
+Cogen        2    11.2042
+Cogen        3     1.00353
+Cogen        4     1.92032
+Cogen        6    22.9176
+ElecGridBuy  3    10.23
+ElecGridBuy  4     8.39738
+ElecGridBuy  5     2.6464
+ElecGridSell 1    10.6265
+ElecGridSell 2    10.1712
+ElecGridSell 4     0.000906873
+ElecGridSell 6    45.8351
+NatGasGrid   1    62.8639
+NatGasGrid   2    61.6121
+NatGasGrid   3     5.51844
+NatGasGrid   4    10.5599
+NatGasGrid   6   126.025
+;
+
+Flowin :=
+Biogas      SOFC            109.729
+Electricity ElecGridSell   1000
+Electricity HP2stage        490.323
+Natgas      Boiler          555.556
+Natgas      Cogen          5499.04
+;
+
+Flowout :=
+Electricity Cogen         2000
+Electricity ElecGridBuy   1000
+Electricity Geothermal    4800
+Electricity PV             100
+Electricity SOFC            58
+Natgas      NatGasGrid    1000
+;
+
+FlowInUnit :=
+Electricity ElecGridSell 1    10626.5
+Electricity ElecGridSell 2    10171.2
+Electricity ElecGridSell 4        0.906873
+Electricity ElecGridSell 6    45835.1
+Natgas      Cogen        1    62863.9
+Natgas      Cogen        2    61612.1
+Natgas      Cogen        3     5518.44
+Natgas      Cogen        4    10559.9
+Natgas      Cogen        5        0.000673574
+Natgas      Cogen        6   126025
+;
+
+FlowOutUnit :=
+Electricity Cogen       1    22863.6
+Electricity Cogen       2    22408.3
+Electricity Cogen       3     2007.06
+Electricity Cogen       4     3840.63
+Electricity Cogen       6    45835.1
+Electricity ElecGridBuy 3    10230
+Electricity ElecGridBuy 4     8397.38
+Electricity ElecGridBuy 5     2646.4
+Electricity ElecGridBuy 6        0.00601525
+Natgas      NatGasGrid  1    62863.9
+Natgas      NatGasGrid  2    61612.1
+Natgas      NatGasGrid  3     5518.44
+Natgas      NatGasGrid  4    10559.9
+Natgas      NatGasGrid  5        0.000673574
+Natgas      NatGasGrid  6   126025
+;
+
+set Buildings :=
+GC     GR     CH     CO     TCV    ME     PO     BM
+CE     CM     PH     BP     IN     AA     CRPP   DIA
+MA     BI     BC     BS     ODY    EL     MX     AI;
+
+InvCost = 38206.5
+
+OpCost = 14582500
+
+use [*] :=
+       Cogen  0.101856
+ ElecGridBuy  0.01023
+ElecGridSell  0.0458351
+  NatGasGrid  0.126025
+;
+
+Tlmc_HP1stageMT [*] :=
+1  279.497
+2  280.497
+3  282.497
+4  284.497
+5  285.497
+6  276.497
+;
+
+CO2 = 25017900
+
+heat_recovery :=
+DC      1      7.6238
+DC      2      7.62375
+DC      3      7.60068
+DC      4      0.541893
+DC      5    373.767
+DC      6      7.62515
+Vent    1     51.8282
+Vent    2      5.49237
+Vent    3      2.78602
+Vent    4     58.2226
+Vent    5    116.11
+Vent    6     22.961
+Vent_HP 1   1397.96
+Vent_HP 2   1369.2
+Vent_HP 3    758.439
+Vent_HP 4    639.483
+Vent_HP 5    428.859
+Vent_HP 6   1957.77
+;
+
+use_recovery [*] :=
+   Vent  5.13074e-16
+;
+
+mult_t :=
+Cogen        1    11.4318
+Cogen        2    11.2042
+Cogen        3     1.00353
+Cogen        4     1.92032
+Cogen        6    22.9176
+ElecGridBuy  3    10.23
+ElecGridBuy  4     8.39738
+ElecGridBuy  5     2.6464
+ElecGridSell 1    10.6265
+ElecGridSell 2    10.1712
+ElecGridSell 4     0.000906873
+ElecGridSell 6    45.8351
+NatGasGrid   1    62.8639
+NatGasGrid   2    61.6121
+NatGasGrid   3     5.51844
+NatGasGrid   4    10.5599
+NatGasGrid   6   126.025
+;
+
+ampl: reset;
+ampl: include scenario.run
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : Error in basis package.
+183 iterations
+Nonlin evals: obj = 2, grad = 1, constrs = 2, Jac = 1.
+Edemand [*] :=
+1  12237.1
+2  12237.1
+3  12237.1
+4  12237.1
+5   2646.4
+;
+
+Qheating [*,*]
+:         1           2           3            4           6        :=
+AA     2851.88    2780.58     1207.35      969.169      4509.7
+AI     3190.73    3131.68        0         523.128      6211.33
+BC     1539.72    1512.53        0         273.703      2923.34
+BI      272.84     267.091       0          31.3329      557.679
+BM     2177.61    2134.01        0         408.809      4121.38
+BP      746.685    733.003       0         147.305      1382.93
+BS     1627.08    1601.22      156.512     505.349      2610.27
+CE     3060.17    2985.82     1250.99     1049.72       4813.94
+CH     2907.18    2853.8         0         258.291      6117.18
+CM      975.389    955.272       0         125.033      1956.61
+CO      531.966    521.782       0          25.6128     1154.86
+CRPP    721.778    708.05        0           0          1681.39
+DIA     125.378    123.587      11.9562     41.8779      193.488
+EL     1173.45    1157.52        0         121.965      2379.52
+GC     2051.53    2014.48        0         391.211      3832.08
+GR      411.598    398.643      56.0567     41.0322      868.129
+IN     1562.2     1530.73        0         251.163      3029.32
+MA     1467.12    1427.46        0           0          4110.62
+ME      512.056    491.531       0           0          1818.67
+MX     1671.82    1651.78        0          36.5923     3697.55
+ODY     515.963    506.154     127.119     175.297       799.736
+PH     1761.33    1740.58        0           0          4431.79
+PO       44.29      43.3786      0           0.499354    100.782
+TCV     110.546    102.196       0           0           869.385
+;
+
+Qheatingdemand :=
+LowT    1   19103.2
+LowT    2   18729.7
+LowT    3    1502.94
+LowT    4    3480.47
+LowT    6   37483.7
+MediumT 1   12907.1
+MediumT 2   12643.1
+MediumT 3    1307.05
+MediumT 4    1896.62
+MediumT 6   26688
+;
+
+Qheatingsupply [*] :=
+    Boiler    500
+     Cogen   2800.11
+Geothermal  10000
+HP1stageLT   1000
+HP1stageMT   1000
+  HP2stage   1000
+      SOFC     30
+;
+
+mult [*] :=
+ ElecGridBuy   9.32116
+  Geothermal   1
+  HP1stageLT  10
+    HP2stage  17.4837
+;
+
+mult_t :=
+ElecGridBuy  1    9.32116
+ElecGridBuy  2    9.19355
+ElecGridBuy  3    7.4371
+ElecGridBuy  4    7.4371
+ElecGridBuy  6    6.01525
+ElecGridSell 1    4.69168e-16
+ElecGridSell 2    9.38335e-16
+Geothermal   1    1
+Geothermal   2    1
+Geothermal   3    1
+Geothermal   4    1
+Geothermal   5    0.551333
+Geothermal   6    1
+HP1stageLT   1    9.10315
+HP1stageLT   2    8.72973
+HP1stageLT   6   10
+HP2stage     6   17.4837
+;
+
+Flowin :=
+Biogas      SOFC            109.729
+Electricity ElecGridSell   1000
+Electricity HP2stage        490.323
+Natgas      Boiler          555.556
+Natgas      Cogen          5499.04
+;
+
+Flowout :=
+Electricity Cogen         2000
+Electricity ElecGridBuy   1000
+Electricity Geothermal    4800
+Electricity PV             100
+Electricity SOFC            58
+Natgas      NatGasGrid    1000
+;
+
+FlowInUnit :=
+Electricity ElecGridSell 3      2.03958e-12
+Electricity HP1stageLT   1   1884.06
+Electricity HP1stageLT   2   1756.45
+Electricity HP1stageLT   6   2242.62
+Electricity HP2stage     5      3.61542e-13
+Electricity HP2stage     6   8572.63
+;
+
+FlowOutUnit :=
+Electricity ElecGridBuy 1   9321.16
+Electricity ElecGridBuy 2   9193.55
+Electricity ElecGridBuy 3   7437.1
+Electricity ElecGridBuy 4   7437.1
+Electricity ElecGridBuy 6   6015.25
+Electricity Geothermal  1   4800
+Electricity Geothermal  2   4800
+Electricity Geothermal  3   4800
+Electricity Geothermal  4   4800
+Electricity Geothermal  5   2646.4
+Electricity Geothermal  6   4800
+;
+
+set Buildings :=
+GC     GR     CH     CO     TCV    ME     PO     BM
+CE     CM     PH     BP     IN     AA     CRPP   DIA
+MA     BI     BC     BS     ODY    EL     MX     AI;
+
+InvCost = 0
+
+OpCost = 5511620
+
+use [*] :=
+ ElecGridBuy  0.00932116
+  Geothermal  1
+  HP1stageLT  1
+    HP2stage  0.349673
+;
+
+Tlmc_HP1stageMT [*] :=
+1  279.497
+2  280.497
+3  282.497
+4  284.497
+5  285.497
+6  276.497
+;
+
+CO2 = 2124770
+
+heat_recovery :=
+DC      1      3.68776
+DC      2    373.767
+DC      3      0.373443
+DC      4    373.767
+DC      5    373.767
+DC      6    373.767
+Vent    1      0.131543
+Vent    2      0.131543
+Vent    3      0.131543
+Vent    4      0.131543
+Vent    5      0.131543
+Vent    6   1029.47
+Vent_HP 1   2104.56
+Vent_HP 2    157.909
+Vent_HP 3   1030.56
+Vent_HP 4    850.972
+Vent_HP 5    452.542
+Vent_HP 6   2104.56
+;
+
+use_recovery [*] :=
+;
+
+mult_t :=
+ElecGridBuy  1    9.32116
+ElecGridBuy  2    9.19355
+ElecGridBuy  3    7.4371
+ElecGridBuy  4    7.4371
+ElecGridBuy  6    6.01525
+ElecGridSell 1    4.69168e-16
+ElecGridSell 2    9.38335e-16
+Geothermal   1    1
+Geothermal   2    1
+Geothermal   3    1
+Geothermal   4    1
+Geothermal   5    0.551333
+Geothermal   6    1
+HP1stageLT   1    9.10315
+HP1stageLT   2    8.72973
+HP1stageLT   6   10
+HP2stage     6   17.4837
+;
+
