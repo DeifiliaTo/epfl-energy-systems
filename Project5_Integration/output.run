@@ -23,8 +23,6 @@ display InvCost;
 
 display OpCost;
 
-display use;
-
 display Tlmc_HP1stageMT;
 
 display CO2;
@@ -34,3 +32,5 @@ display heat_recovery;
 display use_recovery;
 
 display mult_t;
+
+display use_t;
