@@ -1,26 +1,33 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the efficiency of 2stagesHP
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-param eff_carnot := 0.64;
+#param eff_carnot := 0.64;
+param E_HP{Time};
+param E_LP{Time};
+param Qheatingsupply{Time};
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the hot and cold temperature
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-#param Tlmc_HP2stage{t in Time}  := (Tlake[t]-3)/log((Tlake[t]+273)/(3+273)); #water is taken from the lake at Tlake and returned at 3�C
-
-param Tlmc_HP2stage := 5.5;             # water is taken from the lake at 7C and is rejected at 4C (max 3C of difference)
+param T_evap := 5.5;
+param T_sep;   
+param T_cond := 65;          # water is taken from the lake at 7C and is rejected at 4C (max 3C of difference)
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the electricity output as a function of Th, Tc and Heat to supply to the buildings
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-let Flowin['Electricity','HP2stage'] := sum{h in HeatingLevel} ((Qheatingsupply['HP2stage'] * (Theating[h] - Tlmc_HP2stage)) / (eff_carnot * (Theating[h]+273))) ;
+#let Flowin['Electricity','HP2stage'] := sum{h in HeatingLevel} ((Qheatingsupply['HP2stage'] * (Theating[h] - Tlmc_HP2stage)) / (eff_carnot * (Theating[h]+273))) ;
 
-/*?????LOOP LOW TEMPERATURE OR LOOP HIGH TEMPERATURE */
-#subject to HP2stage_elecIn{t in Time}:
-# FlowInUnit['Electricity','HP2stage', t] = sum{h in HeatingLevel} (Qheatingsupply['HP2stage'] * (Theating[h] - Tlmc_HP2stage[t])) / (eff_carnot * (Theating[h]+273)) ;
-/* Qheatingsupply is Q+calculated or the name of de variable is not correct?*/
+subject to COP_HP {t in Time}:
+    Qheatingsupply['HP2stage'] * mult_t['HP2stage',t] * (T_cond - T_sep) = f_HP[t] * (T_cond + 273) * E_HP[t];
 
-#Flowin['Heat','HP2stage'] = Qheatingsupply['HP2stage'] - Electricity['HP2stage'] ;
-# why are we trying to calculate heat supplied to the pump? we don't care about this afaik...
+subject to COP_LP {t in Time}:
+    (Qheatingsupply['HP2stage'] * mult_t['HP2stage',t] - E_HP[t]) * (T_sep - T_evap) = f_LP[t] * (T_sep + 273) * E_LP[t];
+
+subject to EnergyBalance {t in Time}:
+    Qheatingsupply['HP2stage'] * mult_t['HP2stage',t] = Q_evap[t] + E_HP[t] + E_LP[t];
+
+subject to ElecHP2 {t in Time}:
+    FlowInUnit['Electricity','HP2stage',t] = E_HP[t] + E_LP[t];
