@@ -1,8 +1,8 @@
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
 SNOPT 7.5-1.2 : Nonlinear infeasibilities minimized.
-135 iterations, objective 14582497.24
-Nonlin evals: obj = 2, grad = 1, constrs = 2, Jac = 1.
+170 iterations, objective 14582427.46
+Nonlin evals: obj = 23, grad = 22, constrs = 23, Jac = 22.
 Edemand [*] :=
 1  12237.1
 2  12237.1
@@ -76,11 +76,11 @@ Cogen        3     1.00353
 Cogen        4     1.92032
 Cogen        6    22.9176
 ElecGridBuy  3    10.23
-ElecGridBuy  4     8.39738
+ElecGridBuy  4     8.39647
 ElecGridBuy  5     2.6464
 ElecGridSell 1    10.6265
 ElecGridSell 2    10.1712
-ElecGridSell 4     0.000906873
+ElecGridSell 5     1.61035e-06
 ElecGridSell 6    45.8351
 NatGasGrid   1    62.8639
 NatGasGrid   2    61.6121
@@ -109,13 +109,12 @@ Natgas      NatGasGrid    1000
 FlowInUnit :=
 Electricity ElecGridSell 1    10626.5
 Electricity ElecGridSell 2    10171.2
-Electricity ElecGridSell 4        0.906873
+Electricity ElecGridSell 5        0.00161035
 Electricity ElecGridSell 6    45835.1
 Natgas      Cogen        1    62863.9
 Natgas      Cogen        2    61612.1
 Natgas      Cogen        3     5518.44
 Natgas      Cogen        4    10559.9
-Natgas      Cogen        5        0.000673574
 Natgas      Cogen        6   126025
 ;
 
@@ -126,14 +125,13 @@ Electricity Cogen       3     2007.06
 Electricity Cogen       4     3840.63
 Electricity Cogen       6    45835.1
 Electricity ElecGridBuy 3    10230
-Electricity ElecGridBuy 4     8397.38
+Electricity ElecGridBuy 4     8396.47
 Electricity ElecGridBuy 5     2646.4
-Electricity ElecGridBuy 6        0.00601525
+Electricity ElecGridBuy 6       -8.49518e-19
 Natgas      NatGasGrid  1    62863.9
 Natgas      NatGasGrid  2    61612.1
 Natgas      NatGasGrid  3     5518.44
 Natgas      NatGasGrid  4    10559.9
-Natgas      NatGasGrid  5        0.000673574
 Natgas      NatGasGrid  6   126025
 ;
 
@@ -144,7 +142,7 @@ MA     BI     BC     BS     ODY    EL     MX     AI;
 
 InvCost = 38206.5
 
-OpCost = 14582500
+OpCost = 14582400
 
 use [*] :=
        Cogen  0.101856
@@ -171,22 +169,21 @@ DC      3      7.60068
 DC      4      0.541893
 DC      5    373.767
 DC      6      7.62515
-Vent    1     51.8282
-Vent    2      5.49237
-Vent    3      2.78602
-Vent    4     58.2226
-Vent    5    116.11
-Vent    6     22.961
+Vent    1      0.735213
+Vent    2      0.71864
+Vent    3      0.352973
+Vent    4      0.297611
+Vent    5      0.17631
+Vent    6      1.05786
 Vent_HP 1   1397.96
 Vent_HP 2   1369.2
-Vent_HP 3    758.439
-Vent_HP 4    639.483
+Vent_HP 3    757.489
+Vent_HP 4    638.682
 Vent_HP 5    428.859
 Vent_HP 6   1957.77
 ;
 
 use_recovery [*] :=
-   Vent  5.13074e-16
 ;
 
 mult_t :=
@@ -196,11 +193,11 @@ Cogen        3     1.00353
 Cogen        4     1.92032
 Cogen        6    22.9176
 ElecGridBuy  3    10.23
-ElecGridBuy  4     8.39738
+ElecGridBuy  4     8.39647
 ElecGridBuy  5     2.6464
 ElecGridSell 1    10.6265
 ElecGridSell 2    10.1712
-ElecGridSell 4     0.000906873
+ElecGridSell 5     1.61035e-06
 ElecGridSell 6    45.8351
 NatGasGrid   1    62.8639
 NatGasGrid   2    61.6121

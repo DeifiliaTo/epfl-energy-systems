@@ -1,0 +1,14 @@
+name: PVsystem
+channels:
+  - plotly
+  - conda-forge
+dependencies:
+  - jupyterlab=2.1.2
+  - numpy=1.18.1
+  - pandas=1.0.3
+  - pip=20.0.2
+  - plotly=4.7.1
+  - python=3.8.2
+  - pip:
+    - amplpy==0.6.11
+    - matplotlib==3.2.1

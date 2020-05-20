@@ -3,28 +3,28 @@ Load the main model and its data
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 reset;
 
-model moes2020_P4.mod;  # activate this to calculate carnot factor of high pressure stage
+model moes2020_P4_HP.mod;  # activate this to calculate carnot factor of high pressure stage
 data moes2020_P4_R12.dat; # include your specific data for your working fluid
 include runoptions/solver.run;
 option log_file 'Results_R12_HP.log';
 solve;
 include runoptions/HP_log.run;
 
-model moes2020_P4_2.mod; # activate this to calculate carnot factor of low pressure stage
+model moes2020_P4_LP.mod; # activate this to calculate carnot factor of low pressure stage
 data moes2020_P4_R12.dat; # include your specific data for your working fluid
 include runoptions/solver.run;
 option log_file 'Results_R12_LP.log';
 solve;
 include runoptions/LP_log.run;
 
-model moes2020_P4.mod;  # activate this to calculate carnot factor of high pressure stage
+model moes2020_P4_HP.mod;  # activate this to calculate carnot factor of high pressure stage
 data moes2020_P4_R21.dat; # include your specific data for your working fluid
 include runoptions/solver.run;
 option log_file 'Results_R21_HP.log';
 solve;
 include runoptions/HP_log.run;
 
-model moes2020_P4_2.mod; # activate this to calculate carnot factor of low pressure stage
+model moes2020_P4_LP.mod; # activate this to calculate carnot factor of low pressure stage
 data moes2020_P4_R21.dat; # include your specific data for your working fluid
 include runoptions/solver.run;
 option log_file 'Results_R21_LP.log';
