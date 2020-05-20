@@ -1,8 +1,8 @@
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
+SNOPT 7.5-1.2 : major_iterations=10000
+ignoring integrality of 75 variables
 SNOPT 7.5-1.2 : Optimal solution found.
-2318 iterations, objective 13549993.77
-Nonlin evals: constrs = 456, Jac = 455.
+2334 iterations, objective 13549996.93
+Nonlin evals: constrs = 366, Jac = 365.
 Edemand [*] :=
 1  12237.1
 2  12237.1
@@ -63,35 +63,36 @@ HP1stageMT   1000
 ;
 
 mult [*] :=
-       Cogen   18.9749
+       Cogen   18.975
  ElecGridBuy    8.55809
 ElecGridSell   35.1974
-  HP1stageLT   10
-    HP2stage    1.03979
+  Geothermal   -4.52765e-28
+  HP1stageLT    9.99961
+  HP1stageMT   -7.98638e-27
+    HP2stage    1.04009
   NatGasGrid  104.344
           PV   16.7195
 ;
 
 mult_t [*,*]
 :                   1              2              3              4          :=
-Cogen           7.48917        7.26153        1.00353        1.92032
+Cogen           7.48921        7.26156        1.00353        1.92032
 ElecGridBuy     9.65999e-06    8.95765e-06    8.55809        8.03228
-ElecGridSell    0.43903        0              0              0
-Geothermal      0             -1.60037e-32   -1.02981e-32    0
-HP1stageLT     10             10              0              0
-HP1stageMT      0              0              0             -1.20788e-28
-HP2stage        1.03979        1.03979        3.63882e-21    0
-NatGasGrid     41.1833        39.9314         5.51844       10.5599
-PV              2.7728         2.35895       16.7195         3.64188
+ElecGridSell    0.439032       0              0              0
+Geothermal     -3.80505e-28   -7.86612e-28   -6.74895e-28   -6.65199e-28
+HP1stageLT      9.99961        9.99961        0              0
+HP1stageMT      0             -3.86522e-27    0              0
+HP2stage        1.04009        1.04009        0             -2.1689e-28
+NatGasGrid     41.1834        39.9316         5.51844       10.5599
+PV              2.7728         2.35894       16.7195         3.64188
 
 :                   5               6          :=
-Cogen          -2.5778e-16     18.9749
+Cogen          -2.5778e-16     18.975
 ElecGridBuy     2.24497         0
-ElecGridSell   -3.52302e-18    35.1974
-Geothermal      0              -2.34207e-16
-HP1stageLT      1.2329e-29     10
-HP1stageMT      4.83153e-28     0
-HP2stage        0               1.03979
+ElecGridSell   -9.02846e-18    35.1974
+Geothermal     -7.07989e-28    -3.56977e-28
+HP1stageLT      0               9.99961
+HP2stage        0               1.04009
 NatGasGrid      0             104.344
 PV              4.01435         0
 ;
@@ -114,22 +115,22 @@ Natgas      NatGasGrid    1000
 ;
 
 FlowInUnit :=
-Electricity ElecGridSell 1      439.03
+Electricity ElecGridSell 1      439.032
+Electricity ElecGridSell 2       -1.17499e-27
 Electricity ElecGridSell 6    35197.4
-Electricity HP1stageLT   1     2069.68
-Electricity HP1stageLT   2     2012.03
-Electricity HP1stageLT   5        6.90998e-26
-Electricity HP1stageLT   6     2242.62
-Electricity HP1stageMT   4       -5.4142e-26
-Electricity HP2stage     1      509.831
-Electricity HP2stage     2      509.831
-Electricity HP2stage     3       -1.66987e-24
-Electricity HP2stage     4        1.03845e-25
-Electricity HP2stage     5       -1.44096e-24
-Electricity HP2stage     6      509.831
-Natgas      Boiler       6       -2.13481e-25
-Natgas      Cogen        1    41183.3
-Natgas      Cogen        2    39931.4
+Electricity HP1stageLT   1     2069.6
+Electricity HP1stageLT   2     2011.95
+Electricity HP1stageLT   5        1.1056e-24
+Electricity HP1stageLT   6     2242.53
+Electricity HP1stageMT   1        9.41226e-25
+Electricity HP1stageMT   2       -1.64284e-24
+Electricity HP2stage     1      509.977
+Electricity HP2stage     2      509.977
+Electricity HP2stage     3       -2.46261e-12
+Electricity HP2stage     5       -2.41971e-12
+Electricity HP2stage     6      509.977
+Natgas      Cogen        1    41183.4
+Natgas      Cogen        2    39931.6
 Natgas      Cogen        3     5518.44
 Natgas      Cogen        4    10559.9
 Natgas      Cogen        6   104344
@@ -138,20 +139,20 @@ Natgas      Cogen        6   104344
 FlowOutUnit [Biogas,*,*]
  [Electricity,*,*]
 :                     1                 2                3           :=
-Cogen          14978.3           14523.1           2007.06
+Cogen          14978.4           14523.1           2007.06
 ElecGridBuy        0.00965999        0.00895765    8558.09
-Geothermal        -4.17929e-13      -4.17929e-13     -4.17929e-13
+Geothermal        -1.39273e-24      -4.33118e-24     -2.56838e-24
 PV               277.28            235.895         1671.95
 
-:                    4                5                6           :=
-Cogen          3840.63            -5.1556e-13   37949.9
-ElecGridBuy    8032.28          2244.97             0
-Geothermal       -4.17929e-13      0               -4.17929e-13
-PV              364.188          401.435            0
+:                    4                5                 6           :=
+Cogen          3840.63            -5.1556e-13    37949.9
+ElecGridBuy    8032.28          2244.97              0
+Geothermal       -2.54339e-24     -1.98786e-24      -1.86578e-24
+PV              364.188          401.435             0
 
  [Natgas,*,*]
 :                 1         2         3         4        6       :=
-NatGasGrid     41183.3   39931.4   5518.44   10559.9   104344
+NatGasGrid     41183.4   39931.6   5518.44   10559.9   104344
 ;
 
 set Buildings :=
@@ -159,18 +160,20 @@ GC     GR     CH     CO     TCV    ME     PO     BM
 CE     CM     PH     BP     IN     AA     CRPP   DIA
 MA     BI     BC     BS     ODY    EL     MX     AI;
 
-InvCost = 1432710
+InvCost = 1432690
 
 OpCost = 12117300
 
 use [*] :=
-       Cogen  0.084333
- ElecGridBuy  0.00855809
-ElecGridSell  0.0351974
-  HP1stageLT  1
-    HP2stage  0.0207957
-  NatGasGrid  0.104344
-          PV  0.0167195
+       Cogen   0.0843332
+ ElecGridBuy   0.00855809
+ElecGridSell   0.0351974
+  Geothermal  -3.01598e-28
+  HP1stageLT   0.999961
+  HP1stageMT  -3.61409e-28
+    HP2stage   0.0208017
+  NatGasGrid   0.104344
+          PV   0.0167195
 ;
 
 Tlmc_HP1stageMT [*] :=
@@ -185,51 +188,70 @@ Tlmc_HP1stageMT [*] :=
 CO2 = 18027700
 
 heat_recovery :=
-DC      1    367.469
-DC      2    367.429
-DC      3    346.928
-DC      4    354.823
-DC      5    319.658
-DC      6    368.451
-Vent    1    453.258
-Vent    2    438.762
-Vent    3     12.0621
-Vent    4     82.3221
-Vent    5    108.695
-Vent    6    624.879
-Vent_HP 1   1397.96
-Vent_HP 2   1369.2
-Vent_HP 3    734.739
-Vent_HP 4    638.682
+DC      1      7.6238
+DC      2      7.62375
+DC      3      7.60068
+DC      4      7.60867
+DC      5      7.57765
+DC      6      7.62515
+Vent    1      0.131543
+Vent    2      0.131543
+Vent    3     28.3251
+Vent    4     23.8825
+Vent    5     14.1484
+Vent    6     84.8905
+Vent_HP 1   1471.89
+Vent_HP 2   1446.93
+Vent_HP 3    872.395
+Vent_HP 4    735.566
 Vent_HP 5    428.859
 Vent_HP 6   1957.77
 ;
 
 use_recovery [*] :=
-   Vent  -5.9047e-15
 ;
 
 mult_t [*,*]
 :                   1              2              3              4          :=
-Cogen           7.48917        7.26153        1.00353        1.92032
+Cogen           7.48921        7.26156        1.00353        1.92032
 ElecGridBuy     9.65999e-06    8.95765e-06    8.55809        8.03228
-ElecGridSell    0.43903        0              0              0
-Geothermal      0             -1.60037e-32   -1.02981e-32    0
-HP1stageLT     10             10              0              0
-HP1stageMT      0              0              0             -1.20788e-28
-HP2stage        1.03979        1.03979        3.63882e-21    0
-NatGasGrid     41.1833        39.9314         5.51844       10.5599
-PV              2.7728         2.35895       16.7195         3.64188
+ElecGridSell    0.439032       0              0              0
+Geothermal     -3.80505e-28   -7.86612e-28   -6.74895e-28   -6.65199e-28
+HP1stageLT      9.99961        9.99961        0              0
+HP1stageMT      0             -3.86522e-27    0              0
+HP2stage        1.04009        1.04009        0             -2.1689e-28
+NatGasGrid     41.1834        39.9316         5.51844       10.5599
+PV              2.7728         2.35894       16.7195         3.64188
 
 :                   5               6          :=
-Cogen          -2.5778e-16     18.9749
+Cogen          -2.5778e-16     18.975
 ElecGridBuy     2.24497         0
-ElecGridSell   -3.52302e-18    35.1974
-Geothermal      0              -2.34207e-16
-HP1stageLT      1.2329e-29     10
-HP1stageMT      4.83153e-28     0
-HP2stage        0               1.03979
+ElecGridSell   -9.02846e-18    35.1974
+Geothermal     -7.07989e-28    -3.56977e-28
+HP1stageLT      0               9.99961
+HP2stage        0               1.04009
 NatGasGrid      0             104.344
 PV              4.01435         0
 ;
 
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project2_MILP';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project2_MILP' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub';cd 'C:\Users\Marie Jones\Documents\GitHub' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project5_Integration';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project5_Integration' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project2_MILP';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project2_MILP' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project5_Integration';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project5_Integration' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid\Student_version';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid\Student_version' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid\Student_version\AMPL';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid\Student_version\AMPL' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid\Student_version';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid\Student_version' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems' ;
+ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project5_Integration';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project5_Integration' ;
+ampl: reset;
+ampl: reset;
+ampl: 
