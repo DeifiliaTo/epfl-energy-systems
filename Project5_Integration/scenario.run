@@ -6,7 +6,7 @@ include import.run
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver snopt;											# choose the solver
+option solver cplex;											# choose the solver
 option presolve 10;
 option snopt_options 'major_iterations=10000';
 
