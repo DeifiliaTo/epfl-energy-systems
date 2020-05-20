@@ -1,23 +1,31 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set the efficiency of 2stagesHP
+Variables
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-#param eff_carnot := 0.64;
-param E_HP{Time};
-param E_LP{Time};
+var f_HP{Time} >= 0.001;
+var f_LP{Time} >= 0.001;
+
+var E_HP{Time} >= 0.001;
+var E_LP{Time} >= 0.001;
+
+var Q_evap{Time} >= 0.001;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set the hot and cold temperature
+Parameters
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
 param T_evap := 5.5;
-param T_sep;   
+param T_sep := 52.1919;   
 param T_cond := 65;          # water is taken from the lake at 7C and is rejected at 4C (max 3C of difference)
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Set the electricity output as a function of Th, Tc and Heat to supply to the buildings
+Equations
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
-#let Flowin['Electricity','HP2stage'] := sum{h in HeatingLevel} ((Qheatingsupply['HP2stage'] * (Theating[h] - Tlmc_HP2stage)) / (eff_carnot * (Theating[h]+273))) ;
+subject to f1 {t in Time}:
+    f_HP[t] = a_HP * (Text[t] + 273)^2 + b_HP * (Text[t] + 273) + c_HP;
+
+subject to f2 {t in Time}:
+    f_LP[t] = a_LP * (Text[t] + 273)^2 + b_LP * (Text[t] + 273) + c_LP;
 
 subject to COP_HP {t in Time}:
     Qheatingsupply['HP2stage'] * mult_t['HP2stage',t] * (T_cond - T_sep) = f_HP[t] * (T_cond + 273) * E_HP[t];
