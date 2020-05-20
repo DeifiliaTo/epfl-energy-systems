@@ -1,8 +1,4 @@
-SNOPT 7.5-1.2 : major_iterations=10000
-ignoring integrality of 75 variables
-SNOPT 7.5-1.2 : The current point cannot be improved.
-8362 iterations, objective 38206.52659
-Nonlin evals: obj = 2192, grad = 2191, constrs = 2192, Jac = 2191.
+CPLEX 12.9.0.0: Constraint _scon[1] is not convex quadratic since it is an equality constraint.
 Edemand [*] :=
 1  12237.1
 2  12237.1
@@ -63,35 +59,9 @@ HP1stageMT   1000
 ;
 
 mult [*] :=
-       Cogen   22.9176
- ElecGridBuy   10.23
-ElecGridSell   45.8351
-  Geothermal   -1.26632e-17
-  HP1stageLT   -2.07196e-21
-  HP1stageMT   -3.26972e-26
-  NatGasGrid  126.025
-          PV   -2.22785e-18
 ;
 
-mult_t [*,*]
-:                   1              2              3              4          :=
-Cogen          11.4318        11.2042         1.00353        1.92032
-ElecGridBuy     9.04388e-06    8.95765e-06   10.23           8.39647
-ElecGridSell   10.6265        10.1712         0              0
-Geothermal      0              0              0             -1.46779e-16
-HP1stageLT     -2.07196e-21   -2.07196e-21   -2.07196e-21   -2.07196e-21
-HP1stageMT     -3.26972e-26   -3.26972e-26   -3.26972e-26    0
-NatGasGrid     62.8639        61.6121         5.51844       10.5599
-PV             -8.61532e-19    2.98261e-19   -6.12177e-18   -7.54367e-19
-
-:                   5               6          :=
-Cogen          -4.84027e-16    22.9176
-ElecGridBuy     2.6464          6.01525e-06
-ElecGridSell    0              45.8351
-HP1stageLT      1.89844e-22    -2.07196e-21
-HP1stageMT      0              -3.26972e-26
-NatGasGrid      0             126.025
-PV              1.35649e-16     0
+mult_t :=
 ;
 
 Flowin :=
@@ -111,41 +81,10 @@ Electricity SOFC            58
 Natgas      NatGasGrid    1000
 ;
 
-FlowInUnit [Biogas,*,*]
- [Electricity,*,*]
-:                     1                 2               3              4     :=
-ElecGridSell   10626.5           10171.2            0              0
-HP1stageLT        -4.28828e-19      -4.16884e-19   -3.92996e-19   -3.69107e-19
-HP1stageMT        -1.71225e-23      -5.7442e-12    -8.04396e-24    0
-HP2stage          -3.74001e-24      -1.72561e-19    1.88208e-19    0
-
-:                   5                6           :=
-ElecGridSell    0             45835.1
-HP1stageLT      6.05701e-20      -4.64662e-19
-HP1stageMT      0                -8.87989e-24
-HP2stage       -1.64382e-19       0
-
- [Natgas,*,*]
-:                 1         2         3         4        6       :=
-Cogen          62863.9   61612.1   5518.44   10559.9   126025
+FlowInUnit :=
 ;
 
-FlowOutUnit [Biogas,*,*]
- [Electricity,*,*]
-:                    1                 2                 3           :=
-Cogen          22863.6          22408.3            2007.06
-ElecGridBuy        0.00904388       0.00895765    10230
-PV                 0                4.42768e-17      -6.45127e-16
-
-:                    4                5                6           :=
-Cogen          3840.63            -9.68055e-13   45835.1
-ElecGridBuy    8396.47          2646.4               0.00601525
-Geothermal       -7.04538e-13      0                 0
-PV               -1.06334e-16      1.36696e-14       0
-
- [Natgas,*,*]
-:                 1         2         3         4           5           6    :=
-NatGasGrid     62863.9   61612.1   5518.44   10559.9   -8.19868e-20   126025
+FlowOutUnit :=
 ;
 
 set Buildings :=
@@ -153,17 +92,11 @@ GC     GR     CH     CO     TCV    ME     PO     BM
 CE     CM     PH     BP     IN     AA     CRPP   DIA
 MA     BI     BC     BS     ODY    EL     MX     AI;
 
-InvCost = 38206.5
+InvCost = 0
 
-OpCost = 14582400
+OpCost = 0
 
 use [*] :=
-       Cogen   0.101856
- ElecGridBuy   0.01023
-ElecGridSell   0.0458351
-  HP1stageLT  -2.07196e-22
-  HP1stageMT  -5.10894e-27
-  NatGasGrid   0.126025
 ;
 
 Tlmc_HP1stageMT [*] :=
@@ -175,51 +108,14 @@ Tlmc_HP1stageMT [*] :=
 6  276.497
 ;
 
-CO2 = 25017900
+CO2 = 0
 
 heat_recovery :=
-DC      1      7.6238
-DC      2      7.62375
-DC      3      7.60068
-DC      4      0.541893
-DC      5    373.767
-DC      6      7.62515
-Vent    1      0.735213
-Vent    2      0.720062
-Vent    3      0.352973
-Vent    4      0.297611
-Vent    5      0.17631
-Vent    6      1.05786
-Vent_HP 1   1397.96
-Vent_HP 2   1369.2
-Vent_HP 3    757.489
-Vent_HP 4    638.682
-Vent_HP 5    428.859
-Vent_HP 6   1957.77
 ;
 
 use_recovery [*] :=
-   Vent  8.94456e-12
 ;
 
-mult_t [*,*]
-:                   1              2              3              4          :=
-Cogen          11.4318        11.2042         1.00353        1.92032
-ElecGridBuy     9.04388e-06    8.95765e-06   10.23           8.39647
-ElecGridSell   10.6265        10.1712         0              0
-Geothermal      0              0              0             -1.46779e-16
-HP1stageLT     -2.07196e-21   -2.07196e-21   -2.07196e-21   -2.07196e-21
-HP1stageMT     -3.26972e-26   -3.26972e-26   -3.26972e-26    0
-NatGasGrid     62.8639        61.6121         5.51844       10.5599
-PV             -8.61532e-19    2.98261e-19   -6.12177e-18   -7.54367e-19
-
-:                   5               6          :=
-Cogen          -4.84027e-16    22.9176
-ElecGridBuy     2.6464          6.01525e-06
-ElecGridSell    0              45.8351
-HP1stageLT      1.89844e-22    -2.07196e-21
-HP1stageMT      0              -3.26972e-26
-NatGasGrid      0             126.025
-PV              1.35649e-16     0
+mult_t :=
 ;
 
