@@ -27,13 +27,13 @@ param alpha;
 # delete Totalcost; # does work but not ideal as we lose the ability to check this value
 
 # new objective function
-minimize multiobjective: alpha*CO2 + (1-alpha)*TIC;
+minimize multiobjective: alpha*CO2 + (1-alpha)*InvCost;
 # force this to be the objective (otherwise takes the first objective defined -- which is in the model)
 objective multiobjective;
 
 # initialise outputs
 param CO2_multi{alphas};
-param TIC_multi{alphas};
+param InvCost_multi{alphas};
 param TC_multi{alphas};
 
 # inspired by https://ampl.com/NEW/loop1.html
@@ -49,15 +49,15 @@ for {a in alphas} {
 
     # save outputs
     let CO2_multi[a] := CO2;
-    let TIC_multi[a] := TIC;
+    let InvCost_multi[a] := InvCost;
     let TC_multi[a] := Totalcost;
 }
 
 # display all outputs
 display CO2_multi;
-display TIC_multi;
+display InvCost_multi;
 display TC_multi;
 
 # create output file
-printf: "alpha\tCO2\tTIC\tTC\n" > multiobjective.dat;
-printf {a in alphas}:"%15.10g\t%15.10g\t%15.10g\t%15.10g\n", a, CO2_multi[a], TIC_multi[a], TC_multi[a] > multiobjective.dat;
+printf: "CO2\tInvCost\talpha\tTC\n" > multiobjective.dat;
+printf {a in alphas}:"%15.10g\t%15.10g\t%15.10g\t%15.10g\n", CO2_multi[a], InvCost_multi[a], a, TC_multi[a] > multiobjective.dat;
