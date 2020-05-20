@@ -1,3 +1,21 @@
+
+Incorrect usage. Correct command syntax is:
+   cplex [-i] [-f <commandfile> | -c "<command1>" "<command2>" ...]
+Exiting
+Error at _cmdno 409 executing "solve" command
+(file scenario.run, line 24, offset 1299):
+can't open C:\Users\MARIEJ~1\AppData\Local\Temp\at3164.sol
+ampl: reset;
+ampl: include scenario.run
+
+Incorrect usage. Correct command syntax is:
+   cplex [-i] [-f <commandfile> | -c "<command1>" "<command2>" ...]
+Exiting
+Error at _cmdno 409 executing "solve" command
+(file scenario.run, line 24, offset 1299):
+can't open C:\Users\MARIEJ~1\AppData\Local\Temp\at3164.sol
+ampl: reset;
+ampl: include scenario.run
 CPLEX 12.9.0.0: optimal integer solution; objective 356512.4155
 34 MIP simplex iterations
 0 branch-and-bound nodes
@@ -92,7 +110,6 @@ NatGasGrid   6   126.025
 Flowin :=
 Biogas      SOFC            109.729
 Electricity ElecGridSell   1000
-Electricity HP2stage        490.323
 Natgas      Boiler          555.556
 Natgas      Cogen          5499.04
 ;
@@ -137,89 +154,4 @@ Natgas      NatGasGrid  6   126025
 ;
 
 set Buildings :=
-GC     GR     CH     CO     TCV    ME     PO     BM
-CE     CM     PH     BP     IN     AA     CRPP   DIA
-MA     BI     BC     BS     ODY    EL     MX     AI;
-
-InvCost = 356512
-
-OpCost = 14616200
-
-Tlmc_HP1stageMT [*] :=
-1  279.497
-2  280.497
-3  282.497
-4  284.497
-5  285.497
-6  276.497
-;
-
-CO2 = 25018700
-
-heat_recovery :=
-DC      1    357.011
-DC      2    356.967
-DC      3    335.21
-DC      4    343.394
-DC      6    357.897
-Vent    1      0.549
-Vent    2      0.536
-Vent    3      0.263
-Vent    4      0.222
-Vent    5      0.131
-Vent    6      0.789
-Vent_HP 1   1577.79
-Vent_HP 2   1542.22
-Vent_HP 3    757.489
-Vent_HP 4    638.682
-Vent_HP 5    428.859
-Vent_HP 6   2023.78
-;
-
-use_recovery [*] :=
-;
-
-mult_t :=
-Cogen        1    11.4318
-Cogen        2    11.2042
-Cogen        3     1.00353
-Cogen        4     1.92032
-Cogen        6    22.9176
-ElecGridBuy  3    10.231
-ElecGridBuy  4     8.39747
-ElecGridBuy  5     2.6474
-ElecGridSell 1    10.6265
-ElecGridSell 2    10.1712
-ElecGridSell 3     0.001
-ElecGridSell 4     0.001
-ElecGridSell 5     0.001
-ElecGridSell 6    45.8351
-NatGasGrid   1    62.8639
-NatGasGrid   2    61.6121
-NatGasGrid   3     5.51844
-NatGasGrid   4    10.5599
-NatGasGrid   6   126.025
-;
-
-use_t :=
-Cogen        1   1
-Cogen        2   1
-Cogen        3   1
-Cogen        4   1
-Cogen        6   1
-ElecGridBuy  3   1
-ElecGridBuy  4   1
-ElecGridBuy  5   1
-ElecGridSell 1   1
-ElecGridSell 2   1
-ElecGridSell 3   1
-ElecGridSell 4   1
-ElecGridSell 5   1
-ElecGridSell 6   1
-NatGasGrid   1   1
-NatGasGrid   2   1
-NatGasGrid   3   1
-NatGasGrid   4   1
-NatGasGrid   6   1
-;
-
+GC 
