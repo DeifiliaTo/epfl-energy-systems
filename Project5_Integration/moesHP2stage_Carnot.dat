@@ -9,14 +9,15 @@ let Tminheating['HP2stage'] := 110;
 param a_HP := 0.00270757;
 param b_HP := -1.4653;
 param c_HP := 198.516;
-subject to CarnotFactorHP{t in Time}:
- f_HP[t] = a_HP * (Text[t] + 273)^2 + b_HP * (Text[t] + 273)^2 + c_HP;
+#subject to CarnotFactorHP{t in Time}:
+# f_HP[t] = a_HP * (Text[t] + 273)^2 + b_HP * (Text[t] + 273)^2 + c_HP;
 
 param a_LP := 0.00105432;
 param b_LP := -0.569855;
 param c_LP := 77.4214;
-subject to CarnotFactorLP{t in Time}:
- f_LP[t] := a_LP * (Text[t] + 273)^2 + b_LP * (Text[t] + 273)^2 + c_LP;
+
+#subject to CarnotFactorLP{t in Time}:
+ #f_LP[t] := a_LP * (Text[t] + 273)^2 + b_LP * (Text[t] + 273)^2 + c_LP;
 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------

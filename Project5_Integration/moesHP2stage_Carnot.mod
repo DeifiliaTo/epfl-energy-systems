@@ -4,6 +4,16 @@ Set the efficiency of 2stagesHP
 #param eff_carnot := 0.64;
 param E_HP{Time};
 param E_LP{Time};
+param Q_evap{Time}; 
+
+var f_HP{Time}		>= 0.001;
+var f_LP{Time} 		>= 0.001;
+
+subject to CarnotFactorHP{t in Time}:
+ f_HP[t] = a_HP * (Text[t] + 273)^2 + b_HP * (Text[t] + 273)^2 + c_HP;
+ 
+subject to CarnotFactorLP{t in Time}:
+ f_LP[t] = a_LP * (Text[t] + 273)^2 + b_LP * (Text[t] + 273)^2 + c_LP;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the hot and cold temperature
