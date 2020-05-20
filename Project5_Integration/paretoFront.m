@@ -3,6 +3,8 @@ function d = paretoFront(file)
 %   The data file is read using readtable; the first two columns of data
 %   are used as the x and y values respectively. Any further data supplied
 %   is added to a tooltip on the plot.
+%   
+%   Example usage: paretoFront('multiobjective.dat');
 
 % load(file)
 d = readtable(file);

@@ -6,7 +6,7 @@ include import.run
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver snopt;											# choose the solver
+option solver cplex;											# choose the solver
 # option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
 option presolve 10;
 option snopt_options 'major_iterations=10000';
@@ -19,7 +19,7 @@ option log_file 'multiobjective.log';
 Iterate through objective functions
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 # define parameter for objective function
-set alphas := {0..1 by 0.001}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
+set alphas := {0..1 by 0.01}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
 param alpha;
 
 # remove previously-defined objective -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf

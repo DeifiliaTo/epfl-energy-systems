@@ -6,10 +6,8 @@ include import.run
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver snopt;											# choose the solver
-# option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
-option presolve 10;
-option snopt_options 'major_iterations=10000';
+option solver cplex;											# choose the solver
+#option solver '/home/deifilia/AMPL/ampl_linux-intel64/cplex';
 
 option omit_zero_rows 1;										# to not display 0 in rows
 option omit_zero_cols 1;										# to not display 0 in columns
