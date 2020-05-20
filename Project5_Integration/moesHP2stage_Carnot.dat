@@ -1,0 +1,27 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set the maximum scaling factor of 2stageHP
+---------------------------------------------------------------------------------------------------------------------------------------*/
+let Fmax['HP2stage'] := 50; /*1000*/
+let Qheatingsupply['HP2stage'] := 1000; /*120*/
+let Tminheating['HP2stage'] := 110;
+
+# Polynomial regression of Carnot factor for the high and low pressure stages
+let a_HP = 0.00270757;
+let b_HP = -1.4653;
+let c_HP = 198.516;
+param f_HP{t in Time} := a_HP * (Text[t] + 273)^2 + b_HP * (Text[t] + 273)^2 + c_HP;
+
+let a_LP = 0.00105432;
+let b_LP = -0.569855;
+let c_LP = 77.4214;
+param f_LP{t in Time} := a_LP * (Text[t] + 273)^2 + b_LP * (Text[t] + 273)^2 + c_LP;
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set cost parameter
+---------------------------------------------------------------------------------------------------------------------------------------*/
+let cinv1['HP2stage'] := 0;			#  [CHF] /*10*/
+
+# Cost 890 annualised to 83.3741
+let cinv2['HP2stage'] := 83.3741*Qheatingsupply['HP2stage'];			# 890 [CHF/kWp] continious investment cost (n=25) 
+

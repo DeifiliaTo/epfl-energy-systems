@@ -1,0 +1,60 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Import all the model and data files for part 5
+---------------------------------------------------------------------------------------------------------------------------------------*/
+include import.run
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+AMPL options
+---------------------------------------------------------------------------------------------------------------------------------------*/
+option solver snopt;											# choose the solver
+option presolve 10;
+option snopt_options 'major_iterations=10000';
+
+option omit_zero_rows 1;										# to not display 0 in rows
+option omit_zero_cols 1;										# to not display 0 in columns
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Iterate through scenarios
+---------------------------------------------------------------------------------------------------------------------------------------*/
+
+# Scenario 1
+minimize scenario1: InvCost;
+objective scenario1;
+option log_file 'scenario1.log';
+solve;
+include output.run;
+
+# Scenario 2
+minimize scenario2: OpCost;
+objective scenario2;
+option log_file 'scenario2.log';
+solve;
+include output.run;
+
+# Scenario 3
+minimize scenario3: InvCost + OpCost;
+objective scenario3;
+option log_file 'scenario3.log';
+solve;
+include output.run;
+
+# Scenario 4
+minimize scenario4: Flowout['Natgas','NatGasGrid'];
+objective scenario4;
+option log_file 'scenario4.log';
+solve;
+include output.run;
+
+# Scenario 5
+minimize scenario5: Flowout['Natgas','NatGasGrid'] + Flowout['Electricity','ElecGridBuy'];
+objective scenario5;
+option log_file 'scenario5.log';
+solve;
+include output.run;
+
+# Scenario 6
+minimize scenario6: CO2;
+objective scenario6;
+option log_file 'scenario6.log';
+solve;
+include output.run;
