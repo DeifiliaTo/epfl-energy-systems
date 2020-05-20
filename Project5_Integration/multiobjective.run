@@ -56,3 +56,7 @@ for {a in alphas} {
 display CO2_multi;
 display TIC_multi;
 display TC_multi;
+
+# create output file
+printf: "alpha\tCO2\tTIC\tTC\n" > multiobjective.dat;
+printf {a in alphas}:"%15.10g\t%15.10g\t%15.10g\t%15.10g\n", a, CO2_multi[a], TIC_multi[a], TC_multi[a] > multiobjective.dat;
