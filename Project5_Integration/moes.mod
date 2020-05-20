@@ -172,9 +172,9 @@ subject to zero_constraint2{t in Time}:
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Resource balance constraints (except for electricity): flowin = flowout
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-subject to inflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageMT"}, t in Time}:
+subject to inflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageMT","HP2stage"}, t in Time}:
     FlowInUnit[l, u, t] = mult_t[u,t] * Flowin[l,u];
-subject to outflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageMT"}, t in Time}:
+subject to outflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageMT","HP2stage"}, t in Time}:
 	FlowOutUnit[l, u, t] = mult_t[u,t] * Flowout[l,u]; 
 subject to balance_cstr {l in Layers, t in Time: l != 'Electricity'}:
 	sum{u in UtilitiesOfLayer[l]} FlowInUnit[l,u,t] = sum{u in UtilitiesOfLayer[l]} FlowOutUnit[l,u,t];
