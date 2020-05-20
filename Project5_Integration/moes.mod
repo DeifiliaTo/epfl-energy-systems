@@ -135,7 +135,7 @@ var COP_2{Time} 			:=	4	>= 0.001; #coefficient of performance of the new HP
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Vent_HP Parameters
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-var Qheating_HP{t in Time} >= 0;
+var Qheating_HP{t in Time} 	:= 0	>= 0;
 ################################
 # Variables
 
@@ -160,7 +160,7 @@ var Area_Vent{Improvements} 		:=0 >= 0.001; #[m2]
 var DTminVent{Improvements} 		>= 1; #[degC]
 var theta_1{Improvements, Time};	# Temperary variables to make DTLn calculation more readable
 var theta_2{Improvements, Time};
-var Qheating_vent{Time};
+var Qheating_vent{Time} 		:= 0	>= 0;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Calculation of heating demand
@@ -232,12 +232,10 @@ var FlowInUnit{Layers,Utilities,Time} >= 0;						# continuous variables to decid
 var FlowOutUnit{Layers,Utilities,Time} >= 0;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Resource variables
+Improvement variables
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-var use_recovery{Improvements} := 0 binary;								# binary variable to decide if DC is used or not
+var use_recovery{Improvements} 		  := 0 binary;								# binary variable to decide if DC is used or not
 var heat_recovery{Improvements, Time} :=0 >=0;
-var op_recovery{Improvements, Time}   :=0 >=0;
-var cap_recovery{Improvements} 		  :=0 >=0;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Utility sizing constraints
@@ -270,8 +268,8 @@ var mult_heating_t{UtilitiesOfType['Heating'], Time, HeatingLevel} >= 0;
 subject to LT_balance{t in Time}:
 	Qheatingdemand['LowT',t] = sum{u in UtilitiesOfType['Heating']: Tminheating[u] >= Theating['LowT'] + dTmin} (Qheatingsupply[u] * mult_heating_t[u,t,'LowT']);
 subject to MT_balance{t in Time}:
-	Qheatingdemand['MediumT',t] = sum{u in UtilitiesOfType['Heating']: Tminheating[u] >= Theating['MediumT'] + dTmin} (Qheatingsupply[u] * mult_heating_t[u,t,'MediumT']) 
-	- sum{u in Improvements} heat_recovery[u,t] * use_recovery[u]
+	Qheatingdemand['MediumT',t] - sum{u in Improvements} (heat_recovery[u,t] * use_recovery[u]) = 
+		sum{u in UtilitiesOfType['Heating']: Tminheating[u] >= Theating['MediumT'] + dTmin} (Qheatingsupply[u] * mult_heating_t[u,t,'MediumT']) 
 	;
 subject to heating_mult_cstr{u in UtilitiesOfType['Heating'], t in Time}:
 	mult_t[u,t] = sum{h in HeatingLevel} mult_heating_t[u,t,h];
@@ -422,9 +420,6 @@ subject to OPEXcost: #the operating cost can be computed using the electricity c
     OPEX['DC'] = sum{t in Time} (E['DC', t] * top[t] * Cel);
 
 subject to CAPEXcost: #the investment cost can be computed using the area of the heat recovery heat exchanger and annuity factor
-    #Cp = (INew / IRef) * aHE * (AHEDC)^bHE;
-    #IC = Cp * FBMHE;
-    #CAPEX = IC * F_annualise
     CAPEX['DC'] =  ((INew / IRef) * aHE * (AHEDC)^bHE) * FBMHE * (i * (1 + i)^n) / ((1 + i)^n - 1);
 
 
@@ -460,7 +455,7 @@ subject to DTLNVent1 {t in Time}: #DTLN ventilation -> pay attention to this val
 	DTLNVent['Vent', t] * log(theta_1['Vent', t] / theta_2['Vent', t]) = (theta_1['Vent', t] - theta_2['Vent', t]);
 
 subject to Area_Vent1max{t in Time}: #Area of ventilation HEX
-	(Area_Vent['Vent'] + eps) * DTLNVent['Vent', t] * Uvent >= Heat_Vent['Vent', t];
+	Area_Vent['Vent'] * DTLNVent['Vent', t] * Uvent >= Heat_Vent['Vent', t];
 
 subject to DTminVent1{t in Time}: #DTmin needed on one end of HEX
 	DTminVent['Vent'] <= Trelease['Vent', t] - Text[t];
@@ -532,7 +527,7 @@ subject to DTLNVent1_2 {t in Time}: #DTLN ventilation -> pay attention to this v
 	DTLNVent['Vent_HP', t] = (theta_1['Vent_HP', t] - theta_2['Vent_HP', t])/log(theta_1['Vent_HP', t]/theta_2['Vent_HP', t]);  #;((eps + theta_1[t]*theta_2[t]^2 + theta_2[t]*theta_1[t]^2)^(1/3))/2;
 
 subject to Area_Vent1_2{t in Time: t != 5}: #Area of ventilation HEX
-	Area_Vent['Vent_HP'] >= Heat_Vent['Vent_HP', t] / (DTLNVent['Vent_HP', t]*Uvent);
+	Area_Vent['Vent_HP'] * (DTLNVent['Vent_HP', t]*Uvent) >= Heat_Vent['Vent_HP', t];
 		
 subject to DTminVent1_2{t in Time}: #DTmin needed on one end of HEX
 	DTminVent['Vent_HP'] <= Trelease['Vent_HP', t] - Text[t];

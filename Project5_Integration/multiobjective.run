@@ -1,0 +1,63 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+import all the model and data files for part 5
+---------------------------------------------------------------------------------------------------------------------------------------*/
+include import.run
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+AMPL options
+---------------------------------------------------------------------------------------------------------------------------------------*/
+#option solver snopt;											# choose the solver
+option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+option presolve 10;
+option snopt_options 'major_iterations=10000';
+
+option omit_zero_rows 1;										# to not display 0 in rows
+option omit_zero_cols 1;										# to not display 0 in columns
+option log_file 'multiobjective.log';
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Iterate through objective functions
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# define parameter for objective function
+set alphas := {0..1 by 0.1}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
+param alpha;
+
+# remove previously-defined objective -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf
+# delete objective; # doesn't work as no previous objective statement used
+# delete Totalcost; # does work but not ideal as we lose the ability to check this value
+
+# new objective function
+minimize multiobjective: alpha*CO2 + (1-alpha)*TIC;
+# force this to be the objective (otherwise takes the first objective defined -- which is in the model)
+objective multiobjective;
+
+# initialise outputs
+param CO2_multi{alphas};
+param TIC_multi{alphas};
+param TC_multi{alphas};
+
+# inspired by https://ampl.com/NEW/loop1.html
+for {a in alphas} {
+    let alpha := a;
+
+    solve;
+
+    # print outputs
+    # display CO2;
+    # display TIC;
+    # display Totalcost;
+
+    # save outputs
+    let CO2_multi[a] := CO2;
+    let TIC_multi[a] := TIC;
+    let TC_multi[a] := Totalcost;
+}
+
+# display all outputs
+display CO2_multi;
+display TIC_multi;
+display TC_multi;
+
+# create output file
+printf: "alpha\tCO2\tTIC\tTC\n" > multiobjective.dat;
+printf {a in alphas}:"%15.10g\t%15.10g\t%15.10g\t%15.10g\n", a, CO2_multi[a], TIC_multi[a], TC_multi[a] > multiobjective.dat;
