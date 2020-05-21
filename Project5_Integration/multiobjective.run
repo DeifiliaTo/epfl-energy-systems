@@ -28,13 +28,13 @@ param alpha;
 
 # new objective function
 minimize multiobjective: alpha*CO2 + (1-alpha)*InvCost;
+# minimize multiobjective: alpha*OpCost + (1-alpha)*InvCost;
 # force this to be the objective (otherwise takes the first objective defined -- which is in the model)
 objective multiobjective;
 
 # initialise outputs
-param CO2_multi{alphas};
-param InvCost_multi{alphas};
-param TC_multi{alphas};
+set multi_vars := {'CO2', 'InvCost', 'OpCost', 'TotalCost'};
+param multi_out{multi_vars,alphas};
 
 # inspired by https://ampl.com/NEW/loop1.html
 for {a in alphas} {
@@ -48,16 +48,21 @@ for {a in alphas} {
     # display Totalcost;
 
     # save outputs
-    let CO2_multi[a] := CO2;
-    let InvCost_multi[a] := InvCost;
-    let TC_multi[a] := Totalcost;
+    let multi_out['CO2',a] := CO2;
+    let multi_out['InvCost',a] := InvCost;
+    let multi_out['OpCost',a] := OpCost;
+    let multi_out['TotalCost',a] := Totalcost;
 }
 
 # display all outputs
-display CO2_multi;
-display InvCost_multi;
-display TC_multi;
+display multi_out;
 
 # create output file
-printf: "CO2\tInvCost\talpha\tTC\n" > multiobjective.dat;
-printf {a in alphas}:"%15.10g\t%15.10g\t%15.10g\t%15.10g\n", CO2_multi[a], InvCost_multi[a], a, TC_multi[a] > multiobjective.dat;
+# print header
+printf{v in multi_vars}: "%s\t", v > multiobjective.dat;
+printf: "a\n" > multiobjective.dat;
+# print data rows -- after https://ampl.com/NEW/loop1.html
+for {a in alphas} {
+    printf{v in multi_vars}: "%15.10g\t", multi_out[v,a] > multiobjective.dat;
+    printf: "%15.10g\n", a > multiobjective.dat;
+}

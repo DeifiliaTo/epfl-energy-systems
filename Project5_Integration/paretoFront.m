@@ -1,4 +1,4 @@
-function d = paretoFront(file)
+function d = paretoFront(file,dims)
 %PARETOFRONT Takes a data file and generates a Pareto front plot.
 %   The data file is read using readtable; the first two columns of data
 %   are used as the x and y values respectively. Any further data supplied
@@ -16,7 +16,9 @@ fig = plot(d{:,1},d{:,2},'-o');
 % label axes
 ax = gca;
 ax.XAxis.Label.String = d.Properties.VariableNames{1};
+ax.XAxis.Label.Interpreter = 'none';
 ax.YAxis.Label.String = d.Properties.VariableNames{2};
+ax.YAxis.Label.Interpreter = 'none';
 
 % dataTip label
 dtt = fig.DataTipTemplate;
@@ -29,6 +31,10 @@ if size(d,2) > 2
     for j = 3:size(d,2)
         dtt.DataTipRows(j) = dataTipTextRow(d.Properties.VariableNames{j},d{:,j});
     end
+end
+
+if nargin == 2
+    figExport(dims(1),dims(2),sprintf('pareto-front-%s-%s',d.Properties.VariableNames{1:2}));
 end
 
 end
