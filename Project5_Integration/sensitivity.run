@@ -1,0 +1,61 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+import all the model and data files for part 5
+---------------------------------------------------------------------------------------------------------------------------------------*/
+include import.run
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+AMPL options
+---------------------------------------------------------------------------------------------------------------------------------------*/
+option solver cplex;											# choose the solver
+option presolve 10;
+option snopt_options 'major_iterations=10000';
+
+option omit_zero_rows 1;										# to not display 0 in rows
+option omit_zero_cols 1;										# to not display 0 in columns
+option log_file 'sensitivity.log';
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Change value of params
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# save original values of parameters
+param c_spec_orig{Grids};
+
+# define multiplication factors to change parameters by
+set alphas := {0.5..2 by 0.25}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
+
+# initialise param to hold output
+param sensitivity_TC{Grids,alphas};
+
+# iterate through grids inside c_spec
+for {g in Grids} {
+
+    # save original value
+    let c_spec_orig[g] := c_spec[g];
+
+    # iterate through multiplication factors
+    for {a in alphas} {
+
+        # change parameter value
+        let c_spec[g] := c_spec_orig[g] * a;
+
+        solve;
+
+        # save output
+        let sensitivity_TC[g,a] := Totalcost;
+
+    }
+
+    # reset param value
+    let c_spec[g] := c_spec_orig[g];
+
+}
+
+display sensitivity_TC;
+
+# create output file
+# print header
+printf: "Grid\talpha\tc_spec[g]\tTC\n" > sensitivity.dat;
+# print data rows -- after https://ampl.com/NEW/loop1.html
+for {g in Grids} {
+    printf{a in alphas}: "%s\t%5.5g\t%15.10g\t%15.10g\n", g, a, c_spec_orig[g]*a, sensitivity_TC[g,a] > sensitivity.dat;
+}
