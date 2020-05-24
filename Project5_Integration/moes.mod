@@ -209,11 +209,18 @@ param cop2{u in Utilities} = 									# variable cost of the utility [CHF/h]
 param cinv1{t in Technologies} default 0;						# fixed investment cost of the utility [CHF/year]
 param cinv2{t in Technologies} default 0;						# variable investment cost of the utility [CHF/year]
 
+
+# CO2 emissions calculations [kg-CO2eq]
+var CO2;
+subject to CO2_emission:
+	CO2 = sum{t in Time}((c_ng * FlowOutUnit['Natgas','NatGasGrid',t] + c_elec * FlowOutUnit['Electricity','ElecGridBuy',t])*top[t])	;
+
+
 # variable and constraint for operating cost calculation [CHF/year]
 var OpCost;
 subject to oc_cstr:
 	OpCost = sum {u in Utilities, t in Time} (cop1[u] * use_t[u,t] + cop2[u] * mult_t[u,t]) * top[t]
-			 + sum {u in Improvements} use_recovery[u] * OPEX[u]	
+			 + sum {u in Improvements} use_recovery[u] * OPEX[u] + sum{t in Time}(c_ng * FlowOutUnit['Natgas','NatGasGrid',t] * top[t]) * 96
 ;
 
 # variable and constraint for investment cost calculation [CHF/year]
@@ -223,16 +230,17 @@ subject to ic_cstr:
 			+ sum{u in Improvements} use_recovery[u] * CAPEX[u]
 	;
 
-# CO2 emissions calculations [kg-CO2eq]
-var CO2;
-subject to CO2_emission:
-	CO2 = sum{t in Time}((c_ng * FlowOutUnit['Natgas','NatGasGrid',t] + c_elec * FlowOutUnit['Electricity','ElecGridBuy',t] + c_elecPV * FlowOutUnit['Electricity','PV',t] )*top[t])	;
+
+#energy import
+var Eimport;
+subject to energy_import:
+	Eimport = sum{t in Time}(FlowOutUnit['Electricity','ElecGridBuy',t] + FlowOutUnit['Natgas','NatGasGrid',t]);
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Objective function
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 minimize Totalcost: InvCost + OpCost; 
-
+#minimize Dependance: Eimport;
 
 
 
