@@ -1,7 +1,6 @@
-CPLEX 12.9.0.0: optimal integer solution within mipgap or absmipgap; objective 13896677.32
-55 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 562.126, relmipgap = 4.04504e-05
 Edemand [*] :=
 1  12237.1
 2  12237.1
@@ -62,24 +61,36 @@ HP1stageMT   1000
 ;
 
 mult [*] :=
-       Cogen    19.5696
+      Boiler    10
+       Cogen     9.70012
  ElecGridBuy  1000
 ElecGridSell  1000
-  HP1stageLT     1
-    HP2stage     8.37462
+  Geothermal     0.537709
+  HP1stageLT    10
+  HP1stageMT    10
+    HP2stage     6.63321
   NatGasGrid  1000
           PV    16.7195
 ;
 
 mult_t [*,*]
-:                  1          2          3          4          5          6  :=
-Cogen           8.08385     7.85621    1.00353    1.92032   0          19.5696
-ElecGridBuy     0           0          8.55809    8.03228   2.24497     0
-ElecGridSell    0.455193    0          0          0         0          35.7399
-HP1stageLT      1           1          0          0         0           1
-HP2stage        8.37462     8.37462    0          0         0           8.37462
-NatGasGrid     44.4534     43.2016     5.51844   10.5599    0         107.614
-PV              2.7728      2.35895   16.7195     3.64188   4.01435     0
+:                  1           2           3          4          5       :=
+ElecGridBuy    16.9408     16.5736      9.21635    9.29191    2.24497
+Geothermal      0.537709    0.537709    0.280999   0.537709   0
+HP1stageLT     10          10           0          0          0
+HP1stageMT     10          10           0          0          0
+HP2stage        6.63321     5.99577     0          0          0
+PV              2.7728      2.35895    16.7195     3.64188    4.01435
+
+:                  6        :=
+Boiler         10
+Cogen           9.70012
+ElecGridSell   14.3735
+Geothermal      0.537709
+HP1stageLT     10
+HP1stageMT     10
+HP2stage        6.63321
+NatGasGrid     58.8969
 ;
 
 Flowin :=
@@ -99,40 +110,38 @@ Natgas      NatGasGrid    1000
 ;
 
 FlowInUnit :=
-Electricity ElecGridSell 1      455.193
-Electricity ElecGridSell 6    35739.9
-Electricity HP1stageLT   1      206.968
-Electricity HP1stageLT   2      201.203
-Electricity HP1stageLT   6      224.262
-Electricity HP2stage     1     3545.72
-Electricity HP2stage     2     3510
-Electricity HP2stage     6     3175.09
-Natgas      Cogen        1    44453.4
-Natgas      Cogen        2    43201.6
-Natgas      Cogen        3     5518.44
-Natgas      Cogen        4    10559.9
-Natgas      Cogen        6   107614
+Electricity ElecGridSell 6   14373.5
+Electricity HP1stageLT   1    2069.68
+Electricity HP1stageLT   2    2012.03
+Electricity HP1stageLT   6    2242.62
+Electricity HP1stageMT   1    2683.89
+Electricity HP1stageMT   2    2628.44
+Electricity HP1stageMT   6    2850.24
+Electricity HP2stage     1    2808.43
+Electricity HP2stage     2    2512.97
+Electricity HP2stage     6    2514.86
+Natgas      Boiler       6    5555.56
+Natgas      Cogen        6   53341.3
 ;
 
 FlowOutUnit :=
-Electricity Cogen       1    16167.7
-Electricity Cogen       2    15712.4
-Electricity Cogen       3     2007.06
-Electricity Cogen       4     3840.63
-Electricity Cogen       6    39139.2
-Electricity ElecGridBuy 3     8558.09
-Electricity ElecGridBuy 4     8032.28
-Electricity ElecGridBuy 5     2244.97
-Electricity PV          1      277.28
-Electricity PV          2      235.895
-Electricity PV          3     1671.95
-Electricity PV          4      364.188
-Electricity PV          5      401.435
-Natgas      NatGasGrid  1    44453.4
-Natgas      NatGasGrid  2    43201.6
-Natgas      NatGasGrid  3     5518.44
-Natgas      NatGasGrid  4    10559.9
-Natgas      NatGasGrid  6   107614
+Electricity Cogen       6   19400.2
+Electricity ElecGridBuy 1   16940.8
+Electricity ElecGridBuy 2   16573.6
+Electricity ElecGridBuy 3    9216.35
+Electricity ElecGridBuy 4    9291.91
+Electricity ElecGridBuy 5    2244.97
+Electricity Geothermal  1    2581
+Electricity Geothermal  2    2581
+Electricity Geothermal  3    1348.8
+Electricity Geothermal  4    2581
+Electricity Geothermal  6    2581
+Electricity PV          1     277.28
+Electricity PV          2     235.895
+Electricity PV          3    1671.95
+Electricity PV          4     364.188
+Electricity PV          5     401.435
+Natgas      NatGasGrid  6   58896.9
 ;
 
 set Buildings :=
@@ -140,9 +149,9 @@ GC     GR     CH     CO     TCV    ME     PO     BM
 CE     CM     PH     BP     IN     AA     CRPP   DIA
 MA     BI     BC     BS     ODY    EL     MX     AI;
 
-InvCost = 1323720
+InvCost = 5641440
 
-OpCost = 12573000
+OpCost = 12772500
 
 Tlmc_HP1stageMT [*] :=
 1  279.497
@@ -153,7 +162,7 @@ Tlmc_HP1stageMT [*] :=
 6  276.497
 ;
 
-CO2 = 19058100
+CO2 = 4999290
 
 heat_recovery :=
 DC      1    357.011
@@ -179,24 +188,36 @@ use_recovery [*] :=
 ;
 
 mult_t [*,*]
-:                  1          2          3          4          5          6  :=
-Cogen           8.08385     7.85621    1.00353    1.92032   0          19.5696
-ElecGridBuy     0           0          8.55809    8.03228   2.24497     0
-ElecGridSell    0.455193    0          0          0         0          35.7399
-HP1stageLT      1           1          0          0         0           1
-HP2stage        8.37462     8.37462    0          0         0           8.37462
-NatGasGrid     44.4534     43.2016     5.51844   10.5599    0         107.614
-PV              2.7728      2.35895   16.7195     3.64188   4.01435     0
+:                  1           2           3          4          5       :=
+ElecGridBuy    16.9408     16.5736      9.21635    9.29191    2.24497
+Geothermal      0.537709    0.537709    0.280999   0.537709   0
+HP1stageLT     10          10           0          0          0
+HP1stageMT     10          10           0          0          0
+HP2stage        6.63321     5.99577     0          0          0
+PV              2.7728      2.35895    16.7195     3.64188    4.01435
+
+:                  6        :=
+Boiler         10
+Cogen           9.70012
+ElecGridSell   14.3735
+Geothermal      0.537709
+HP1stageLT     10
+HP1stageMT     10
+HP2stage        6.63321
+NatGasGrid     58.8969
 ;
 
 use_t [*,*]
 :              1   2   3   4   5   6    :=
-Cogen          1   1   1   1   0   1
-ElecGridBuy    0   0   1   1   1   0
-ElecGridSell   1   0   0   0   0   1
+Boiler         0   0   0   0   0   1
+Cogen          0   0   0   0   0   1
+ElecGridBuy    1   1   1   1   1   0
+ElecGridSell   0   0   0   0   0   1
+Geothermal     1   1   1   1   0   1
 HP1stageLT     1   1   0   0   0   1
+HP1stageMT     1   1   0   0   0   1
 HP2stage       1   1   0   0   0   1
-NatGasGrid     1   1   1   1   0   1
+NatGasGrid     0   0   0   0   0   1
 PV             1   1   1   1   1   0
 ;
 

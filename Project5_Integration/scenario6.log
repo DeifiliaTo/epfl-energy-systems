@@ -1,4 +1,4 @@
-CPLEX 12.9.0.0: optimal integer solution; objective 4696310.995
+CPLEX 12.9.0.0: optimal integer solution; objective 4436166.479
 17 MIP simplex iterations
 0 branch-and-bound nodes
 Edemand [*] :=
@@ -148,7 +148,7 @@ Tlmc_HP1stageMT [*] :=
 6  276.497
 ;
 
-CO2 = 4696310
+CO2 = 4436170
 
 heat_recovery :=
 DC      1    357.011

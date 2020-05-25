@@ -142,7 +142,7 @@ MA     BI     BC     BS     ODY    EL     MX     AI;
 
 InvCost = 356512
 
-OpCost = 14616200
+OpCost = 2120470000
 
 Tlmc_HP1stageMT [*] :=
 1  279.497
