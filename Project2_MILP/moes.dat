@@ -109,11 +109,6 @@ set UtilitiesOfLayer[Biogas] :=
 SOFC
 ;
 
-set Improvements :=
-DC
-Vent
-Vent_HP
-;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Generic Parameters

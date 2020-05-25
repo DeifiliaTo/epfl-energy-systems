@@ -1,0 +1,60 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Populate sets
+---------------------------------------------------------------------------------------------------------------------------------------*/
+set Improvements :=
+DC
+Vent
+Vent_HP
+;
+
+param c_CO2 :=              # [kg-CO2/kWh]
+Natgas 0.27
+Electricity 0.113
+;
+# param c_elecPV := 0.065;  #Emission factor of electricity from PV
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Set the grid parameters: resource flow and fmax
+---------------------------------------------------------------------------------------------------------------------------------------*/
+let  Flowout['Natgas','NatGasGrid'] := refSize;
+let  Fmax['NatGasGrid'] := refSize;
+let  Flowout['Electricity','ElecGridBuy'] := refSize;
+let  Fmax['ElecGridBuy'] := refSize;
+let  Flowin['Electricity','ElecGridSell'] := refSize;
+let  Fmax['ElecGridSell'] := refSize;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Integrate heat recovery results from part 3
+----------------------------------------------------------------------------------------------------------------------------------------*/
+let heat_recovery['DC', 1] := 357.011;
+let heat_recovery['DC', 2] := 356.967;
+let heat_recovery['DC', 3] := 335.21;
+let heat_recovery['DC', 4] := 343.394;
+let heat_recovery['DC', 5] := 0;
+let heat_recovery['DC', 6] := 357.897;
+
+let	heat_recovery['Vent', 1] := 0.549;
+let	heat_recovery['Vent', 2] := 0.536;
+let	heat_recovery['Vent', 3] := 0.263;
+let	heat_recovery['Vent', 4] := 0.222;
+let	heat_recovery['Vent', 5] := 0.131;
+let	heat_recovery['Vent', 6] := 0.789;
+
+let	heat_recovery['Vent_HP', 1] := 1577.79;
+let	heat_recovery['Vent_HP', 2] := 1542.22;
+let	heat_recovery['Vent_HP', 3] := 757.489;
+let	heat_recovery['Vent_HP', 4] := 638.682;
+let	heat_recovery['Vent_HP', 5] := 428.859;
+let	heat_recovery['Vent_HP', 6] := 2023.78;
+
+# COSTS and OBJECTIVE
+let OPEX['DC'] := 769173;
+let CAPEX['DC'] :=  11302.8;
+
+let OPEX['Vent'] := 796379;
+let CAPEX['Vent'] := 785.514;
+
+let OPEX['Vent_HP'] := 693652;
+let CAPEX['Vent_HP'] := 167257;
+
+end;
