@@ -41,7 +41,7 @@ CPLEX 12.9.0.0: optimal integer solution; objective 2760807.172
 CPLEX 12.9.0.0: optimal integer solution; objective 2936773.167
 48 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 4.65661e-10, relmipgap = 1.58562e-16
+absmipgap = 9.31323e-10, relmipgap = 3.17124e-16
 CPLEX 12.9.0.0: optimal integer solution; objective 3109291.806
 49 MIP simplex iterations
 0 branch-and-bound nodes
@@ -89,365 +89,368 @@ CPLEX 12.9.0.0: optimal integer solution; objective 3968459.611
 63 MIP simplex iterations
 0 branch-and-bound nodes
 absmipgap = 4.65661e-10, relmipgap = 1.17341e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4008829.816
+CPLEX 12.9.0.0: optimal integer solution; objective 4004167.319
 61 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 4.65661e-10, relmipgap = 1.16159e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4049200.022
+CPLEX 12.9.0.0: optimal integer solution; objective 4038489.028
 61 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 2.30002e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4089570.227
+CPLEX 12.9.0.0: optimal integer solution; objective 4072810.737
 61 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 4.65661e-10, relmipgap = 1.13866e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4129940.433
+CPLEX 12.9.0.0: optimal integer solution; objective 4107132.446
 61 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4170310.638
+absmipgap = 4.65661e-10, relmipgap = 1.13379e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4141454.155
 60 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4210680.843
+CPLEX 12.9.0.0: optimal integer solution; objective 4175775.864
 60 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 2.21181e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4251051.049
+CPLEX 12.9.0.0: optimal integer solution; objective 4210097.573
 61 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 1.86265e-09, relmipgap = 4.38161e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4291421.254
+absmipgap = 9.31323e-10, relmipgap = 2.21212e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4244419.282
 60 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4331791.46
+CPLEX 12.9.0.0: optimal integer solution; objective 4278740.991
 60 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4372161.665
+CPLEX 12.9.0.0: optimal integer solution; objective 4313062.7
 59 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4412531.87
+CPLEX 12.9.0.0: optimal integer solution; objective 4347384.409
 61 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4452902.076
+CPLEX 12.9.0.0: optimal integer solution; objective 4381706.118
 61 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4493217.926
+CPLEX 12.9.0.0: optimal integer solution; objective 4415973.471
 66 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4532359.768
+CPLEX 12.9.0.0: optimal integer solution; objective 4449066.817
 67 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 1.86265e-09, relmipgap = 4.10966e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4571501.611
+CPLEX 12.9.0.0: optimal integer solution; objective 4482160.164
 60 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4610643.454
+absmipgap = 9.31323e-10, relmipgap = 2.07784e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4515253.51
 58 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4649785.297
+CPLEX 12.9.0.0: optimal integer solution; objective 4548346.856
 52 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4688927.14
+CPLEX 12.9.0.0: optimal integer solution; objective 4581440.202
 50 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4728068.982
+absmipgap = 9.31323e-10, relmipgap = 2.03282e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4614533.549
 46 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.96977e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4764691.927
+CPLEX 12.9.0.0: optimal integer solution; objective 4647626.895
 50 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4800386.719
+absmipgap = 9.31323e-10, relmipgap = 2.00387e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4680720.241
 46 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4835314.026
+CPLEX 12.9.0.0: optimal integer solution; objective 4713046.103
 61 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.92608e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4869254.739
+absmipgap = 9.31323e-10, relmipgap = 1.97605e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4744385.371
 55 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.91266e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4903195.451
+CPLEX 12.9.0.0: optimal integer solution; objective 4775724.638
 55 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4936876.945
+absmipgap = 9.31323e-10, relmipgap = 1.95012e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4806804.687
 54 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4969134.457
+CPLEX 12.9.0.0: optimal integer solution; objective 4836460.754
 50 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.87421e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5001391.97
+absmipgap = 9.31323e-10, relmipgap = 1.92563e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4866116.821
 52 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.86213e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5033649.482
+absmipgap = 9.31323e-10, relmipgap = 1.91389e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4895772.888
 51 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5064023.09
+absmipgap = 9.31323e-10, relmipgap = 1.9023e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4923545.051
 39 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5093230.288
+absmipgap = 9.31323e-10, relmipgap = 1.89157e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4950150.804
 39 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.82855e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5122437.486
+CPLEX 12.9.0.0: optimal integer solution; objective 4976756.557
 43 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5151644.684
+absmipgap = 9.31323e-10, relmipgap = 1.87134e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5003362.309
 43 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5180851.882
+absmipgap = 9.31323e-10, relmipgap = 1.86139e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5029968.062
 41 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5210059.079
+CPLEX 12.9.0.0: optimal integer solution; objective 5056573.815
 40 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5239266.277
+absmipgap = 9.31323e-10, relmipgap = 1.84181e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5083179.567
 42 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5268473.475
+absmipgap = 9.31323e-10, relmipgap = 1.83217e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5109785.32
 38 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5295235.353
+absmipgap = 9.31323e-10, relmipgap = 1.82263e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5133945.753
 37 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5310325.105
+absmipgap = 9.31323e-10, relmipgap = 1.81405e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5146434.06
 36 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5321085.33
+CPLEX 12.9.0.0: optimal integer solution; objective 5154592.839
 36 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5331845.554
+CPLEX 12.9.0.0: optimal integer solution; objective 5162751.618
 34 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5342605.778
+absmipgap = 9.31323e-10, relmipgap = 1.80393e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5170910.397
 37 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5353366.003
+CPLEX 12.9.0.0: optimal integer solution; objective 5179069.176
 36 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5357711.465
+absmipgap = 9.31323e-10, relmipgap = 1.79824e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5180813.194
 33 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5355951.304
+CPLEX 12.9.0.0: optimal integer solution; objective 5176451.588
 30 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5354191.143
+absmipgap = 9.31323e-10, relmipgap = 1.79915e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5172089.981
 34 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.73943e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5352430.982
+CPLEX 12.9.0.0: optimal integer solution; objective 5167728.375
 35 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.74e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5350670.82
+absmipgap = 9.31323e-10, relmipgap = 1.80219e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5163366.768
 30 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.74057e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5348910.659
+CPLEX 12.9.0.0: optimal integer solution; objective 5159005.162
 30 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5337315.163
+CPLEX 12.9.0.0: optimal integer solution; objective 5144808.22
 27 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5313261.222
+CPLEX 12.9.0.0: optimal integer solution; objective 5118152.834
 26 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.75283e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5289207.281
+CPLEX 12.9.0.0: optimal integer solution; objective 5091497.448
 26 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.7608e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5265153.34
+absmipgap = 9.31323e-10, relmipgap = 1.82917e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5064842.062
 27 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.76884e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5241099.399
+absmipgap = 9.31323e-10, relmipgap = 1.8388e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5038186.676
 26 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 1.86265e-09, relmipgap = 3.55392e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5217045.459
+absmipgap = 9.31323e-10, relmipgap = 1.84853e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 5011531.29
 27 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5192991.518
+CPLEX 12.9.0.0: optimal integer solution; objective 4984875.904
 24 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5168937.577
+CPLEX 12.9.0.0: optimal integer solution; objective 4958220.518
 25 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.80177e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5144883.636
+absmipgap = 9.31323e-10, relmipgap = 1.87834e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4931565.132
 28 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.81019e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5120829.695
+absmipgap = 9.31323e-10, relmipgap = 1.88849e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4904909.746
 26 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.81869e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5096775.754
+absmipgap = 9.31323e-10, relmipgap = 1.89876e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4878254.36
 24 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5072721.814
+CPLEX 12.9.0.0: optimal integer solution; objective 4851598.974
 26 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.83594e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5048667.873
+absmipgap = 9.31323e-10, relmipgap = 1.91962e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4824943.588
 26 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 5024613.932
+CPLEX 12.9.0.0: optimal integer solution; objective 4798288.202
 26 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 1.86265e-09, relmipgap = 3.70704e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 5000559.991
+absmipgap = 9.31323e-10, relmipgap = 1.94095e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4771632.816
 25 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.86244e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4976506.05
+absmipgap = 9.31323e-10, relmipgap = 1.95179e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4744977.43
 24 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.87144e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4952452.109
+CPLEX 12.9.0.0: optimal integer solution; objective 4718322.044
 25 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.88053e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4928398.169
+CPLEX 12.9.0.0: optimal integer solution; objective 4691666.658
 27 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.88971e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4904344.228
+CPLEX 12.9.0.0: optimal integer solution; objective 4665011.272
 28 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4880290.287
+absmipgap = 9.31323e-10, relmipgap = 1.9964e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4638355.886
 25 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4856236.346
+absmipgap = 9.31323e-10, relmipgap = 2.00787e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4611700.5
 24 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 1.86265e-09, relmipgap = 3.83557e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4832182.405
+absmipgap = 9.31323e-10, relmipgap = 2.01948e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4585045.114
 27 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.92733e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4808128.465
+absmipgap = 9.31323e-10, relmipgap = 2.03122e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4558389.728
 25 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4783923.264
+absmipgap = 9.31323e-10, relmipgap = 2.0431e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 4531583.083
 24 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.94678e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4759536.004
+CPLEX 12.9.0.0: optimal integer solution; objective 4504594.378
 24 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 4735148.744
+CPLEX 12.9.0.0: optimal integer solution; objective 4477605.672
 26 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 9.31323e-10, relmipgap = 1.96683e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 4696310.995
+CPLEX 12.9.0.0: optimal integer solution; objective 4436166.479
 17 MIP simplex iterations
 0 branch-and-bound nodes
 multi_out [*,*] (tr)
-:                       CO2      InvCost     OpCost   TotalCost    :=
-0                     25018700     356512   14616200   14972700
-0.01                  25017900     356512   14615100   14971600
-0.02                  23828800     375800   16032000   16407800
-0.03                  22651700     402793   17482900   17885700
-0.04                  22651700     402793   17482900   17885700
-0.05                  22651700     402793   17482900   17885700
-0.06                  22651700     402793   17482900   17885700
-0.07                  22651700     402793   17482900   17885700
-0.08                  22651700     402793   17482900   17885700
-0.09                  20428900     606235   16532300   17138500
-0.1                   18467800     819499   15879400   16698900
-0.11                  18467800     819499   15879400   16698900
-0.12                  18118400     866549   15815500   16682100
-0.13                  18118400     866549   15815500   16682100
-0.14                  17917400     898152   15815700   16713900
-0.15                  17917400     898152   15815700   16713900
-0.16                   8281660    2621300   17297300   19918700
-0.17                   8281660    2621300   17297300   19918700
-0.18                   8281660    2621300   17297300   19918700
-0.19                   8281660    2621300   17297300   19918700
-0.2                    8281660    2621300   17297300   19918700
-0.21                   6996230    2959200   16203300   19162500
-0.22                   6996230    2959200   16203300   19162500
-0.23                   6996230    2959200   16203300   19162500
-0.24                   6996230    2959200   16203300   19162500
-0.25                   6996230    2959200   16203300   19162500
-0.26                   6996230    2959200   16203300   19162500
-0.27                   6996230    2959200   16203300   19162500
-0.28                   6996230    2959200   16203300   19162500
-0.29                   6996230    2959200   16203300   19162500
-0.3                    6996230    2959200   16203300   19162500
-0.31                   6996230    2959200   16203300   19162500
-0.32                   6996230    2959200   16203300   19162500
-0.33                   6996230    2959200   16203300   19162500
-0.34                   6996230    2959200   16203300   19162500
-0.35000000000000003    6996230    2959200   16203300   19162500
-0.36                   6996230    2959200   16203300   19162500
-0.37                   6996230    2959200   16203300   19162500
-0.38                   6920010    3005830   16132600   19138400
-0.39                   6920010    3005830   16132600   19138400
-0.4                    6920010    3005830   16132600   19138400
-0.41000000000000003    6920010    3005830   16132600   19138400
-0.42                   6920010    3005830   16132600   19138400
-0.43                   6920010    3005830   16132600   19138400
-0.44                   6920010    3005830   16132600   19138400
-0.45                   6727910    3158430   15135600   18294000
-0.46                   6727910    3158430   15135600   18294000
-0.47000000000000003    6634170    3240100   14927000   18167100
-0.48                   6634170    3240100   14927000   18167100
-0.49                   6634170    3240100   14927000   18167100
-0.5                    6549750    3324000   14739100   18063100
-0.51                   6549750    3324000   14739100   18063100
-0.52                   6549750    3324000   14739100   18063100
-0.53                   6549750    3324000   14739100   18063100
-0.54                   6407550    3486830   14422700   17909500
-0.55                   6407550    3486830   14422700   17909500
-0.56                   6407550    3486830   14422700   17909500
-0.5700000000000001     6407550    3486830   14422700   17909500
-0.58                   6407550    3486830   14422700   17909500
-0.59                   6407550    3486830   14422700   17909500
-0.6                    6407550    3486830   14422700   17909500
-0.61                   6407550    3486830   14422700   17909500
-0.62                   6202330    3815240   13966000   17781200
-0.63                   5708450    4632430   12941700   17574100
-0.64                   5708450    4632430   12941700   17574100
-0.65                   5708450    4632430   12941700   17574100
-0.66                   5708450    4632430   12941700   17574100
-0.67                   5708450    4632430   12941700   17574100
-0.68                   5301390    5477400   12094600   17572000
-0.6900000000000001     5301390    5477400   12094600   17572000
-0.7000000000000001     5301390    5477400   12094600   17572000
-0.71                   5301390    5477400   12094600   17572000
-0.72                   5301390    5477400   12094600   17572000
-0.73                   5301390    5477400   12094600   17572000
-0.74                   4711910    7117310   10860600   17977900
-0.75                   4711910    7117310   10860600   17977900
-0.76                   4711910    7117310   10860600   17977900
-0.77                   4711910    7117310   10860600   17977900
-0.78                   4711910    7117310   10860600   17977900
-0.79                   4711910    7117310   10860600   17977900
-0.8                    4711910    7117310   10860600   17977900
-0.81                   4711910    7117310   10860600   17977900
-0.8200000000000001     4711910    7117310   10860600   17977900
-0.8300000000000001     4711910    7117310   10860600   17977900
-0.84                   4711910    7117310   10860600   17977900
-0.85                   4711910    7117310   10860600   17977900
-0.86                   4711910    7117310   10860600   17977900
-0.87                   4711910    7117310   10860600   17977900
-0.88                   4711910    7117310   10860600   17977900
-0.89                   4711910    7117310   10860600   17977900
-0.9                    4711910    7117310   10860600   17977900
-0.91                   4711910    7117310   10860600   17977900
-0.92                   4711910    7117310   10860600   17977900
-0.93                   4711910    7117310   10860600   17977900
-0.9400000000000001     4711910    7117310   10860600   17977900
-0.9500000000000001     4711910    7117310   10860600   17977900
-0.96                   4711910    7117310   10860600   17977900
-0.97                   4710760    7149490   10861500   18011000
-0.98                   4710760    7149490   10861500   18011000
-0.99                   4710760    7149490   10861500   18011000
-1                      4696310   20141600   10094900   30236500
+:                       CO2      InvCost      OpCost     TotalCost     :=
+0                     25018700     356512   2120470000   2120820000
+0.01                  25017900     356512   2120460000   2120820000
+0.02                  23828800     375800   1985240000   1985620000
+0.03                  22651700     402793   1861800000   1862210000
+0.04                  22651700     402793   1861800000   1862210000
+0.05                  22651700     402793   1861800000   1862210000
+0.06                  22651700     402793   1861800000   1862210000
+0.07                  22651700     402793   1861800000   1862210000
+0.08                  22651700     402793   1861800000   1862210000
+0.09                  20428900     606235   1640060000   1640660000
+0.1                   18467800     819499   1447380000   1448190000
+0.11                  18467800     819499   1447380000   1448190000
+0.12                  18118400     866549   1413770000   1414640000
+0.13                  18118400     866549   1413770000   1414640000
+0.14                  17917400     898152   1391250000   1392150000
+0.15                  17917400     898152   1391250000   1392150000
+0.16                   8281660    2621300    174261000    176882000
+0.17                   8281660    2621300    174261000    176882000
+0.18                   8281660    2621300    174261000    176882000
+0.19                   8281660    2621300    174261000    176882000
+0.2                    8281660    2621300    174261000    176882000
+0.21                   6996230    2959200     26541500     29500700
+0.22                   6996230    2959200     26541500     29500700
+0.23                   6996230    2959200     26541500     29500700
+0.24                   6996230    2959200     26541500     29500700
+0.25                   6996230    2959200     26541500     29500700
+0.26                   6543970    3111800     25544500     28656300
+0.27                   6543970    3111800     25544500     28656300
+0.28                   6543970    3111800     25544500     28656300
+0.29                   6543970    3111800     25544500     28656300
+0.3                    6543970    3111800     25544500     28656300
+0.31                   6543970    3111800     25544500     28656300
+0.32                   6543970    3111800     25544500     28656300
+0.33                   6543970    3111800     25544500     28656300
+0.34                   6543970    3111800     25544500     28656300
+0.35000000000000003    6543970    3111800     25544500     28656300
+0.36                   6543970    3111800     25544500     28656300
+0.37                   6543970    3111800     25544500     28656300
+0.38                   6467760    3158430     16772600     19931100
+0.39                   6467760    3158430     16772600     19931100
+0.4                    6467760    3158430     16772600     19931100
+0.41000000000000003    6467760    3158430     16772600     19931100
+0.42                   6467760    3158430     16772600     19931100
+0.43                   6467760    3158430     16772600     19931100
+0.44                   6467760    3158430     16772600     19931100
+0.45                   6467760    3158430     16772600     19931100
+0.46                   6467760    3158430     16772600     19931100
+0.47000000000000003    6374030    3240100     16564100     19804200
+0.48                   6374030    3240100     16564100     19804200
+0.49                   6374030    3240100     16564100     19804200
+0.5                    6289610    3324000     16376200     19700200
+0.51                   6289610    3324000     16376200     19700200
+0.52                   6289610    3324000     16376200     19700200
+0.53                   6289610    3324000     16376200     19700200
+0.54                   6147410    3486830     16059800     19546600
+0.55                   6147410    3486830     16059800     19546600
+0.56                   6147410    3486830     16059800     19546600
+0.5700000000000001     6147410    3486830     16059800     19546600
+0.58                   6147410    3486830     16059800     19546600
+0.59                   6147410    3486830     16059800     19546600
+0.6                    6147410    3486830     16059800     19546600
+0.61                   6147410    3486830     16059800     19546600
+0.62                   5942180    3815240     15603100     19418300
+0.63                   5448310    4632430     14578800     19211200
+0.64                   5448310    4632430     14578800     19211200
+0.65                   5448310    4632430     14578800     19211200
+0.66                   5448310    4632430     14578800     19211200
+0.67                   5448310    4632430     14578800     19211200
+0.68                   5041240    5477400     13731700     19209100
+0.6900000000000001     5041240    5477400     13731700     19209100
+0.7000000000000001     5041240    5477400     13731700     19209100
+0.71                   5041240    5477400     13731700     19209100
+0.72                   5041240    5477400     13731700     19209100
+0.73                   5041240    5477400     13731700     19209100
+0.74                   4451770    7117310     12497700     19615000
+0.75                   4451770    7117310     12497700     19615000
+0.76                   4451770    7117310     12497700     19615000
+0.77                   4451770    7117310     12497700     19615000
+0.78                   4451770    7117310     12497700     19615000
+0.79                   4451770    7117310     12497700     19615000
+0.8                    4451770    7117310     12497700     19615000
+0.81                   4451770    7117310     12497700     19615000
+0.8200000000000001     4451770    7117310     12497700     19615000
+0.8300000000000001     4451770    7117310     12497700     19615000
+0.84                   4451770    7117310     12497700     19615000
+0.85                   4451770    7117310     12497700     19615000
+0.86                   4451770    7117310     12497700     19615000
+0.87                   4451770    7117310     12497700     19615000
+0.88                   4451770    7117310     12497700     19615000
+0.89                   4451770    7117310     12497700     19615000
+0.9                    4451770    7117310     12497700     19615000
+0.91                   4451770    7117310     12497700     19615000
+0.92                   4451770    7117310     12497700     19615000
+0.93                   4451770    7117310     12497700     19615000
+0.9400000000000001     4451770    7117310     12497700     19615000
+0.9500000000000001     4451770    7117310     12497700     19615000
+0.96                   4451770    7117310     12497700     19615000
+0.97                   4450620    7149490     12388100     19537600
+0.98                   4450620    7149490     12388100     19537600
+0.99                   4450620    7149490     12388100     19537600
+1                      4436170   20141600     10094900     30236500
 ;
 

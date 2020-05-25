@@ -2,7 +2,8 @@ function d = paretoFront(file,dims)
 %PARETOFRONT Takes a data file and generates a Pareto front plot.
 %   The data file is read using readtable; the first two columns of data
 %   are used as the x and y values respectively. Any further data supplied
-%   is added to a tooltip on the plot.
+%   is added to a tooltip on the plot. If dims ([width height] in cm) is
+%   supplied, figures are exported.
 %   
 %   Example usage: paretoFront('multiobjective.dat');
 
