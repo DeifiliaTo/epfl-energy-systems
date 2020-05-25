@@ -9,7 +9,7 @@ function d = sensitivityPlot(file,dims)
 %       4       dependent variable value
 %   If dims ([width height] in cm) is supplied, figures are exported.
 %
-%   Example usage: sensitivityPlot('sensitivity_TC.dat');
+%   Example usage: sensitivityPlot('sensitivity_TC_c_spec.dat');
 
 
 % load(file)
@@ -35,7 +35,7 @@ for j = 1:numel(uniqueVars)
     ax1.Box = 'off';
     
     % ax1.XTick = d_{:,3};
-    ax1.XAxis.Label.String = var;
+    ax1.XAxis.Label.String = sprintf('%s : %s',d.Properties.VariableNames{3},var);
     ax1.XAxis.Label.Interpreter = 'none';
     
     ax1.YAxis.Label.String = d.Properties.VariableNames{4};
@@ -64,7 +64,7 @@ for j = 1:numel(uniqueVars)
 
     % export
     if nargin == 2
-        figExport(dims(1),dims(2),sprintf('sensitivity-%s',var));
+        figExport(dims(1),dims(2),sprintf('sensitivity-%s-%s',d.Properties.VariableNames{3},var));
     end
 end
 

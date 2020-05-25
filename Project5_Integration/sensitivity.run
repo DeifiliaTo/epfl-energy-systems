@@ -15,16 +15,17 @@ option omit_zero_cols 1;										# to not display 0 in columns
 option log_file 'sensitivity.log';
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Change value of params
+Universal setup
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-# save original values of parameters
-param c_spec_orig{Grids};
-
 # define multiplication factors to change parameters by
 set alphas := {0.5..2 by 0.25}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
 
-# initialise param to hold output
-param sensitivity_TC{Grids,alphas};
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Grid utility cost
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# initialise params for original values & output
+param c_spec_orig{Grids};
+param sensitivity_TC_c_spec{Grids,alphas};
 
 # iterate through grids inside c_spec
 for {g in Grids} {
@@ -41,7 +42,7 @@ for {g in Grids} {
         solve;
 
         # save output
-        let sensitivity_TC[g,a] := Totalcost;
+        let sensitivity_TC_c_spec[g,a] := Totalcost;
 
     }
 
@@ -50,12 +51,53 @@ for {g in Grids} {
 
 }
 
-display sensitivity_TC;
+display sensitivity_TC_c_spec;
 
 # create output file
 # print header
-printf: "Grid\talpha\tc_spec[g]\tTC\n" > sensitivity.dat;
+printf: "Grid\talpha\tc_spec\tTC\n" > sensitivity_TC_c_spec.dat;
 # print data rows -- after https://ampl.com/NEW/loop1.html
 for {g in Grids} {
-    printf{a in alphas}: "%s\t%5.5g\t%15.10g\t%15.10g\n", g, a, c_spec_orig[g]*a, sensitivity_TC[g,a] > sensitivity.dat;
+    printf{a in alphas}: "%s\t%5.5g\t%15.10g\t%15.10g\n", g, a, c_spec_orig[g]*a, sensitivity_TC_c_spec[g,a] > sensitivity_TC_c_spec.dat;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Emissions factors
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# initialise params for original values & output
+param c_CO2_orig{Layers};
+param sensitivity_TC_c_CO2{Layers,alphas};
+
+# iterate through layers with specific CO2 cost
+for {l in Layers: l != 'Biogas'} {
+
+    # save original value
+    let c_CO2_orig[l] := c_CO2[l];
+
+    # iterate through multiplication factors
+    for {a in alphas} {
+
+        # change parameter value
+        let c_CO2[l] := c_CO2_orig[l] * a;
+
+        solve;
+
+        # save output
+        let sensitivity_TC_c_CO2[l,a] := Totalcost;
+
+    }
+
+    # reset param value
+    let c_CO2[l] := c_CO2_orig[l];
+
+}
+
+display sensitivity_TC_c_CO2;
+
+# create output file
+# print header
+printf: "Layer\talpha\tc_CO2\tTC\n" > sensitivity_TC_c_CO2.dat;
+# print data rows -- after https://ampl.com/NEW/loop1.html
+for {l in Layers: l != 'Biogas'} {
+    printf{a in alphas}: "%s\t%5.5g\t%15.10g\t%15.10g\n", l, a, c_CO2_orig[l]*a, sensitivity_TC_c_CO2[l,a] > sensitivity_TC_c_CO2.dat;
 }

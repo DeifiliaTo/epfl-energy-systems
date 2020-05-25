@@ -67,7 +67,7 @@ CPLEX 12.9.0.0: optimal integer solution; objective 18418804.62
 CPLEX 12.9.0.0: optimal integer solution; objective 18420439.01
 34 MIP simplex iterations
 0 branch-and-bound nodes
-sensitivity_TC [*,*] (tr)
+sensitivity_TC_c_spec [*,*] (tr)
 :    ElecGridBuy ElecGridSell NatGasGrid    :=
 0.5    11925400     18414700    18410600
 0.75   15340400     18414300    18412300
@@ -76,5 +76,70 @@ sensitivity_TC [*,*] (tr)
 1.5    23724800     18413100    18417200
 1.75   26191300     18412800    18418800
 2      28657900     18412400    18420400
+;
+
+CPLEX 12.9.0.0: optimal integer solution; objective 17650598.23
+30 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18032249.84
+32 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18795553.08
+32 MIP simplex iterations
+0 branch-and-bound nodes
+absmipgap = 3.72529e-09, relmipgap = 1.98201e-16
+CPLEX 12.9.0.0: optimal (non-)integer solution; objective 19012002.04
+40 MIP simplex iterations
+0 branch-and-bound nodes
+5 integer variables rounded (maxerr = 1.28092e-06).
+Assigning integrality = 6e-07 might help.
+Currently integrality = 1e-05.
+CPLEX 12.9.0.0: optimal integer solution; objective 19048004.66
+28 MIP simplex iterations
+0 branch-and-bound nodes
+absmipgap = 3.72529e-09, relmipgap = 1.95574e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 19084004.66
+28 MIP simplex iterations
+0 branch-and-bound nodes
+absmipgap = 3.72529e-09, relmipgap = 1.95205e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
+0 branch-and-bound nodes
+CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
+34 MIP simplex iterations
+0 branch-and-bound nodes
+sensitivity_TC_c_CO2 :=
+Electricity 0.5    18413900
+Electricity 0.75   18413900
+Electricity 1      18413900
+Electricity 1.25   18413900
+Electricity 1.5    18413900
+Electricity 1.75   18413900
+Electricity 2      18413900
+Natgas      0.5    17650600
+Natgas      0.75   18032200
+Natgas      1      18413900
+Natgas      1.25   18795600
+Natgas      1.5    19012000
+Natgas      1.75   19048000
+Natgas      2      19084000
 ;
 
