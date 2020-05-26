@@ -39,14 +39,19 @@ set GridsOfLayer{Layers} default {};
 param c_CO2{Layers} default 0;
 
 # CO2 emissions calculations [kg-CO2eq]
+var CO2_layer{Layers};
+subject to CO2_layers {l in Layers}:
+	CO2_layer[l] = sum{t in Time, g in GridsOfLayer[l]}( c_CO2[l] * FlowOutUnit[l,g,t] * top[t] );
+
 var CO2;
-subject to CO2_emission:
+subject to CO2_total:
 	CO2 = sum{t in Time, l in Layers, g in GridsOfLayer[l]}( c_CO2[l] * FlowOutUnit[l,g,t] * top[t] );
 
 # energy import
 var Eimport;
 subject to energy_import:
 	Eimport = sum{t in Time, l in Layers, g in GridsOfLayer[l]}( FlowOutUnit[l,g,t] );
+	# sum{l in Layers} CO2_layer[l];
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Update cost calculations
@@ -54,7 +59,7 @@ Update cost calculations
 delete oc_cstr;
 subject to oc_cstr:
 	OpCost = sum {u in Utilities, t in Time} (cop1[u] * use_t[u,t] + cop2[u] * mult_t[u,t]) * top[t]
-			 + sum {u in Improvements} use_recovery[u] * OPEX[u] + sum{t in Time}(c_CO2['Natgas'] * FlowOutUnit['Natgas','NatGasGrid',t] * top[t]) * 96
+			 + sum {u in Improvements} (use_recovery[u] * OPEX[u]) + CO2_layer['Natgas'] * 96
 ;
 
 delete ic_cstr;
