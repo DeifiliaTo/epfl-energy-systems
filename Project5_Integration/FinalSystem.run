@@ -1,0 +1,45 @@
+/*---------------------------------------------------------------------------------------------------------------------------------------
+import all the model and data files for part 5
+---------------------------------------------------------------------------------------------------------------------------------------*/
+include import.run
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+AMPL options
+---------------------------------------------------------------------------------------------------------------------------------------*/
+option solver 'C:\AAA\EPFL Y3\Semester 2\Modelling and optimization of energy systems\Project part 2\ampl_mswin64\cplex.exe';											# choose the solver
+# option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+option presolve 10;
+option snopt_options 'major_iterations=10000';
+
+option omit_zero_rows 1;										# to not display 0 in rows
+option omit_zero_cols 1;										# to not display 0 in columns
+option log_file 'FinalSystem.log';
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Iterate through objective functions
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# define parameter for objective function
+#set alphas := {0..1 by 0.01}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
+param alpha := 0.62;
+
+# remove previously-defined objective -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf
+# delete objective; # doesn't work as no previous objective statement used
+# delete Totalcost; # does work but not ideal as we lose the ability to check this value
+
+# new objective function
+# TO EDIT: change the params which feed into the objective function
+minimize multiobjective: alpha*CO2 + (1-alpha)*(InvCost+OpCost);
+# minimize multiobjective: alpha*OpCost + (1-alpha)*InvCost;
+# force this to be the objective (otherwise takes the first objective defined -- which is in the model)
+objective multiobjective;
+
+# initialise outputs
+# TO EDIT: change the first 2 elements of this set to the terms of your objective function (this is for MATLAB--it will use them as plot axes)
+#   You can also include other stuff that could be interesting to note on the plot here
+#set multi_vars := {'CO2', 'TotalCost', 'InvCost', 'OpCost'};
+#param multi_out{multi_vars,alphas};
+
+solve;
+
+include output.run
+

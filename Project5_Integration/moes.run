@@ -6,8 +6,8 @@ include import.run
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver cplex;
-# option solver 'C:\AAA\EPFL Y3\Semester 2\Modelling and optimization of energy systems\Project part 2\ampl_mswin64\cplex.exe';											# choose the solver
+#option solver cplex;
+ option solver 'C:\AAA\EPFL Y3\Semester 2\Modelling and optimization of energy systems\Project part 2\ampl_mswin64\cplex.exe';											# choose the solver
 # option solver '/home/deifilia/AMPL/ampl_linux-intel64/cplex';
 
 option omit_zero_rows 1;										# to not display 0 in rows
