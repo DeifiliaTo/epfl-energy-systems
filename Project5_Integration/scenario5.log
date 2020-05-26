@@ -162,7 +162,7 @@ Tlmc_HP1stageMT [*] :=
 6  276.497
 ;
 
-CO2 = 4999290
+CO2 = 412809
 
 heat_recovery :=
 DC      1    357.011
