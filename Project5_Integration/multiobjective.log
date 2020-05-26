@@ -10,6 +10,7 @@ CPLEX 12.9.0.0: optimal integer solution; objective 783818.4707
 CPLEX 12.9.0.0: optimal integer solution; objective 975278.7507
 56 MIP simplex iterations
 0 branch-and-bound nodes
+absmipgap = 2.32831e-10, relmipgap = 2.38732e-16
 CPLEX 12.9.0.0: optimal integer solution; objective 1166107.423
 57 MIP simplex iterations
 0 branch-and-bound nodes
@@ -42,7 +43,6 @@ absmipgap = 4.65661e-10, relmipgap = 1.93964e-16
 CPLEX 12.9.0.0: optimal integer solution; objective 2543976.759
 73 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 4.65661e-10, relmipgap = 1.83045e-16
 CPLEX 12.9.0.0: optimal integer solution; objective 2561907.277
 66 MIP simplex iterations
 0 branch-and-bound nodes

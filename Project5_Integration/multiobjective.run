@@ -22,26 +22,23 @@ Iterate through objective functions
 set alphas := {0..1 by 0.01}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
 param alpha;
 
-# remove previously-defined objective -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf
-# delete objective; # doesn't work as no previous objective statement used
-# delete Totalcost; # does work but not ideal as we lose the ability to check this value
-
-# new objective function
+# new objective functions
 # TO EDIT: change the params which feed into the objective function
-# case 1
-    minimize multiobjective: alpha*CO2 + (1-alpha)*InvCost;
-# case 2
-    # minimize multiobjective: alpha*OpCost + (1-alpha)*InvCost;
-# case 3
-    # delete Totalcost; var Totalcost; subject to tc_cstr: Totalcost = InvCost + OpCost; # need to change TC from objective to variable
-    # minimize multiobjective: alpha*CO2 + (1-alpha)*Totalcost;
-# force this to be the objective (otherwise takes the first objective defined -- which is in the model)
-objective multiobjective;
+minimize multiobj1: alpha*CO2       + (1-alpha)*InvCost;
+minimize multiobj2: alpha*OpCost    + (1-alpha)*InvCost;
+minimize multiobj3: alpha*CO2       + (1-alpha)*Totalcost;
+
+# set objective (otherwise takes the first objective defined -- which is in the model)
+objective multiobj1;
+# objective multiobj2;
+# objective multiobj3;
 
 # initialise outputs
 # TO EDIT: change the first 2 elements of this set to the terms of your objective function (this is for MATLAB--it will use them as plot axes)
 #   You can also include other stuff that could be interesting to note on the plot here
-set multi_vars := {'CO2', 'InvCost', 'OpCost', 'TotalCost'};
+set multi_vars := {'CO2', 'InvCost', 'OpCost', 'TotalCost'}; # for multiobj1
+# set multi_vars := {'OpCost', 'InvCost', 'CO2', 'TotalCost'}; # for multiobj2
+# set multi_vars := {'CO2', 'TotalCost', 'OpCost', 'InvCost'}; # for multiobj3
 param multi_out{multi_vars,alphas};
 
 # inspired by https://ampl.com/NEW/loop1.html
@@ -75,5 +72,5 @@ printf: "a\n" > multiobjective.dat;
 # print data rows -- after https://ampl.com/NEW/loop1.html
 for {a in alphas} {
     printf{v in multi_vars}: "%15.10g\t", multi_out[v,a] > multiobjective.dat;
-    printf: "%15.10g\n", a > multiobjective.dat;
+    printf: "%1.5g\n", a > multiobjective.dat;
 }
