@@ -32,18 +32,21 @@ subject to outflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT
 /*---------------------------------------------------------------------------------------------------------------------------------------
 CO2 emissions
 ---------------------------------------------------------------------------------------------------------------------------------------*/
+# new sets: grids assigned by layer
+set GridsOfLayer{Layers} default {};
+
 # emission factors [kg-CO2/kWh]
 param c_CO2{Layers} default 0;
 
 # CO2 emissions calculations [kg-CO2eq]
 var CO2;
 subject to CO2_emission:
-	CO2 = sum{t in Time}((c_CO2['Natgas'] * FlowOutUnit['Natgas','NatGasGrid',t] + c_CO2['Electricity'] * FlowOutUnit['Electricity','ElecGridBuy',t])*top[t]);
+	CO2 = sum{t in Time, l in Layers, g in GridsOfLayer[l]}( c_CO2[l] * FlowOutUnit[l,g,t] * top[t] );
 
-#energy import
+# energy import
 var Eimport;
 subject to energy_import:
-	Eimport = sum{t in Time}(FlowOutUnit['Electricity','ElecGridBuy',t] + FlowOutUnit['Natgas','NatGasGrid',t]);
+	Eimport = sum{t in Time, l in Layers, g in GridsOfLayer[l]}( FlowOutUnit[l,g,t] );
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Update cost calculations
