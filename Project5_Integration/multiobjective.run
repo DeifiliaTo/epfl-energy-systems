@@ -27,12 +27,15 @@ param alpha;
 # delete Totalcost; # does work but not ideal as we lose the ability to check this value
 
 # new objective function
+# TO EDIT: change the params which feed into the objective function
 minimize multiobjective: alpha*CO2 + (1-alpha)*InvCost;
 # minimize multiobjective: alpha*OpCost + (1-alpha)*InvCost;
 # force this to be the objective (otherwise takes the first objective defined -- which is in the model)
 objective multiobjective;
 
 # initialise outputs
+# TO EDIT: change the first 2 elements of this set to the terms of your objective function (this is for MATLAB--it will use them as plot axes)
+#   You can also include other stuff that could be interesting to note on the plot here
 set multi_vars := {'CO2', 'InvCost', 'OpCost', 'TotalCost'};
 param multi_out{multi_vars,alphas};
 
@@ -48,6 +51,7 @@ for {a in alphas} {
     # display Totalcost;
 
     # save outputs
+    # TO EDIT: make sure that you're saving everything from multi_vars
     let multi_out['CO2',a] := CO2;
     let multi_out['InvCost',a] := InvCost;
     let multi_out['OpCost',a] := OpCost;
