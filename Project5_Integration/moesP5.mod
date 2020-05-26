@@ -62,3 +62,10 @@ subject to ic_cstr:
 	InvCost = sum{tc in Technologies} (cinv1[tc] * use[tc] + cinv2[tc] * mult[tc])
 			+ sum{u in Improvements} use_recovery[u] * CAPEX[u]
 ;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Update objective
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# change TC from objective to variable -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf
+delete Totalcost; var Totalcost; subject to tc_cstr: Totalcost = InvCost + OpCost;
+minimize TC: Totalcost;
