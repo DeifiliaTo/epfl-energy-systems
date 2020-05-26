@@ -28,8 +28,13 @@ param alpha;
 
 # new objective function
 # TO EDIT: change the params which feed into the objective function
-minimize multiobjective: alpha*CO2 + (1-alpha)*InvCost;
-# minimize multiobjective: alpha*OpCost + (1-alpha)*InvCost;
+# case 1
+    minimize multiobjective: alpha*CO2 + (1-alpha)*InvCost;
+# case 2
+    # minimize multiobjective: alpha*OpCost + (1-alpha)*InvCost;
+# case 3
+    # delete Totalcost; var Totalcost; subject to tc_cstr: Totalcost = InvCost + OpCost; # need to change TC from objective to variable
+    # minimize multiobjective: alpha*CO2 + (1-alpha)*Totalcost;
 # force this to be the objective (otherwise takes the first objective defined -- which is in the model)
 objective multiobjective;
 
@@ -61,7 +66,9 @@ for {a in alphas} {
 # display all outputs
 display multi_out;
 
-# create output file
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Create output file
+---------------------------------------------------------------------------------------------------------------------------------------*/
 # print header
 printf{v in multi_vars}: "%s\t", v > multiobjective.dat;
 printf: "a\n" > multiobjective.dat;
