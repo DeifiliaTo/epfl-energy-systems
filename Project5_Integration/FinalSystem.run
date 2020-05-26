@@ -6,8 +6,8 @@ include import.run
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver 'C:\AAA\EPFL Y3\Semester 2\Modelling and optimization of energy systems\Project part 2\ampl_mswin64\cplex.exe';											# choose the solver
-# option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+# option solver 'C:\AAA\EPFL Y3\Semester 2\Modelling and optimization of energy systems\Project part 2\ampl_mswin64\cplex.exe';											# choose the solver
+option solver cplex;
 option presolve 10;
 option snopt_options 'major_iterations=10000';
 
@@ -20,7 +20,7 @@ Iterate through objective functions
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 # define parameter for objective function
 #set alphas := {0..1 by 0.01}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
-param alpha := 0.98;
+param alpha := 0.89;
 
 # remove previously-defined objective -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf
 # delete objective; # doesn't work as no previous objective statement used
