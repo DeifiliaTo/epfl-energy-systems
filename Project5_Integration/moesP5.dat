@@ -9,7 +9,7 @@ Vent_HP
 
 param c_CO2 :=              # [kg-CO2/kWh]
 Natgas 0.27
-Electricity 0.113
+Electricity 0.009
 ;
 # param c_elecPV := 0.065;  #Emission factor of electricity from PV
 
