@@ -20,7 +20,7 @@ Iterate through objective functions
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 # define parameter for objective function
 #set alphas := {0..1 by 0.01}; # book §5.2 https://ampl.com/BOOK/CHAPTERS/08-sets1.pdf
-param alpha := 0.98;
+param alpha := 0.17;
 
 # remove previously-defined objective -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf
 # delete objective; # doesn't work as no previous objective statement used

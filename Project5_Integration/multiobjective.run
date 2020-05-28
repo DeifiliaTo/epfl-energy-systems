@@ -6,7 +6,8 @@ include import.run
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver cplex;											# choose the solver
+#option solver cplex;
+ option solver 'C:\AAA\EPFL Y3\Semester 2\Modelling and optimization of energy systems\Project part 2\ampl_mswin64\cplex.exe';												# choose the solver
 # option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
 option presolve 10;
 option snopt_options 'major_iterations=10000';
@@ -29,12 +30,12 @@ param alpha;
 # new objective function
 # TO EDIT: change the params which feed into the objective function
 # case 1
-    minimize multiobjective: alpha*CO2 + (1-alpha)*InvCost;
+    #minimize multiobjective: alpha*CO2 + (1-alpha)*InvCost;
 # case 2
     # minimize multiobjective: alpha*OpCost + (1-alpha)*InvCost;
 # case 3
     # delete Totalcost; var Totalcost; subject to tc_cstr: Totalcost = InvCost + OpCost; # need to change TC from objective to variable
-    # minimize multiobjective: alpha*CO2 + (1-alpha)*Totalcost;
+    minimize multiobjective: alpha*CO2 + (1-alpha)*(InvCost+OpCost);
 # force this to be the objective (otherwise takes the first objective defined -- which is in the model)
 objective multiobjective;
 
