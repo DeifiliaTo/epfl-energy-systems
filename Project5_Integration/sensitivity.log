@@ -1,145 +1,158 @@
-CPLEX 12.9.0.0: optimal integer solution; objective 11925384.81
-43 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 10367336.26
+67 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 15340417.49
-37 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.79665e-16
+CPLEX 12.9.0.0: optimal integer solution within mipgap or absmipgap; objective 13394601.14
+56 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 1.86265e-09, relmipgap = 1.21421e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 1289.69, relmipgap = 9.62843e-05
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 21185633.16
-29 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 16731619.01
+70 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 3.72529e-09, relmipgap = 1.7584e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 23724810.08
-27 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.11325e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 18266020.51
+78 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 26191349.66
-28 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 19786467.94
+79 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 28657889.23
-23 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 21267594.6
+66 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 3.72529e-09, relmipgap = 1.29992e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 18414667.57
-34 MIP simplex iterations
+absmipgap = 7.45058e-09, relmipgap = 3.50325e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15134702.62
+58 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18414284.52
-32 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 15133775.24
+59 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 3.72529e-09, relmipgap = 2.46157e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413518.41
-34 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 15121266.69
+63 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413135.35
-34 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.2318e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15114822.15
+63 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18412752.3
-34 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.23233e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15083446.49
+48 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 3.72529e-09, relmipgap = 2.02321e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 18412369.25
-32 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution within mipgap or absmipgap; objective 14846324.08
+65 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 3.72529e-09, relmipgap = 2.02325e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 18410632.69
-32 MIP simplex iterations
+absmipgap = 1193.08, relmipgap = 8.03617e-05
+CPLEX 12.9.0.0: optimal integer solution; objective 11766664.1
+41 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18412267.07
-32 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.58298e-16
+CPLEX 12.9.0.0: optimal integer solution within mipgap or absmipgap; objective 13787318.07
+51 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 3.72529e-09, relmipgap = 2.02327e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 1368.54, relmipgap = 9.92605e-05
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18415535.85
-32 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 16270697.22
+55 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18417170.24
-34 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.14479e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 16859358.32
+58 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18418804.62
-32 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 16861111.03
+46 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18420439.01
-34 MIP simplex iterations
+absmipgap = 3.72529e-09, relmipgap = 2.2094e-16
+CPLEX 12.9.0.0: optimal integer solution within mipgap or absmipgap; objective 16862863.74
+54 MIP simplex iterations
 0 branch-and-bound nodes
+absmipgap = 0.0329124, relmipgap = 1.95177e-09
 sensitivity_TC_c_spec [*,*] (tr)
 :    ElecGridBuy ElecGridSell NatGasGrid    :=
-0.5    11925400     18414700    18410600
-0.75   15340400     18414300    18412300
-1      18413900     18413900    18413900
-1.25   21185600     18413500    18415500
-1.5    23724800     18413100    18417200
-1.75   26191300     18412800    18418800
-2      28657900     18412400    18420400
+0.5    10367300     15134700    11766700
+0.75   13394600     15133800    13787300
+1      15127700     15127700    15127700
+1.25   16731600     15121300    16270700
+1.5    18266000     15114800    16859400
+1.75   19786500     15083400    16861100
+2      21267600     14846300    16862900
 ;
 
-CPLEX 12.9.0.0: optimal integer solution; objective 17650598.23
-30 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution within mipgap or absmipgap; objective 14523880.77
+54 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18032249.84
-32 MIP simplex iterations
+absmipgap = 1037.97, relmipgap = 7.14666e-05
+CPLEX 12.9.0.0: optimal integer solution within mipgap or absmipgap; objective 14829132.92
+51 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 1039.21, relmipgap = 7.00788e-05
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18795553.08
-32 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution within mipgap or absmipgap; objective 15399822.49
+73 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 3.72529e-09, relmipgap = 1.98201e-16
-CPLEX 12.9.0.0: optimal (non-)integer solution; objective 19012002.04
-40 MIP simplex iterations
+absmipgap = 499.735, relmipgap = 3.24507e-05
+CPLEX 12.9.0.0: optimal integer solution; objective 15667419.01
+60 MIP simplex iterations
 0 branch-and-bound nodes
-5 integer variables rounded (maxerr = 1.28092e-06).
-Assigning integrality = 6e-07 might help.
-Currently integrality = 1e-05.
-CPLEX 12.9.0.0: optimal integer solution; objective 19048004.66
-28 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.18887e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15931735.63
+57 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 3.72529e-09, relmipgap = 1.95574e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 19084004.66
-28 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.16914e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 16196052.25
+43 MIP simplex iterations
 0 branch-and-bound nodes
-absmipgap = 3.72529e-09, relmipgap = 1.95205e-16
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 5.58794e-09, relmipgap = 3.45018e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.23128e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.23128e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.23128e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.23128e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
-CPLEX 12.9.0.0: optimal integer solution; objective 18413901.46
-34 MIP simplex iterations
+absmipgap = 1.86265e-09, relmipgap = 1.23128e-16
+CPLEX 12.9.0.0: optimal integer solution; objective 15127711.24
+62 MIP simplex iterations
 0 branch-and-bound nodes
+absmipgap = 1.86265e-09, relmipgap = 1.23128e-16
 sensitivity_TC_c_CO2 :=
-Electricity 0.5    18413900
-Electricity 0.75   18413900
-Electricity 1      18413900
-Electricity 1.25   18413900
-Electricity 1.5    18413900
-Electricity 1.75   18413900
-Electricity 2      18413900
-Natgas      0.5    17650600
-Natgas      0.75   18032200
-Natgas      1      18413900
-Natgas      1.25   18795600
-Natgas      1.5    19012000
-Natgas      1.75   19048000
-Natgas      2      19084000
+Electricity 0.5    15127700
+Electricity 0.75   15127700
+Electricity 1      15127700
+Electricity 1.25   15127700
+Electricity 1.5    15127700
+Electricity 1.75   15127700
+Electricity 2      15127700
+Natgas      0.5    14523900
+Natgas      0.75   14829100
+Natgas      1      15127700
+Natgas      1.25   15399800
+Natgas      1.5    15667400
+Natgas      1.75   15931700
+Natgas      2      16196100
 ;
 
