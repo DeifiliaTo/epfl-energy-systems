@@ -54,7 +54,7 @@ Update cost calculations
 delete oc_cstr;
 subject to oc_cstr:
 	OpCost = sum {u in Utilities, t in Time} (cop1[u] * use_t[u,t] + cop2[u] * mult_t[u,t]) * top[t]
-			 + sum {u in Improvements} use_recovery[u] * OPEX[u] + sum{t in Time}(c_CO2['Natgas'] * FlowOutUnit['Natgas','NatGasGrid',t] * top[t]) * 96 * (10^-3)
+			 + sum {u in Improvements} use_recovery[u] * OPEX[u] + sum{t in Time}(c_CO2['Natgas'] * FlowOutUnit['Natgas','NatGasGrid',t] * top[t]) * 96e-3
 ;
 
 delete ic_cstr;
@@ -62,3 +62,10 @@ subject to ic_cstr:
 	InvCost = sum{tc in Technologies} (cinv1[tc] * use[tc] + cinv2[tc] * mult[tc])
 			+ sum{u in Improvements} use_recovery[u] * CAPEX[u]
 ;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Update objective
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# change TC from objective to variable -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf
+delete Totalcost; var Totalcost; subject to tc_cstr: Totalcost = InvCost + OpCost;
+minimize TC: Totalcost;
