@@ -12,9 +12,24 @@ filename = 'P1_weatherdata.csv';
 data_w = csvread(filename,1,0);
 Text = data_w(:,1);% External temperature [C]
 Irr = data_w(:,2); % Global solar irradiation [W/m2]
+t_hour = (1:1:length(Text)); % Vector of hour for the year
 T_th = 16;
 n = 4;
 Colours = {'b.', 'r.', 'y.', 'g.', 'm.', 'c.', 'k*'};
+
+% Graph of temperature and irradiance
+figure(1)
+plot(t_hour,Text);
+xlabel 'Time [hours]';
+ylabel 'Text [°C]'; 
+saveas(figure(1),"plots/text_year.png")
+
+figure(2)
+plot(t_hour,Irr);             
+hold on;
+xlabel 'Time [hours]';
+ylabel 'Irradiation [W/m2]';
+saveas(figure(2),"plots/irr_year.png")
 
 
 %% Normalization of Text and Irr
@@ -116,11 +131,17 @@ DevPart_kmean = [Dev_C; Dev_hot; Dev_cold];
 DevTot_kmean = sum(DevPart_kmean);
 
 % Maximum load duration curve difference
+% t_select = (1:1:length(Text_norm_day));
+% Tt_sort = sort ([TypText_kmean,Freq_kmean],'descend');
+% 
+% figure(3)
+% plot (t_select, sort(Text_norm_day,'descend')*(Text_max - Text_min) + Text_min, 'k.')
+% hold on
 
 
 %% Graph kmean clustering
 
-figure(1)
+figure(4)
 for i = 1:n
     
     % Identification of periods relative to cluster i
@@ -147,6 +168,7 @@ ylabel 'Irradiance normalized';
 legend('Kmean cluster 1','Kmean cluster 2','Kmean cluster 3','Kmean cluster 4','Hot period','Cold period', 'Centroids',...
     'FontSize', 12, 'Location', 'northwest');
 hold off;
+saveas(figure(4),"plots/Cluster_k.png")
 
 
 %% Clustering by average
@@ -192,7 +214,7 @@ DevTot_Av = sum(DevPart_Av);
 
 %% Graph average clustering
 
-figure(2)
+figure(5)
 for i = 1:n
     
     % Upper and lower limit of the period
@@ -220,3 +242,7 @@ ylabel 'Irradiance normalized';
 legend('Average cluster 1','Average cluster 2','Average cluster 3','Average cluster 4','Hot period','Cold period', 'Centroids',...
     'FontSize', 12, 'Location', 'northwest');
 hold off;
+saveas(figure(5),"plots/Cluster_av.png")
+
+
+
