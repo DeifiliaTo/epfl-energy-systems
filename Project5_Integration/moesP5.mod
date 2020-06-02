@@ -69,3 +69,13 @@ Update objective
 # change TC from objective to variable -- see discussion of delete/update in book §11.4 https://ampl.com/BOOK/CHAPTERS/14-command.pdf
 delete Totalcost; var Totalcost; subject to tc_cstr: Totalcost = InvCost + OpCost;
 minimize TC: Totalcost;
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Add sums of FlowInUnit and FlowOutUnit for graph plotting
+---------------------------------------------------------------------------------------------------------------------------------------*/
+var FlowInUnitSum{Layers,Utilities} >= 0;
+subject to FlowInUnitSum_cstr{l in Layers, u in UtilitiesOfLayer[l]}:
+	FlowInUnitSum[l,u] = sum{t in Time} FlowInUnit[l,u,t];
+var FlowOutUnitSum{Layers,Utilities} >= 0;
+subject to FlowOutUnitSum_cstr{l in Layers, u in UtilitiesOfLayer[l]}:
+	FlowOutUnitSum[l,u] = sum{t in Time} FlowOutUnit[l,u,t];

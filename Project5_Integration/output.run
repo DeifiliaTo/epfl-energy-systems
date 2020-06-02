@@ -34,3 +34,6 @@ display use_recovery;
 display mult_t;
 
 display use_t;
+
+display FlowInUnitSum;
+display FlowOutUnitSum;
