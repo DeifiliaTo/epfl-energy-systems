@@ -21,7 +21,7 @@ Colours = {'b.', 'r.', 'y.', 'g.', 'm.', 'c.', 'k*'};
 figure(1)
 plot(t_hour,Text);
 xlabel 'Time [hours]';
-ylabel 'Text [°C]'; 
+ylabel 'Text [ï¿½C]'; 
 saveas(figure(1),"plots/text_year.png")
 
 figure(2)
