@@ -1,4 +1,5 @@
-SNOPT 7.5-1.2 : major_iterations=10000
+SNOPT 7.5-1.2 : major_iterations=10000
+
 SNOPT 7.5-1.2 : Optimal solution found.
 57 iterations, objective 0.0002941030142
 Nonlin evals: constrs = 129, Jac = 128.
@@ -74,9 +75,12 @@ Evap_area = 1283.05
 
 DTlnEvap = 5.77078
 
+W_comp1[12] = 593.498
+
 ampl: reset;
 ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid\Student_version';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid\Student_version' ;
 ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project4_Fluid' ;
 ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems' ;
 ampl: cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project5_Integration';cd 'C:\Users\Marie Jones\Documents\GitHub\epfl-energy-systems\Project5_Integration' ;
-ampl: include scenario.run
+ampl: include scenario.run
+
