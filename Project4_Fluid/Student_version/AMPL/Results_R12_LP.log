@@ -1,4 +1,5 @@
-SNOPT 7.5-1.2 : major_iterations=10000
+SNOPT 7.5-1.2 : major_iterations=10000
+
 SNOPT 7.5-1.2 : Optimal solution found.
 62 iterations, objective 0.0006113943689
 Nonlin evals: constrs = 139, Jac = 138.
@@ -74,3 +75,4 @@ Evap_area = 991.133
 
 DTlnEvap = 5.77078
 
+W_comp1[12] = 703.481
