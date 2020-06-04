@@ -187,4 +187,4 @@ subject to TCost: #the total cost can be computed using the operating and invest
 #	Paybt <= n;
 
 ################################
-minimize obj : TC;
+minimize obj : OPEX;

@@ -3,17 +3,16 @@ Set the maximum scaling factor of Geothermal power (GP) unit
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 let Fmax['Geothermal'] := 1; #[kW]
 
-let Tminheating['Geothermal'] := 150;
+let Tminheating['Geothermal'] := 65;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set the reference size of electricity flow (will be scaled with mult_t)
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-# Source: https://www.mech.kuleuven.be/en/tme/research/energy_environment/Pdf/wp-en2017-7.pdf
+# Source: https://www.mech.kuleuven.be/en/tme/research/energy_environment/Pdf/wp-en-2017-10.pdf
 let Flowout['Electricity','Geothermal'] := 4800; #[kWe]
 let Qheatingsupply['Geothermal'] := 10000; #[kWh]
 
 # Confirmation source: https://www.researchgate.net/publication/312997539_Geothermal_Energy
-# Confirmation source: https://www.mech.kuleuven.be/en/tme/research/energy_environment/Pdf/wp-en-2017-10.pdf
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Set cost parameter

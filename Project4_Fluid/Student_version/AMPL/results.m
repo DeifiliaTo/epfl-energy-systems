@@ -50,6 +50,49 @@ plot_correlation(titles(2), LP_12, corr_LP_12)
 plot_correlation(titles(3), HP_21, corr_HP_21) 
 plot_correlation(titles(4), LP_21, corr_LP_21) 
 
+%% Graph for all other fluids
+plot_all_fluids(f, Text)
+end
+
+function plot_all_fluids(f, Text)
+
+% State coefficients
+coeff_HP_20 = [0.00255438 1.39412 190.358];
+coeff_HP_30 = [0.00270757 1.4653 198.516]
+coeff_HP_40 = [0.0026193 1.41759 192.048];
+
+coeff_LP_20 = [0.000284124 0.139853 17.4208];
+coeff_LP_30 = [0.00105432 0.569855 77.4214];
+coeff_LP_40 = [0.00101758 0.549892 74.6889];
+
+
+% Generate quadratic functions
+quad_HP_20 = generate_quadratic(coeff_HP_20, f)
+quad_HP_30 = generate_quadratic(coeff_HP_30, f)
+quad_HP_40 = generate_quadratic(coeff_HP_40, f)
+quad_LP_20 = generate_quadratic(coeff_LP_20, f)
+quad_LP_30 = generate_quadratic(coeff_LP_30, f)
+quad_LP_40 = generate_quadratic(coeff_LP_40, f)
+
+
+all_fluids = fplot(quad_HP_20, [min(Text), max(Text)])
+hold on;
+fplot(quad_HP_30, [min(Text), max(Text)])
+fplot(quad_HP_40, [min(Text), max(Text)])
+fplot(quad_LP_20, [min(Text), max(Text)])
+fplot(quad_LP_30, [min(Text), max(Text)])
+fplot(quad_LP_40, [min(Text), max(Text)])
+
+hold off
+
+xlim([min(Text), max(Text)])
+xlabel('External Temperature [C]')
+ylabel('Carnot factor')
+legend('HP_{20}', 'HP_{30}', 'HP_{40}', 'LP_{20}', 'LP_{30}', 'LP_{40}', 'Location', 'northwest')
+
+figExport(5, 4, 'all_fluids')
+
+
 
 end
 
@@ -57,14 +100,14 @@ end
 function plot_correlation (title, data1, data2)
 
 lin = @(x) x
-plot = fplot(lin, [0, 1], 'blue')
+plot = fplot(lin, [min(data1)-0.05, max(data1)+0.05], 'blue')
 hold on
 scatter(data1, data2, 'filled', 'MarkerFaceColor', 'red')
 
 hold off
 
-xlabel('External Temperature [C]')
-ylabel('Carnot factor')
+xlabel('Experimental Carnot factor')
+ylabel('Regressed Carnot factor')
 legend('Regression', 'Data', 'Location', 'northwest')
 figExport(5, 4, title.char)
 end
@@ -75,7 +118,6 @@ hold on
 scatter(Text, data, 'filled', 'MarkerFaceColor', 'red')
 
 hold off
-
 xlabel('External Temperature [C]')
 ylabel('Carnot factor')
 legend('Regression', 'Data', 'Location', 'northwest')
