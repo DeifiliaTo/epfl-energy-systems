@@ -21,7 +21,7 @@ Colours = {'b.', 'r.', 'y.', 'g.', 'm.', 'c.', 'k*'};
 figure(1)
 plot(t_hour,Text);
 xlabel 'Time [hours]';
-ylabel 'Text [ï¿½C]'; 
+ylabel 'Text [°C]'; 
 saveas(figure(1),"plots/text_year.png")
 
 figure(2)
@@ -58,6 +58,9 @@ for i = 1:365
     Text_norm_day ( ((i-1)*14 +1):((i-1)*14 +14) ) = ...
         Text_norm ( ((i-1)*24 + 8):((i-1)*24 + 21) );
     
+    t_day ( ((i-1)*14 +1):((i-1)*14 +14) ) = ...
+        t_hour ( ((i-1)*24 + 8):((i-1)*24 + 21) );
+    
     % Extraction of irradiance
     Irr_norm_day ( ((i-1)*14 +1):((i-1)*14 +14) ) = ...
         Irr_norm ( ((i-1)*24 + 8):((i-1)*24 + 21) );
@@ -72,11 +75,13 @@ T_norm_idx = Text_norm_day < T_th_norm;
 % Vector containing the temperature and the irradiance to be clustered
 Text_norm_heated = Text_norm_day (T_norm_idx);
 Irr_norm_heated = Irr_norm_day (T_norm_idx);
+t_heated = t_day(T_norm_idx);
 Weather_norm_select = [Text_norm_heated, Irr_norm_heated];
 
 % Vector containing the temperature and the irradiance not to be clustered
 Text_norm_notheated = Text_norm_day (~T_norm_idx);
 Irr_norm_notheated = Irr_norm_day (~T_norm_idx);
+t_notheated = t_day(~T_norm_idx);
 Weather_norm_nonselect = [Text_norm_notheated, Irr_norm_notheated];
 
 
@@ -148,23 +153,26 @@ for i = 1:n
     Cluster_idx = idx_C == i;
     
     % Plot of the periods
-    plot (Weather_norm_select(Cluster_idx,1), Weather_norm_select(Cluster_idx,2), Colours{i});
+    plot (Weather_norm_select(Cluster_idx,1)*(Text_max - Text_min) + Text_min, ...
+        Weather_norm_select(Cluster_idx,2)*(Irr_max - Irr_min) + Irr_min, Colours{i});
     hold on
 end
 
 % Plot hot periods
-plot (Weather_norm_nonselect(:,1), Weather_norm_nonselect(:,2), Colours {n + 1})
+plot (Weather_norm_nonselect(:,1)*(Text_max - Text_min) + Text_min, ...
+    Weather_norm_nonselect(:,2)*(Irr_max - Irr_min) + Irr_min, Colours {n + 1})
 hold on
 
 % Plot cold period
-plot (Weather_norm_cold (1), Weather_norm_cold(2), Colours {n + 2})
+plot (Weather_norm_cold(1)*(Text_max - Text_min) + Text_min, ...
+    Weather_norm_cold(2)*(Irr_max - Irr_min) + Irr_min, Colours {n + 2})
 hold on
 
 % Plot typical periods
-plot (TypWeather_norm_kmean(:,1), TypWeather_norm_kmean(:,2), Colours {n + 3}, 'LineWidth', 1.5)
+plot (TypText_kmean, TypIrr_kmean, Colours {n + 3}, 'LineWidth', 1.5)
 
-xlabel 'Temperature normalized';
-ylabel 'Irradiance normalized'; 
+xlabel 'Temperature [°C]';
+ylabel 'Irradiance [W/m^2]'; 
 legend('Kmean cluster 1','Kmean cluster 2','Kmean cluster 3','Kmean cluster 4','Hot period','Cold period', 'Centroids',...
     'FontSize', 12, 'Location', 'northwest');
 hold off;
@@ -222,27 +230,59 @@ for i = 1:n
     Lim_u = sum(Freq_Av(1:i));
     
     % Plot of the periods
-    plot (Weather_norm_select((Lim_l:Lim_u),1), Weather_norm_select((Lim_l:Lim_u),2), Colours{i});
+    plot (Weather_norm_select((Lim_l:Lim_u),1)*(Text_max - Text_min) + Text_min, ...
+        Weather_norm_select((Lim_l:Lim_u),2)*(Irr_max - Irr_min) + Irr_min, Colours{i});
     hold on
 end
 
 % Plot hot periods
-plot (Weather_norm_nonselect (:,1), Weather_norm_nonselect(:,2), Colours {n + 1})
+plot (Weather_norm_nonselect (:,1)*(Text_max - Text_min) + Text_min, ...
+    Weather_norm_nonselect(:,2)*(Irr_max - Irr_min) + Irr_min, Colours {n + 1})
 hold on
 
 % Plot cold period
-plot (Weather_norm_cold (1), Weather_norm_cold(2), Colours {n + 2})
+plot (Weather_norm_cold(1)*(Text_max - Text_min) + Text_min, ...
+    Weather_norm_cold(2)*(Irr_max - Irr_min) + Irr_min, Colours {n + 2})
 hold on
 
 % Plot typical periods
-plot (TypWeather_norm_Av (:,1), TypWeather_norm_Av (:,2), Colours {n + 3}, 'LineWidth', 1.5)
+plot (TypWeather_norm_Av(:,1)*(Text_max - Text_min) + Text_min, ...
+    TypWeather_norm_Av (:,2)*(Irr_max - Irr_min) + Irr_min, Colours {n + 3}, 'LineWidth', 1.5)
 
-xlabel 'Temperature normalized';
-ylabel 'Irradiance normalized'; 
+xlabel 'Temperature [°C]';
+ylabel 'Irradiance [W/m^2]'; 
 legend('Average cluster 1','Average cluster 2','Average cluster 3','Average cluster 4','Hot period','Cold period', 'Centroids',...
     'FontSize', 12, 'Location', 'northwest');
 hold off;
 saveas(figure(5),"plots/Cluster_av.png")
+
+figure(6)
+plot (t_heated, Text_norm_heated*(Text_max - Text_min) + Text_min, 'b.')
+hold on
+plot (t_notheated, Text_norm_notheated*(Text_max - Text_min) + Text_min, 'c.')
+hold on
+plot (t_day, [ones(Freq_Av(1),1)*TypText_Av(1); ones(Freq_Av(2),1)*TypText_Av(2); ...
+    ones(Freq_Av(5),1)*TypText_Av(5); ones(Freq_Av(3),1)*TypText_Av(3); ...
+    ones(Freq_Av(4),1)*TypText_Av(4)], 'r.')
+xlabel 'Time [hours]';
+ylabel 'Temperature [°C]'; 
+legend('Heated','Not heated','Clusters','FontSize', 12, 'Location', 'northwest');
+hold off
+saveas(figure(6),"plots/Cluster_av_T.png")
+
+figure(7)
+plot (t_heated, Irr_norm_heated*(Irr_max - Irr_min) + Irr_min, 'b.')
+hold on
+plot (t_notheated, Irr_norm_notheated*(Irr_max - Irr_min) + Irr_min, 'c.')
+hold on
+plot (t_day, [ones(Freq_Av(1),1)*TypIrr_Av(1); ones(Freq_Av(2),1)*TypIrr_Av(2); ...
+    ones(Freq_Av(5),1)*TypIrr_Av(5); ones(Freq_Av(3),1)*TypIrr_Av(3); ...
+    ones(Freq_Av(4),1)*TypIrr_Av(4)], 'r.')
+xlabel 'Time [hours]';
+ylabel 'Irradiance [W/m^2]'; 
+legend('Heated','Not heated','Clusters','FontSize', 12, 'Location', 'northwest');
+hold off
+saveas(figure(7),"plots/Cluster_av_I.png")
 
 
 
