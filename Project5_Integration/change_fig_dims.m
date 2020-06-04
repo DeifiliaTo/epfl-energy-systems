@@ -17,12 +17,26 @@ set2 = {'pareto-front-CO2-InvCost-c_CO2-Natgas-overview'...
 for file = set2
     file = char(file);
     fig = openfig(['figures/' file '.fig']);
-    % change title alignment to right of plot
-    % export changes limits later so doesn't look right though
-    %     ax = gca;
-    %     ax.Title.HorizontalAlignment = 'right';
-    %     pos = ax.Title.Position;
-    %     pos(1) = ax.XLim(2);
-    %     ax.Title.Position = pos;
+    
+%     moveTitleToLegend(fig)
+    
     figExport(8,8,file)
+end
+
+function alignTitleRight
+% change title alignment to right of plot
+% export changes limits later so doesn't look right though
+ax = gca;
+ax.Title.HorizontalAlignment = 'right';
+pos = ax.Title.Position;
+pos(1) = ax.XLim(2);
+ax.Title.Position = pos;
+end
+
+function moveTitleToLegend(fig)
+lgd = findobj(fig,'type','legend');
+ax = gca;
+lgd.Title.String = ax.Title.String;
+lgd.Title.Interpreter = ax.Title.Interpreter;
+ax.Title.String ='';
 end
