@@ -6,7 +6,7 @@ param Qheating := # medium temperature heating demand (KW or KWh) [kW]
 3 1307.05
 4 1896.62
 #5 0
-5 22212
+5 26688
 ;
 
 param top := #operating time (hours)
