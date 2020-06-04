@@ -17,8 +17,8 @@ data ../../Project2_MILP/building_dat/moesPH.dat
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver snopt;
- #option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+#option solver snopt;
+option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
 option presolve 5;
 #option omit_zero_rows 1;
 #option omit_zero_cols 1;
@@ -48,6 +48,7 @@ display Area_Vent;
 display Heat_Vent;
 display theta_1;
 display theta_2;
+display (TIC - Cost_HP * BM_hp)*(i * (1 + i)^n) / ((1 + i)^n - 1);
 
 print '########################################';
 print '#    AIR STREAM TEMPERATURES';
@@ -73,6 +74,15 @@ print '##   temperatures / properties';
 display COP_2;
 display TLMCond_2;
 display TLMEvapHP_2;
+
+print '## Cost of the heat pump';
+display Cost_HP * BM_hp;
+
+print '## Cost (annualized) of the heat pump';
+display Cost_HP*(i * (1 + i)^n) / ((1 + i)^n - 1);
+
+print '## Cost difference (annualized)';
+display 203000*(i * (1 + i)^n) / ((1 + i)^n - 1);
 
 print '########################################';
 print '#    MAIN HEAT PUMP';
