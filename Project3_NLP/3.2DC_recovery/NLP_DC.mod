@@ -20,12 +20,12 @@ param Cel 			:= 0.20; #[CHF/kWh] operating cost for buying electricity from the 
 param THPhighin 	:= 7; #[deg C] temperature of water coming from lake into the evaporator of the HP
 param THPhighout 	:= 3; #[deg C] temperature of water coming from lake into the evaporator of the HP
 
-param i 			:= 0.05 ; #interest rate
+param i 			:= 0.06 ; #interest rate
 param n 			:= 20; #[y] life-time
 param FBMHE 		:= 4.74; #bare module factor of the heat exchanger
 param INew 			:= 605.7; #chemical engineering plant cost index (2015)
 param IRef 			:= 394.1; #chemical engineering plant cost index (2000)
-param aHE 			:= 800; #HE cost parameter
+param aHE 			:= 1200; #HE cost parameter
 param bHE 			:= 0.6; #HE cost parameter
 
 param HeatDC 		:= 574; #amount of heat to be removed from data center (kW)
