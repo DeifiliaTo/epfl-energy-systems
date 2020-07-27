@@ -78,5 +78,5 @@ TBC
         determine for which frontiers a combined plot will be made showing the variation of a parameter (here there will be 9 plots)
     - the line `files = {[filePrefix '-' var '-50.fig'] [filePrefix '.fig'] [filePrefix '-' var '-200.fig']};` determines which multiplier values of the paramters will be used: here 50%, 100% (file has no suffix), 200%
         - remember to rename the legend accordingly if you change this! `legend('50%','100%','200%')`
-    - obviously, for all this to work you need to have produced the relevant files from steps 1–3 above first
+    - obviously, for all this to work you need to have produced the relevant files from steps 1–4 above first
     - MATLAB spits out the combined plot as e.g. `pareto-front-CO2-InvCost-c_CO2-Natgas-overview`
