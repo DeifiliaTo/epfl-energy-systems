@@ -81,6 +81,8 @@ Load the HP1stage models and their data
 data ../Project2_MILP/moesHP1stageLT.dat;
 model ../Project2_MILP/moesHP1stageLT.mod;
 
+data ../Project5_Integration/moesHP1stageLT_2.dat;
+model ../Project5_Integration/moesHP1stageLT_2.mod;
 
 data ../Project2_MILP/moesHP1stageMT.dat;
 model ../Project2_MILP/moesHP1stageMT.mod;
