@@ -79,3 +79,8 @@ subject to FlowInUnitSum_cstr{l in Layers, u in UtilitiesOfLayer[l]}:
 var FlowOutUnitSum{Layers,Utilities} >= 0;
 subject to FlowOutUnitSum_cstr{l in Layers, u in UtilitiesOfLayer[l]}:
 	FlowOutUnitSum[l,u] = sum{t in Time} FlowOutUnit[l,u,t];
+
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Add extra technologies
+---------------------------------------------------------------------------------------------------------------------------------------*/
+let Technologies := Technologies union {'HP1stageLT_2'};

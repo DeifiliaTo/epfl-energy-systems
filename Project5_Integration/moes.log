@@ -67,6 +67,7 @@ mult [*] :=
 ElecGridSell  1000
   Geothermal     0.150294
   HP1stageLT    10
+HP1stageLT_2  1000
     HP2stage     0.794457
   NatGasGrid  1000
           PV    16.7195
@@ -99,6 +100,7 @@ Fmax [*] :=
 ElecGridSell  1000
   Geothermal     1
   HP1stageLT    10
+HP1stageLT_2  1000
   HP1stageMT    10
     HP2stage    50
 HPDatacenter  1000
