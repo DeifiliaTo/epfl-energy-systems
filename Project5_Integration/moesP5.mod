@@ -80,11 +80,3 @@ var FlowOutUnitSum{Layers,Utilities} >= 0;
 subject to FlowOutUnitSum_cstr{l in Layers, u in UtilitiesOfLayer[l]}:
 	FlowOutUnitSum[l,u] = sum{t in Time} FlowOutUnit[l,u,t];
 
-/*---------------------------------------------------------------------------------------------------------------------------------------
-Add duplicate technologies to relevant sets
----------------------------------------------------------------------------------------------------------------------------------------*/
-# HP1stageLT_2
-let Technologies := Technologies union {'HP1stageLT_2'};
-let UtilitiesOfType['Heating'] := UtilitiesOfType['Heating'] union {'HP1stageLT_2'};
-let UtilitiesOfType['ElectricityCons'] := UtilitiesOfType['ElectricityCons'] union {'HP1stageLT_2'};
-let UtilitiesOfLayer['Electricity'] := UtilitiesOfLayer['Electricity'] union {'HP1stageLT_2'};

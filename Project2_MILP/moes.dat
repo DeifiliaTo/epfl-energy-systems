@@ -27,6 +27,7 @@ SOFC
 Geothermal
 HP2stage
 HP1stageLT
+HP1stageLT_2
 HP1stageMT
 Cogen
 HPDatacenter
@@ -62,6 +63,7 @@ SOFC
 Geothermal
 HP2stage
 HP1stageLT
+HP1stageLT_2
 HP1stageMT
 Cogen
 HPDatacenter
@@ -79,6 +81,7 @@ ElecGridBuy
 set UtilitiesOfType[ElectricityCons] :=
 HP2stage
 HP1stageLT
+HP1stageLT_2
 HP1stageMT
 HPDatacenter
 HPWaste
