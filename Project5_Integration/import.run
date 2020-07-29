@@ -87,6 +87,9 @@ model ../Project5_Integration/moesHP1stageLT_2.mod;
 data ../Project2_MILP/moesHP1stageMT.dat;
 model ../Project2_MILP/moesHP1stageMT.mod;
 
+data ../Project5_Integration/moesHP1stageMT_2.dat;
+model ../Project5_Integration/moesHP1stageMT_2.mod;
+
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Load the Cogen model and its data
 ---------------------------------------------------------------------------------------------------------------------------------------*/

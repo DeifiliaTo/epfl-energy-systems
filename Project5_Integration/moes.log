@@ -58,6 +58,7 @@ Qheatingsupply [*] :=
   HP1stageLT   1000
 HP1stageLT_2   1000
   HP1stageMT   1000
+HP1stageMT_2   1000
     HP2stage   1000
         SOFC     30
 ;
@@ -102,6 +103,7 @@ ElecGridSell  1000
   HP1stageLT    10
 HP1stageLT_2    10
   HP1stageMT    10
+HP1stageMT_2    10
     HP2stage    50
 HPDatacenter  1000
      HPWaste  1000
@@ -210,3 +212,4 @@ Electricity PV              2950.75
 Natgas      NatGasGrid    178049
 ;
 
+ampl: 

@@ -1,25 +1,25 @@
 /*---------------------------------------------------------------------------------------------------------------------------------------
-import all the model and data files for part 5
+Set the maximum scaling factor of 2stageHP
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-include import.run
+let Fmax['HP1stageMT_2'] := 10;
+
+let Qheatingsupply['HP1stageMT_2'] := 1000;
+let Tminheating['HP1stageMT_2'] := 110;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-AMPL options
+Set the reference size of Heat flow (will be scaled with mult_t)????
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-# option solver cplex;
- option solver 'C:\AAA\EPFL Y3\Semester 2\Modelling and optimization of energy systems\Project part 2\ampl_mswin64\cplex.exe';											# choose the solver
-# option solver '/home/deifilia/AMPL/ampl_linux-intel64/cplex';
-
-option omit_zero_rows 1;										# to not display 0 in rows
-option omit_zero_cols 1;										# to not display 0 in columns
-option log_file 'moes.log';
+# let  Flowout['Heat','HP2stage'] := 1000; # [KW]
+# why are we trying to calculate this? isn't this just Qheatingsupply['HP2stage'] ??
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Solve the problem
+Set the hot and cold temperature
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-solve;
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
-Output to print & log
+Set cost parameter
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-include output.run
+
+let cinv1['HP1stageMT_2'] := 532.0955;			#  [CHF]
+
+let cinv2['HP1stageMT_2'] := 116.1617*Qheatingsupply['HP1stageMT_2'];			# continious investment cost [CHF/year]
