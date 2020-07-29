@@ -135,4 +135,81 @@ Electricity ElecGridSell 6   16315.4
 Electricity HP1stageLT   1    2069.68
 Electricity HP1stageLT   2    2012.03
 Electricity HP1stageLT   3     247.913
-Electric
+Electricity HP1stageLT   4     337.872
+Electricity HP1stageLT   6    2242.62
+Electricity HP1stageMT   1    2683.89
+Electricity HP1stageMT   2    2628.44
+Electricity HP1stageMT   6    2850.24
+Electricity HP2stage     1    3611.43
+Electricity HP2stage     2    3307.89
+Electricity HP2stage     6    3233.93
+Natgas      Cogen        6   63160.6
+;
+
+FlowOutUnit :=
+Electricity Cogen       6   22971.5
+Electricity ElecGridBuy 1   18654.2
+Electricity ElecGridBuy 2   18278.9
+Electricity ElecGridBuy 3   10091.6
+Electricity ElecGridBuy 4   10540.2
+Electricity ElecGridBuy 5    2244.97
+Electricity Geothermal  1    1670.63
+Electricity Geothermal  2    1670.63
+Electricity Geothermal  3     721.411
+Electricity Geothermal  4    1670.63
+Electricity Geothermal  6    1670.63
+Electricity PV          1     277.28
+Electricity PV          2     235.895
+Electricity PV          3    1671.95
+Electricity PV          4     364.188
+Electricity PV          5     401.435
+Natgas      NatGasGrid  6   63160.6
+;
+
+usedroofArea = 15500
+
+InvCost = 4982980
+
+OpCost = 11982700
+
+CO2 = 442205
+
+heat_recovery :=
+DC      1    357.011
+DC      2    356.967
+DC      3    335.21
+DC      4    343.394
+DC      6    357.897
+Vent    1      0.549
+Vent    2      0.536
+Vent    3      0.263
+Vent    4      0.222
+Vent    5      0.131
+Vent    6      0.789
+Vent_HP 1   1577.79
+Vent_HP 2   1542.22
+Vent_HP 3    757.489
+Vent_HP 4    638.682
+Vent_HP 5    428.859
+Vent_HP 6   2023.78
+;
+
+use_recovery [*] :=
+;
+
+FlowInUnitSum :=
+Electricity ElecGridSell   16315.4
+Electricity HP1stageLT      6910.11
+Electricity HP1stageMT      8162.58
+Electricity HP2stage       10153.3
+Natgas      Cogen          63160.6
+;
+
+FlowOutUnitSum :=
+Electricity Cogen         22971.5
+Electricity ElecGridBuy   59809.9
+Electricity Geothermal     7403.91
+Electricity PV             2950.75
+Natgas      NatGasGrid    63160.6
+;
+
