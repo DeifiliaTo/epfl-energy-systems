@@ -27,10 +27,7 @@ SOFC
 Geothermal
 HP2stage
 HP1stageLT
-HP1stageLT_2
-HP1stageLT_3
 HP1stageMT
-HP1stageMT_2
 Cogen
 HPDatacenter
 HPWaste
@@ -65,10 +62,7 @@ SOFC
 Geothermal
 HP2stage
 HP1stageLT
-HP1stageLT_2
-HP1stageLT_3
 HP1stageMT
-HP1stageMT_2
 Cogen
 HPDatacenter
 HPWaste
@@ -85,10 +79,7 @@ ElecGridBuy
 set UtilitiesOfType[ElectricityCons] :=
 HP2stage
 HP1stageLT
-HP1stageLT_2
-HP1stageLT_3
 HP1stageMT
-HP1stageMT_2
 HPDatacenter
 HPWaste
 ElecGridSell
@@ -100,10 +91,7 @@ SOFC
 Geothermal
 HP2stage
 HP1stageLT
-HP1stageLT_2
-HP1stageLT_3
 HP1stageMT
-HP1stageMT_2
 Cogen
 HPDatacenter
 HPWaste

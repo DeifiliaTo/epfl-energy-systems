@@ -66,4 +66,23 @@ let CAPEX['Vent'] := 785.514;
 let OPEX['Vent_HP'] := 693652;
 let CAPEX['Vent_HP'] := 167257;
 
-end;
+/*---------------------------------------------------------------------------------------------------------------------------------------
+Add duplicate technologies to relevant sets
+---------------------------------------------------------------------------------------------------------------------------------------*/
+# HP1stageLT_2
+let Technologies := Technologies union {'HP1stageLT_2'};
+let UtilitiesOfType['Heating'] := UtilitiesOfType['Heating'] union {'HP1stageLT_2'};
+let UtilitiesOfType['ElectricityCons'] := UtilitiesOfType['ElectricityCons'] union {'HP1stageLT_2'};
+let UtilitiesOfLayer['Electricity'] := UtilitiesOfLayer['Electricity'] union {'HP1stageLT_2'};
+
+# HP1stageLT_3
+let Technologies := Technologies union {'HP1stageLT_3'};
+let UtilitiesOfType['Heating'] := UtilitiesOfType['Heating'] union {'HP1stageLT_3'};
+let UtilitiesOfType['ElectricityCons'] := UtilitiesOfType['ElectricityCons'] union {'HP1stageLT_3'};
+let UtilitiesOfLayer['Electricity'] := UtilitiesOfLayer['Electricity'] union {'HP1stageLT_3'};
+
+# HP1stageMT_2
+let Technologies := Technologies union {'HP1stageMT_2'};
+let UtilitiesOfType['Heating'] := UtilitiesOfType['Heating'] union {'HP1stageMT_2'};
+let UtilitiesOfType['ElectricityCons'] := UtilitiesOfType['ElectricityCons'] union {'HP1stageMT_2'};
+let UtilitiesOfLayer['Electricity'] := UtilitiesOfLayer['Electricity'] union {'HP1stageMT_2'};
