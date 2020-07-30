@@ -35,12 +35,12 @@ let  Fmax['ElecGridSell'] := refSize;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Integrate heat recovery results from part 3
 ----------------------------------------------------------------------------------------------------------------------------------------*/
-let heat_recovery['DC', 1] := 357.011;
-let heat_recovery['DC', 2] := 356.967;
-let heat_recovery['DC', 3] := 335.21;
-let heat_recovery['DC', 4] := 343.394;
+let heat_recovery['DC', 1] := 309.78;
+let heat_recovery['DC', 2] := 309.731;
+let heat_recovery['DC', 3] := 287.793;
+let heat_recovery['DC', 4] := 295.593;
 let heat_recovery['DC', 5] := 0;
-let heat_recovery['DC', 6] := 357.897;
+let heat_recovery['DC', 6] := 311;
 
 let	heat_recovery['Vent', 1] := 0.549;
 let	heat_recovery['Vent', 2] := 0.536;
@@ -57,8 +57,8 @@ let	heat_recovery['Vent_HP', 5] := 428.859;
 let	heat_recovery['Vent_HP', 6] := 2023.78;
 
 # COSTS and OBJECTIVE
-let OPEX['DC'] := 769173;
-let CAPEX['DC'] :=  11302.8;
+let OPEX['DC'] := 772577;
+let CAPEX['DC'] :=  14431.6;
 
 let OPEX['Vent'] := 796379;
 let CAPEX['Vent'] := 785.514;
