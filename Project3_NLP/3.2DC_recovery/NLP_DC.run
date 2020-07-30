@@ -8,7 +8,7 @@ data NLP_DC.dat;
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
+option solver 'snopt';#'/home/deifilia/AMPL/ampl_linux-intel64/snopt';
 option snopt_options 'major_iterations=10000';
 #option omit_zero_rows 1;
 #option omit_zero_cols 1;
