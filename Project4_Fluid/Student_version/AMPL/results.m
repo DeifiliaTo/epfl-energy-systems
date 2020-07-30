@@ -86,7 +86,7 @@ fplot(quad_LP_40, [min(Text), max(Text)])
 hold off
 
 xlim([min(Text), max(Text)])
-xlabel('External Temperature [C]')
+xlabel('External Temperature [K]')
 ylabel('Carnot factor')
 legend('HP_{20}', 'HP_{30}', 'HP_{40}', 'LP_{20}', 'LP_{30}', 'LP_{40}', 'Location', 'northwest')
 
@@ -118,7 +118,7 @@ hold on
 scatter(Text, data, 'filled', 'MarkerFaceColor', 'red')
 
 hold off
-xlabel('External Temperature [C]')
+xlabel('External Temperature [K]')
 ylabel('Carnot factor')
 legend('Regression', 'Data', 'Location', 'northwest')
 figExport(5, 4, title.char)
