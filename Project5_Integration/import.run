@@ -84,6 +84,9 @@ model ../Project2_MILP/moesHP1stageLT.mod;
 data ../Project5_Integration/moesHP1stageLT_2.dat;
 model ../Project5_Integration/moesHP1stageLT_2.mod;
 
+data ../Project5_Integration/moesHP1stageLT_3.dat;
+model ../Project5_Integration/moesHP1stageLT_3.mod;
+
 data ../Project2_MILP/moesHP1stageMT.dat;
 model ../Project2_MILP/moesHP1stageMT.mod;
 

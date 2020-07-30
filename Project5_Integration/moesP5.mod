@@ -22,11 +22,11 @@ subject to MT_balance{t in Time}:
 Update resource balances 
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 delete inflow_cstr;
-subject to inflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageLT_2","HP1stageMT","HP1stageMT_2","HP2stage"}, t in Time}:
+subject to inflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageLT_2","HP1stageLT_3", "HP1stageMT","HP1stageMT_2","HP2stage"}, t in Time}:
     FlowInUnit[l, u, t] = mult_t[u,t] * Flowin[l,u];
 
 delete outflow_cstr;
-subject to outflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageLT_2","HP1stageMT","HP1stageMT_2","HP2stage"}, t in Time}:
+subject to outflow_cstr {l in Layers, u in UtilitiesOfLayer[l] diff {"HP1stageLT","HP1stageLT_2","HP1stageLT_3","HP1stageMT","HP1stageMT_2","HP2stage"}, t in Time}:
 	FlowOutUnit[l, u, t] = mult_t[u,t] * Flowout[l,u]; 
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
