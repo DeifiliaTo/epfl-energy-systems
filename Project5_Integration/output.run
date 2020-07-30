@@ -9,31 +9,23 @@ display Qheatingsupply;
 display mult;
 display mult_t;
 
+display Fmax;
+
 display Flowin;
 display Flowout;
 
 display FlowInUnit;
 display FlowOutUnit;
 
-display Buildings;
-
-#display usedroofArea;
+display usedroofArea;
 
 display InvCost;
-
 display OpCost;
-
-display Tlmc_HP1stageMT;
 
 display CO2;
 
 display heat_recovery;
-
 display use_recovery;
-
-display mult_t;
-
-display use_t;
 
 display FlowInUnitSum;
 display FlowOutUnitSum;

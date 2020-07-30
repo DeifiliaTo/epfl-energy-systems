@@ -6,14 +6,15 @@ include import.run
 /*---------------------------------------------------------------------------------------------------------------------------------------
 AMPL options
 ---------------------------------------------------------------------------------------------------------------------------------------*/
-option solver cplex;											# choose the solver
+option solver cplex;
+# option solver 'C:\AAA\EPFL Y3\Semester 2\Modelling and optimization of energy systems\Project part 2\ampl_mswin64\cplex.exe';											# choose the solver
 # option solver '/home/deifilia/AMPL/ampl_linux-intel64/snopt';
 option presolve 10;
 option snopt_options 'major_iterations=10000';
 
 option omit_zero_rows 1;										# to not display 0 in rows
 option omit_zero_cols 1;										# to not display 0 in columns
-option log_file 'multiobjective.log';
+#option log_file 'multiobjective.log';
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Iterate through objective functions
@@ -29,21 +30,21 @@ param alpha;
 
 # new objective functions
 # TO EDIT: change the params which feed into the objective function
-minimize multiobj1: alpha*CO2       + (1-alpha)*InvCost;
-minimize multiobj2: alpha*OpCost    + (1-alpha)*InvCost;
+#minimize multiobj1: alpha*CO2       + (1-alpha)*InvCost;
+#minimize multiobj2: alpha*OpCost    + (1-alpha)*InvCost;
 minimize multiobj3: alpha*CO2       + (1-alpha)*Totalcost;
 
 # set objective (otherwise takes the first objective defined -- which is in the model)
-objective multiobj1;
+#objective multiobj1;
 # objective multiobj2;
-# objective multiobj3;
+ objective multiobj3;
 
 # initialise outputs
 # TO EDIT: change the first 2 elements of this set to the terms of your objective function (this is for MATLAB--it will use them as plot axes)
 #   You can also include other stuff that could be interesting to note on the plot here
-set multi_vars := {'CO2', 'InvCost', 'OpCost', 'TotalCost'}; # for multiobj1
+#set multi_vars := {'CO2', 'InvCost', 'OpCost', 'TotalCost'}; # for multiobj1
 # set multi_vars := {'OpCost', 'InvCost', 'CO2', 'TotalCost'}; # for multiobj2
-# set multi_vars := {'CO2', 'TotalCost', 'OpCost', 'InvCost'}; # for multiobj3
+ set multi_vars := {'CO2', 'TotalCost', 'OpCost', 'InvCost'}; # for multiobj3
 param multi_out{multi_vars,alphas};
 
 # inspired by https://ampl.com/NEW/loop1.html
