@@ -2,8 +2,9 @@ clear all;
 close all;
 clc;
 
-% Analysis to cluster Text and Irr
+% Analysis to cluster Text and Irr --> in typical days
 % From 7 am to 9 pm (from Monday to Friday)
+
 
 % Extracting data from Excel sheet
 filename = 'P1_weatherdata.csv';
@@ -243,7 +244,7 @@ end
 Dev_Average = sum( sum( ( (Text - Text_season_avg)/(Text_max - Text_min) ).^2 + ...
     ( (Irr - Irr_season_avg)/(Irr_max - Irr_min) ).^2 ) );
 
-% Tenir compte de la température extérieure
+% Account of Text
 k = 1;
 for i = 1:8760
     u = mod(i,168);
