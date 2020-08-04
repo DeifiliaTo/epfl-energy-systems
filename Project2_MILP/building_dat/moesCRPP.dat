@@ -1,14 +1,14 @@
 let Buildings := Buildings union {'CRPP'};
 let LowTempBuildings := LowTempBuildings union {'CRPP'};
 
-###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
+###########BUILDING SPECIFIC PARAMETER  Time  Independent ##########################
 let FloorArea['CRPP'] := 10831;     # [m2]
 let k_th['CRPP']:= 0.00525;   # [kW/m2/K]
 let k_sun['CRPP']:= 0.12;
 let U_env['CRPP']:= 0.004450000000000001;
 let specQ_people['CRPP']:= 0.002261; 
 
-###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################
+###########BUILDING SPECIFIC PARAMETER  Time  Dependent ##########################
 let specElec['CRPP',1] := 0.04065183270242822;
 let specElec['CRPP',2] := 0.04065183270242822;
 let specElec['CRPP',3] := 0.04065183270242822;

@@ -1,14 +1,14 @@
 let Buildings := Buildings union {'AI'};
 let LowTempBuildings := LowTempBuildings union {'AI'};
 
-###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
+###########BUILDING SPECIFIC PARAMETER  Time  Independent ##########################
 let FloorArea['AI'] := 17674;     # [m2]
 let k_th['AI']:= 0.011789999999999998;   # [kW/m2/K]
 let k_sun['AI']:= 0.22;
 let U_env['AI']:= 0.010989999999999998;
 let specQ_people['AI']:= 0.002261; 
 
-###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################
+###########BUILDING SPECIFIC PARAMETER  Time  Dependent ##########################
 let specElec['AI',1] := 0.06035985062804119;
 let specElec['AI',2] := 0.06035985062804119;
 let specElec['AI',3] := 0.06035985062804119;

@@ -1,14 +1,14 @@
 let Buildings := Buildings union {'CE'};
 let MediumTempBuildings := MediumTempBuildings union {'CE'};
 
-###########BUILDING SPECIFIC PARAMETER  Time  Independend ##########################
+###########BUILDING SPECIFIC PARAMETER  Time  Independent ##########################
 let FloorArea['CE'] := 16655;     # [m2]
 let k_th['CE']:= 0.009710000000000002;   # [kW/m2/K]
 let k_sun['CE']:= 0.01;
 let U_env['CE']:= 0.008910000000000001;
 let specQ_people['CE']:= 0.002261; 
 
-###########BUILDING SPECIFIC PARAMETER  Time  Dependend ##########################
+###########BUILDING SPECIFIC PARAMETER  Time  Dependent ##########################
 let specElec['CE',1] := 0.019729810867607327;
 let specElec['CE',2] := 0.019729810867607327;
 let specElec['CE',3] := 0.019729810867607327;
