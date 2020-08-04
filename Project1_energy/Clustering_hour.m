@@ -2,7 +2,7 @@ clearvars;
 close all;
 clc;
 
-% Analysis to cluster Text and Irr
+% Analysis to cluster Text and Irr --> in typical hours
 % From 7 am to 9 pm (from Monday to Friday)
 
 %% Data extraction
