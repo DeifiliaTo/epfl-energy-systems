@@ -62,12 +62,12 @@ subject to CarnotFactor1{t in Time}:
 #we assume that the low pressure stage can provide heat to the low temperature network of epfl over a free heat exchanger (no cost considered!)
 #for calculating the carnot factor, assume t_epfl_low as condenser temperature, and source temperature as evaporator temperature
 #How can you calculate the condensation heat that is available here? 
-#avoid dividing by 0! ,use conditions
+#avoid dividing by 0!, use conditions
     c_factor1[t] = if (Q_cond[t] > 0) then
         ((W_comp1[t] + Q_evap[t]) / W_comp1[t]) * ((T_epfl_low - T_source) / (T_epfl_low + 273))
         else 0.001;
 
-subject to CarnotFactor2{t in Time}:  #caculates the carnot factor for all time steps with fitting function (2nd degree polynomial)
+subject to CarnotFactor2{t in Time}:  #calculates the carnot factor for all time steps with fitting function (2nd degree polynomial)
 #if you used conditions in CarnotFactor1,apply the same ones
     c_factor2[t] = if (Q_cond[t] > 0) then
         a * (T_ext[t] + 273)^2 - b * (T_ext[t] + 273) + c
@@ -82,7 +82,7 @@ subject to Evaporator_area: #Area of evap HEX, calclated for extreme period
 subject to Comp2cost: #calculates the cost for comp2 for extreme period 
     comp_cost = (index/ref_index) * (k1 + k2 * (W_comp1[12])^k3) * f_BM * 0.96; #*0.96 to convert from $ to CHF
 
-#subject to HEX1_cost: #calculates the cost forHEX1 for extreme period 
+#calculates the cost forHEX1 for extreme period 
 subject to Evaporator_cost:
  	Evap_cost = (index/ref_index) * (k1_HEX + k2_HEX * (Evap_area)^k3_HEX) * f_BM_HEX * 0.96;
 
