@@ -22,19 +22,20 @@ end
 
 heat_plt = bar(Q, 'stacked')
 xlabel('Time period')
-ylabel('Heaing supply [kW]')
+ylabel('Heating supply [kW]')
 legend('Cogeneration', '2-stage heat pump', '1-stage heat pump (LT)', 'Location', 'northwest');
-figExport(5, 4, 'heat_supply')
+figExport(12, 8, 'heat_supply')
 
 end
 
 function capex()
 costs = [355828.0496 86690.7217 1162149.096 152598.0475];
 labels = {'Cogeneration', '2-stage heat pump', '1-stage heat pump', 'PV'};
-capex_plt = pie(costs, '.2f%')
+explode = [1 1 1 1];
+capex_plt = pie(costs,explode,'%2.0f%%')
 legend(labels, 'Location', 'southwest')
 
-figExport(5, 5, 'capex')
+figExport(10, 10, 'capex')
 end
 
 function E_supply()
@@ -53,7 +54,7 @@ E_supply = bar(E, 'stacked')
 xlabel('Time period')
 ylabel('Electricity supply [kW]')
 legend('Grid', 'Cogeneration', 'PV', 'Location', 'northwest');
-figExport(5, 4, 'E_supply')
+figExport(12, 8, 'E_supply')
 
 
 end
@@ -76,7 +77,7 @@ E_usage = bar(E, 'stacked')
 xlabel('Time period')
 ylabel('Electricity usage [kW]')
 legend('Demand', '1-stage heat pump', '2-stage heat pump', 'sell', 'Location', 'northwest');
-figExport(5, 4, 'E_usage')
+figExport(12, 8, 'E_usage')
 
 end
 
