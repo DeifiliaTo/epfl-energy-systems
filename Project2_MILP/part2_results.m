@@ -76,7 +76,7 @@ E
 E_usage = bar(E, 'stacked')
 xlabel('Time period')
 ylabel('Electricity usage [kW]')
-legend('Demand', '1-stage heat pump', '2-stage heat pump', 'sell', 'Location', 'northwest');
+legend('Campus demand', '1-stage heat pump', '2-stage heat pump', 'Sold to grid', 'Location', 'northwest');
 figExport(12, 8, 'E_usage')
 
 end
