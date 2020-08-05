@@ -43,7 +43,7 @@ xlabel('Time Period')
 ylabel('Electricity Consumption [kW]')
 
 legend(E_DC_bar(:), {'Reference', 'DC'}, 'Location', 'northwest')
-figExport(12, 8, 'E_DC')
+figExport(8, 6, 'E_DC')
 
 %% 3.3 Electricity consumption
 
@@ -58,8 +58,8 @@ E_Vent_bar = bar(E_Vent_ref)
 xlabel('Time Period')
 ylabel('Electricity Consumption [kW]')
 
-legend(E_Vent_bar(:), {'Reference', 'minimize: total cost', 'minimize: operational cost'}, 'Location', 'northwest')
-figExport(12, 8, 'E_Vent')
+legend(E_Vent_bar(:), {'Reference', 'min.: total cost', 'min.: operational cost'}, 'Location', 'northwest')
+figExport(8, 6, 'E_Vent')
 
 %% 3.4 Electricity consumption
 
@@ -73,8 +73,8 @@ E_venthp_bar= bar(E_ventHP)
 xlabel('Time Period')
 ylabel('Electricity consumption [kW]')
 
-legend(E_venthp_bar(:), {'Reference', 'minimize: total cost', 'minimize: operational cost'}, 'Location', 'northwest')
-figExport(12, 8, 'E_venthp')
+legend(E_venthp_bar(:), {'Reference', 'min.: total cost', 'min.: operational cost'}, 'Location', 'northwest')
+figExport(8, 6, 'E_venthp')
 
 %% 3.2 Qheating demand
 
@@ -89,7 +89,7 @@ xlabel('Time Period')
 ylabel('Heating demand [kW]')
 
 legend(Q_DC_bar(:), {'Reference', 'DC'}, 'Location', 'northwest')
-figExport(12, 8, 'Q_DC')
+figExport(8, 6, 'Q_DC')
 
 %% 3.3 Qheating demand
 
@@ -104,8 +104,8 @@ Q_Vent_bar = bar(Q_Vent_ref)
 xlabel('Time Period')
 ylabel('Heating demand [kW]')
 
-legend(Q_Vent_bar(:), {'Reference', 'minimize: total cost', 'minimize: operational cost'}, 'Location', 'northwest')
-figExport(12, 8, 'Q_Vent')
+legend(Q_Vent_bar(:), {'Reference', 'min.: total cost', 'min.: operational cost'}, 'Location', 'northwest')
+figExport(8, 6, 'Q_Vent')
 
 %% 3.4 Qheating demand
 
@@ -120,8 +120,8 @@ Q_bar = bar(Q_consolidate)
 xlabel('Time Period')
 ylabel('Heating demand [kW]')
 
-legend(Q_bar(:), {'Reference', 'minimize: total cost', 'minimize: operational cost'}, 'Location', 'northwest')
-figExport(12, 8, 'Q_venthp')
+legend(Q_bar(:), {'Reference', 'min.: total cost', 'min.: operational cost'}, 'Location', 'northwest')
+figExport(8, 6, 'Q_venthp')
 
 end
 
