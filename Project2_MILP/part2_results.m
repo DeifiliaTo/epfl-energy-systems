@@ -67,12 +67,12 @@ twostg = [509.828	509.828	0	0	0	510];
 sell = [439.029	0	0	0	0	15968];
 
 for i = 1:6
-   E(i, 1) = demand(i);
-   E(i, 2) = onestg(i);
-   E(i, 3) = twostg(i);
-   E(i, 4) = sell(i);
+    E(i, 1) = demand(i);
+    E(i, 2) = onestg(i);
+    E(i, 3) = twostg(i);
+    E(i, 4) = sell(i);
 end
-E
+
 E_usage = bar(E, 'stacked')
 xlabel('Time period')
 ylabel('Electricity usage [kW]')
