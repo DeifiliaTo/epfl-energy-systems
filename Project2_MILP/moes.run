@@ -99,6 +99,7 @@ AMPL options
 option solver cplex;											# choose the solver
 option omit_zero_rows 1;										# to not display 0 in rows
 option omit_zero_cols 1;										# to not display 0 in columns
+option log_file 'moes.log';
 
 /*---------------------------------------------------------------------------------------------------------------------------------------
 Solve the problem
