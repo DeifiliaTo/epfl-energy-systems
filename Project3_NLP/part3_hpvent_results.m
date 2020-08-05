@@ -43,7 +43,7 @@ xlabel('Time Period')
 ylabel('Electricity Consumption [kW]')
 
 legend(E_DC_bar(:), {'Reference', 'DC'}, 'Location', 'northwest')
-figExport(5, 4, 'E_DC')
+figExport(12, 8, 'E_DC')
 
 %% 3.3 Electricity consumption
 
@@ -59,7 +59,7 @@ xlabel('Time Period')
 ylabel('Electricity Consumption [kW]')
 
 legend(E_Vent_bar(:), {'Reference', 'minimize: total cost', 'minimize: operational cost'}, 'Location', 'northwest')
-figExport(5, 4, 'E_Vent')
+figExport(12, 8, 'E_Vent')
 
 %% 3.4 Electricity consumption
 
@@ -74,7 +74,7 @@ xlabel('Time Period')
 ylabel('Electricity consumption [kW]')
 
 legend(E_venthp_bar(:), {'Reference', 'minimize: total cost', 'minimize: operational cost'}, 'Location', 'northwest')
-figExport(5, 4, 'E_venthp')
+figExport(12, 8, 'E_venthp')
 
 %% 3.2 Qheating demand
 
@@ -89,7 +89,7 @@ xlabel('Time Period')
 ylabel('Heating demand [kW]')
 
 legend(Q_DC_bar(:), {'Reference', 'DC'}, 'Location', 'northwest')
-figExport(5, 4, 'Q_DC')
+figExport(12, 8, 'Q_DC')
 
 %% 3.3 Qheating demand
 
@@ -105,7 +105,7 @@ xlabel('Time Period')
 ylabel('Heating demand [kW]')
 
 legend(Q_Vent_bar(:), {'Reference', 'minimize: total cost', 'minimize: operational cost'}, 'Location', 'northwest')
-figExport(5, 4, 'Q_Vent')
+figExport(12, 8, 'Q_Vent')
 
 %% 3.4 Qheating demand
 
@@ -121,7 +121,7 @@ xlabel('Time Period')
 ylabel('Heating demand [kW]')
 
 legend(Q_bar(:), {'Reference', 'minimize: total cost', 'minimize: operational cost'}, 'Location', 'northwest')
-figExport(5, 4, 'Q_venthp')
+figExport(12, 8, 'Q_venthp')
 
 end
 
