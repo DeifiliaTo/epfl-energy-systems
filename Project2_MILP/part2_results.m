@@ -10,9 +10,9 @@ end
 
 function heating_supply()
 Q = zeros(6, 3);
-cogen = [14978.36	14523.06	2007.06	3840.64	0	37949.9];
-twostg = [1039.78	1039.78	0	0	0	1039.78];
-onestg = [10000	10000	0	0	0	10000];
+cogen = [20970.53	20333.08	2809.99	5377.11	0	53131.81];
+twostg = [1039.78	1039.78     0       0       0	1039.78];
+onestg = [10000     10000       0       0       0	10000];
 
 for i = 1:6
     Q(i, 1) = cogen(i);
@@ -41,7 +41,7 @@ end
 function E_supply()
 E = zeros(6, 3);
 grid = [0	0	8558.09	8032.28	2244.97	0];
-cogen = [14978.4	14523.1	2007.06	3840.63	0	30957.5];
+cogen = [14978.4	14523.1	2007.06	3840.63	0	37949.9];
 PV = [277.28	235.895	1671.95	364.188	401.435	0];
 
 for i = 1:6
@@ -76,7 +76,7 @@ E
 E_usage = bar(E, 'stacked')
 xlabel('Time period')
 ylabel('Electricity usage [kW]')
-legend('Demand', '1-stage heat pump', '2-stage heat pump', 'sell', 'Location', 'northwest');
+legend('Campus demand', '1-stage heat pump', '2-stage heat pump', 'Sold to grid', 'Location', 'northwest');
 figExport(12, 8, 'E_usage')
 
 end
