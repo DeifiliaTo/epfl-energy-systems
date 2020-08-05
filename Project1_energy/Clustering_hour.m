@@ -21,7 +21,7 @@ Colours = {'b.', 'r.', 'y.', 'g.', 'm.', 'c.', 'k*'};
 figure(1)
 plot(t_hour,Text);
 xlabel 'Time [hours]';
-ylabel 'Text [°C]'; 
+ylabel 'Text [ï¿½C]'; 
 saveas(figure(1),"plots/text_year.png")
 
 figure(2)
@@ -103,7 +103,7 @@ Dev_cold = 0;
 %% Clustering by kmeans
 
 % Clustering into 4 typical hour periods
-[idx_C, Weather_norm_C] = kmeans (Weather_norm_select, n);
+[idx_C, Weather_norm_C] = kmeans (Weather_norm_select, n, 'Replicates', 1000);
 
 % Profile deviation for each typical period of the kmean
 Freq_C = zeros (n,1);
@@ -171,7 +171,7 @@ hold on
 % Plot typical periods
 plot (TypText_kmean, TypIrr_kmean, Colours {n + 3}, 'LineWidth', 1.5)
 
-xlabel 'Temperature [°C]';
+xlabel 'Temperature [ï¿½C]';
 ylabel 'Irradiance [W/m^2]'; 
 legend('Kmean cluster 1','Kmean cluster 2','Kmean cluster 3','Kmean cluster 4','Hot period','Cold period', 'Centroids',...
     'FontSize', 12, 'Location', 'northwest');
@@ -249,7 +249,7 @@ hold on
 plot (TypWeather_norm_Av(:,1)*(Text_max - Text_min) + Text_min, ...
     TypWeather_norm_Av (:,2)*(Irr_max - Irr_min) + Irr_min, Colours {n + 3}, 'LineWidth', 1.5)
 
-xlabel 'Temperature [°C]';
+xlabel 'Temperature [ï¿½C]';
 ylabel 'Irradiance [W/m^2]'; 
 legend('Average cluster 1','Average cluster 2','Average cluster 3','Average cluster 4','Hot period','Cold period', 'Centroids',...
     'FontSize', 12, 'Location', 'northwest');
@@ -265,7 +265,7 @@ plot (t_day, [ones(Freq_Av(1),1)*TypText_Av(1); ones(Freq_Av(2),1)*TypText_Av(2)
     ones(Freq_Av(5),1)*TypText_Av(5); ones(Freq_Av(3),1)*TypText_Av(3); ...
     ones(Freq_Av(4),1)*TypText_Av(4)], 'r.')
 xlabel 'Time [hours]';
-ylabel 'Temperature [°C]'; 
+ylabel 'Temperature [ï¿½C]'; 
 legend('Heated','Not heated','Clusters','FontSize', 12, 'Location', 'northwest');
 hold off
 saveas(figure(6),"plots/Cluster_av_T.png")
