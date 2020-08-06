@@ -1,11 +1,11 @@
 
 function part5_results()
 % Generate 
-%total_cost_scenario
-%CO2
+total_cost_scenario
+CO2
 E_bought
-%E_gen
-%gas_bought
+E_gen
+gas_bought
 end
 
 
@@ -26,7 +26,7 @@ Cost_plt = bar(X, C, 'stacked')
 xlabel('Scenarios')
 ylabel('Total Cost [MCHF/yr]')
 legend('CAPEX', 'OPEX', 'Location', 'northeast');
-figExport(5, 4, 'Cost_scenario')
+figExport(8, 6, 'Cost_scenario')
 
 end
 
@@ -40,7 +40,7 @@ CO2_plt = bar(X, CO2, 'stacked')
 xlabel('Scenarios')
 ylabel('CO_2 Emissions [t/yr]')
 
-figExport(5, 4, 'CO2')
+figExport(8, 6, 'CO2')
 end
 
 function E_bought()
@@ -66,8 +66,8 @@ t = t';
 bar(t)
 xlabel('Time period')
 ylabel('Electricity bought from grid [kW]')
-legend('min OPEX', 'min TOTEX', 'Self-sufficient', 'CO2', 'Location', 'northwest');
-figExport(5, 4, 'E_bought')
+legend('min OPEX', 'min TOTEX', 'Self-sufficient', 'CO2', 'Location', 'southwest');
+figExport(8, 6, 'E_bought')
 
 
 end
@@ -95,7 +95,7 @@ bar(t)
 xlabel('Time period')
 ylabel('Electricity generated [kW]')
 legend('min OPEX', 'min TOTEX', 'Self-sufficient', 'CO2', 'Location', 'northwest');
-figExport(5, 4, 'E_gen')
+figExport(8, 6, 'E_gen')
 
 end
 
@@ -123,7 +123,7 @@ bar(t)
 xlabel('Time period')
 ylabel('Natural gas from grid [kW]')
 legend('min OPEX', 'min TOTEX', 'Self-sufficient', 'CO2', 'Location', 'northwest');
-figExport(5, 4, 'gas_bought')
+figExport(8, 6, 'gas_bought')
 
 end
 
