@@ -79,18 +79,19 @@ all_fluids = fplot(quad_HP_20, [min(Text), max(Text)])
 hold on;
 fplot(quad_HP_30, [min(Text), max(Text)])
 fplot(quad_HP_40, [min(Text), max(Text)])
-fplot(quad_LP_20, [min(Text), max(Text)])
-fplot(quad_LP_30, [min(Text), max(Text)])
-fplot(quad_LP_40, [min(Text), max(Text)])
+set(gca,'ColorOrderIndex',1);
+fplot(quad_LP_20, [min(Text), max(Text)], '--')
+fplot(quad_LP_30, [min(Text), max(Text)], '--')
+fplot(quad_LP_40, [min(Text), max(Text)], '--')
 
 hold off
 
 xlim([min(Text), max(Text)])
 xlabel('External Temperature [K]')
 ylabel('Carnot factor')
-legend('HP_{20}', 'HP_{30}', 'HP_{40}', 'LP_{20}', 'LP_{30}', 'LP_{40}', 'Location', 'northwest')
+legend('HP_{20}', 'HP_{30}', 'HP_{40}', 'LP_{20}', 'LP_{30}', 'LP_{40}', 'Location', 'northwest', 'NumColumns', 2)
 
-figExport(5, 4, 'all_fluids')
+figExport(12, 8, 'all_fluids')
 
 
 
@@ -109,7 +110,7 @@ hold off
 xlabel('Experimental Carnot factor')
 ylabel('Regressed Carnot factor')
 legend('Regression', 'Data', 'Location', 'northwest')
-figExport(5, 4, title.char)
+figExport(12, 8, title.char)
 end
 
 function plot_regression (Text, title, g, data)
@@ -121,7 +122,7 @@ hold off
 xlabel('External Temperature [K]')
 ylabel('Carnot factor')
 legend('Regression', 'Data', 'Location', 'northwest')
-figExport(5, 4, title.char)
+figExport(12, 8, title.char)
 end
 
 function fn = generate_quadratic(arr, f)
